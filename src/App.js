@@ -8,7 +8,9 @@ function App() {
 		<>
 			<ResetStyle />
 			<GlobalFonts />
-			<LoginBtn />
+			{/* <Header/>
+			<Outlet/>
+			<Footer/> */}
 		</>
 	);
 }
