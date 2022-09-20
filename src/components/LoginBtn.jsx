@@ -3,17 +3,16 @@ import { useState, useEffect } from "react";
 import { supabase } from "../client";
 
 export default function LoginBtn() {
-	// const CLINT_ID = "fa5dc7a641c36473540d";
-	// const CLINT_SECRET = "3fe1366fa59093206257f569f7b6f2f3b4b41c1e";
-
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {
+		checkUser();
 		window.addEventListener("hashchange", () => checkUser());
 	}, []);
 
 	async function checkUser() {
 		const user = supabase.auth.user();
+		const session = supabase.auth.session();
 		setUser(user);
 	}
 
