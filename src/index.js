@@ -12,7 +12,7 @@ root.render(
 				{/* <Route index element={<Issues />} />
 				<Route path="issue/:id" element={<Issue />} />
 				<Route path="new_issue" element={<NewIssue />} />
-				<Route path="label" element={<Labels />} /> */}
+				<Route path="labels" element={<Labels />} /> */}
 			</Route>
 		</Routes>
 	</BrowserRouter>
