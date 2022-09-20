@@ -93,6 +93,6 @@ meter {
 
 export const GlobalFonts = createGlobalStyle`
 html {
-  font-family: 'Noto Sans TC', sans-serif;
+  font-family:  sans-serif;
 }
 `;
