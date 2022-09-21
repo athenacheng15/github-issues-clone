@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-// eslint-disable-next-line react/prop-types
 export default function SearchBar({ width, max }) {
 	return (
 		<Wrapper width={width} max={max}>
