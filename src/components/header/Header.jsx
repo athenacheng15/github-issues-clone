@@ -25,7 +25,7 @@ export default function Header() {
 				</HamburgerBox>
 				<MarkGithubIcon fill="#FFFFFF" size="medium" />
 				<GrowBox>
-					<SearchBar width="272px" max="540px" />
+					<SearchBar width="272px" max="500px" />
 					<LinkBox>
 						{linkList.map((item, index) => (
 							<HeaderLink key={index}>{item}</HeaderLink>
@@ -34,7 +34,12 @@ export default function Header() {
 				</GrowBox>
 				<HeaderBox>
 					<BellBtn fill="#FFFFFF" size={16} />
-					<ArrowList onClick={() => setPlusBtnState(!plusBtnState)}>
+					<ArrowList
+						onClick={() => {
+							setPlusBtnState(!plusBtnState);
+							setUserBtnState(false);
+						}}
+					>
 						<PlusBtn fill="#FFFFFF" />
 						<TriangleBtn fill="#FFFFFF" size="small" />
 						<SelectList
@@ -45,7 +50,12 @@ export default function Header() {
 						/>
 					</ArrowList>
 
-					<ArrowList onClick={() => setUserBtnState(!userBtnState)}>
+					<ArrowList
+						onClick={() => {
+							setUserBtnState(!userBtnState);
+							setPlusBtnState(false);
+						}}
+					>
 						<UserImage />
 						<TriangleBtn fill="#FFFFFF" size="small" />
 						<UserSelectList right="35px" top="48px" isShown={userBtnState} />
