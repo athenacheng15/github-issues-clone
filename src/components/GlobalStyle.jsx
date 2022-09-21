@@ -10,7 +10,7 @@ export const ResetStyle = createGlobalStyle`
     Remove all the styles of the "User-Agent-Stylesheet", except for the 'display' property
     - The "symbol *" part is to solve Firefox SVG sprite bug
  */
-    *:where(:not(html, iframe, canvas, img, svg, video, audio, select):not(svg
+    *:where(:not(html, iframe, canvas, img, svg, video, audio, select,strong):not(svg
 			*, symbol *)) {
 	all: unset;
 	display: revert;

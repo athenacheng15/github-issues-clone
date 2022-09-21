@@ -9,18 +9,18 @@ import {
 	SignOutIcon,
 } from "@primer/octicons-react";
 import SearchBar from "./SearchBar";
+import SelectList from "./SelectList";
+import UserSelectList from "./UserSelectList";
 
 export default function Header() {
 	const [mobileState, setMobileState] = useState(false);
-
-	function handelBtn() {
-		setMobileState(!mobileState);
-	}
+	const [plusBtnState, setPlusBtnState] = useState(false);
+	const [userBtnState, setUserBtnState] = useState(false);
 
 	return (
 		<>
 			<Wapper>
-				<HamburgerBox onClick={handelBtn}>
+				<HamburgerBox onClick={() => setMobileState(!mobileState)}>
 					<HamburgerBtn fill="#FFFFFF" size={24} />
 				</HamburgerBox>
 				<MarkGithubIcon fill="#FFFFFF" size="medium" />
@@ -34,13 +34,21 @@ export default function Header() {
 				</GrowBox>
 				<HeaderBox>
 					<BellBtn fill="#FFFFFF" size={16} />
-					<ArrowList>
+					<ArrowList onClick={() => setPlusBtnState(!plusBtnState)}>
 						<PlusBtn fill="#FFFFFF" />
 						<TriangleBtn fill="#FFFFFF" size="small" />
+						<SelectList
+							right="88px"
+							top="48px"
+							listitems={plusListitems}
+							isShown={plusBtnState}
+						/>
 					</ArrowList>
-					<ArrowList>
+
+					<ArrowList onClick={() => setUserBtnState(!userBtnState)}>
 						<UserImage />
 						<TriangleBtn fill="#FFFFFF" size="small" />
+						<UserSelectList right="35px" top="48px" isShown={userBtnState} />
 					</ArrowList>
 				</HeaderBox>
 			</Wapper>
@@ -66,13 +74,7 @@ export default function Header() {
 	);
 }
 
-const linkList = [
-	"Pulls requests",
-	"Issues",
-	"Marketplace",
-	"Explore",
-	"Pulls",
-];
+const linkList = ["Pull requests", "Issues", "Marketplace", "Explore", "Pulls"];
 const mobileLinkList = [
 	"Dashboard",
 	"Pull requests",
@@ -82,6 +84,13 @@ const mobileLinkList = [
 	"Explore",
 	"Sponsors",
 	"Settings",
+];
+
+const plusListitems = [
+	"New repository",
+	"Import repository",
+	"New gist",
+	"New organization",
 ];
 
 const Wapper = styled.div`
@@ -160,7 +169,7 @@ const HeaderLink = styled.a`
 	}
 `;
 
-const ArrowList = styled.div`
+const ArrowList = styled.button`
 	display: flex;
 	width: auto;
 	height: auto;
