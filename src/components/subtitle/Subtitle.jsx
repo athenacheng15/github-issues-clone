@@ -26,9 +26,9 @@ export default function SubTitle() {
 				<UpperBox>
 					<TitleBox>
 						<RepoIcon size={16} fill="rgb(87, 96, 106)" />
-						<UserName>UserName</UserName>
+						<UserName>user_name</UserName>
 						<span>/</span>
-						<RepoName>RepoName</RepoName>
+						<RepoName>repo_name</RepoName>
 						<LabelBtn>Public</LabelBtn>
 					</TitleBox>
 					<OutLineBtnBox>
@@ -118,7 +118,11 @@ const ButtomBox = styled.div`
 	height: auto;
 	display: flex;
 	bottom: 0;
-	overflow: scroll;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	::-webkit-scrollbar {
+		/* margin-top: 20px; */
+	}
 	& > *:not(:first-child) {
 		margin-left: 8px;
 	}

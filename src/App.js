@@ -5,6 +5,7 @@ import { GlobalFonts } from "./components/GlobalStyle";
 import Header from "./components/header/Header";
 import SubTitle from "./components/subtitle/Subtitle";
 import Footer from "./components/Footer";
+import Labels from "./components/labels/Labels";
 
 function App() {
 	return (
@@ -13,6 +14,7 @@ function App() {
 			<GlobalFonts />
 			<Header />
 			<SubTitle />
+			<Labels />
 			<Outlet />
 			<Footer />
 		</>
