@@ -49,7 +49,7 @@ const Wrapper = styled.div`
 `;
 
 const FooterBox = styled.div`
-	margin-top: 100px;
+	margin-top: 24px;
 	padding-top: 40px;
 	padding-bottom: 48px;
 	border-top: solid 1px rgb(209, 213, 218);

@@ -1,48 +1,73 @@
 import styled from "styled-components";
-import NormalBtn from "./NormalBtn";
+import api from "../../utils/api";
+import { useState, useEffect } from "react";
+import NormalBtn from "../../commons/NormalBtn";
 import LabelBar from "./LabelBar";
+import SelectBox from "../../commons/SelectBox";
+import DoubleIconBtn from "../../commons/DoubleIconBtn";
+import ContentSearchBar from "../../commons/ContentSearchBar";
 import {
 	TagIcon,
 	MilestoneIcon,
-	SearchIcon,
 	TriangleDownIcon,
 } from "@primer/octicons-react";
 
 export default function Labels() {
-	const initialLabel = [{ labelText: "bug", bgColor: "#d73a4a" }];
+	const [sortListVis, setSortListVis] = useState(false);
+	const [repoLabels, setRepoLabels] = useState([]);
+
+	useEffect(() => {
+		async function getLabels() {
+			const data = await api.getLabels();
+			setRepoLabels(data);
+		}
+		getLabels();
+	}, []);
+
+	console.log(repoLabels);
+
 	return (
 		<>
 			<Wrapper>
 				<FunctionBar>
-					<DoubleBtn>
-						<OutLineBtnLeft>
-							<TagIcon /> <div>Labels</div>
-						</OutLineBtnLeft>
-						<OutLineBtnRight>
-							<MilestoneIcon /> <div>Milestone</div>
-						</OutLineBtnRight>
-					</DoubleBtn>
-					<SearchBar>
-						<IconWrapper>
-							<SearchIcon fill="#57606a" />
-						</IconWrapper>
-						<SearchInput placeholder="Search all labels" />
-					</SearchBar>
+					<DoubleIconBtn
+						icon1={<TagIcon />}
+						text1="Labels"
+						icon2={<MilestoneIcon />}
+						text2="Milestone"
+					/>
+					<ContentSearchBar />
 					<NormalBtn text="New label" />
 				</FunctionBar>
 				<ListBox>
 					<ListHeader>
 						<LabelsCount>12 labels</LabelsCount>
-						<SortBtn>
+						<SortBtn onClick={() => setSortListVis(!sortListVis)}>
 							Sort <TriangleDownIcon />
+							<SelectBox textList={sortList} isShown={sortListVis} />
 						</SortBtn>
 					</ListHeader>
-					<LabelBar labelText="bug" bgColor="#d73a4a" />
+					{repoLabels.map((item) => (
+						<LabelBar
+							key={item.id}
+							id={item.id}
+							labelText={item.name}
+							bgColor={`#${item.color}`}
+							description={item.description}
+						/>
+					))}
 				</ListBox>
 			</Wrapper>
 		</>
 	);
 }
+
+const sortList = [
+	"Alphabetically",
+	"Reverse alphabetically",
+	"Most issues",
+	"Fewest issues",
+];
 
 const Wrapper = styled.div`
 	padding: 24px 32px;
@@ -69,82 +94,9 @@ const FunctionBar = styled.div`
 	}
 `;
 
-const DoubleBtn = styled.div`
-	width: auto;
-	height: auto;
-	display: flex;
-	margin-right: 8px;
-
-	@media screen and (max-width: 767px) {
-		flex: auto;
-	}
-`;
-
-const OutLineBtn = styled.button`
-	width: auto;
-	height: 32px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 5px 16px;
-	border: solid 1px #d1d5da;
-	font-size: 14px;
-	font-weight: 500;
-	color: #24292f;
-	cursor: pointer;
-	& > *:not(:first-child) {
-		margin-left: 5px;
-	}
-	:hover {
-		background-color: #f3f3f6;
-	}
-`;
-
-const OutLineBtnLeft = styled(OutLineBtn)`
-	border-top-left-radius: 6px;
-	border-bottom-left-radius: 6px;
-`;
-
-const OutLineBtnRight = styled(OutLineBtn)`
-	border-top-right-radius: 6px;
-	border-bottom-right-radius: 6px;
-	border-left: none;
-`;
-
-const IconWrapper = styled.div`
-	position: absolute;
-	top: 2px;
-	left: 12px;
-`;
-
-const SearchBar = styled.div`
-	position: relative;
-	width: auto;
-	height: auto;
-	display: flex;
-	flex-grow: 1;
-	margin-right: 59px;
-	@media screen and (max-width: 767px) {
-		width: 100%;
-		order: 1;
-		flex: auto;
-	}
-`;
-
-const SearchInput = styled.input`
-	width: 320px;
-	height: 32px;
-	border: solid 1px #d1d5da;
-	border-radius: 6px;
-	padding-left: 32px;
-	font-size: 14px;
-	color: #57606a;
-	background-color: #f6f8fa;
-`;
-
 const ListBox = styled.div`
 	width: 100%;
-	height: 300px;
+	height: auto;
 `;
 
 const ListHeader = styled.div`
@@ -166,6 +118,7 @@ const LabelsCount = styled.p`
 `;
 
 const SortBtn = styled.button`
+	position: relative;
 	display: flex;
 	align-items: center;
 	font-size: 14px;

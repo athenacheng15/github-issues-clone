@@ -1,17 +1,12 @@
 import styled from "styled-components";
 
 export default function Label({ labelText, bgColor }) {
-	function lightOrDark(bgcolor = bgColor) {
-		bgcolor = +(
-			"0x" + bgcolor.slice(1).replace(bgcolor.length < 5 && /./g, "$&$&")
-		);
-
-		const r = bgcolor >> 16;
-		const g = (bgcolor >> 8) & 255;
-		const b = bgcolor & 255;
-		const hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
-
-		if (hsp > 128.2) {
+	function lightOrDark(color = bgColor) {
+		const r = parseInt(color.slice(1, 3), 16);
+		const g = parseInt(color.slice(3, 5), 16);
+		const b = parseInt(color.slice(5, 7), 16);
+		const hsp = r * 0.3 + g * 0.6 + b * 0.1;
+		if (hsp > 127.5) {
 			return "light";
 		} else {
 			return "dark";
@@ -33,8 +28,10 @@ const LabelBtn = styled.button`
 	font-size: 12px;
 	font-weight: 500;
 	border-radius: 12px;
-	padding: 0 10px;
+	padding: 0 12px;
 	text-align: center;
 	background-color: ${(props) => props.bgColor};
 	color: ${(props) => (props.color === "light" ? "black" : "white")};
+	border: ${(props) =>
+		props.bgColor === "#ffffff" ? "solid 1px #d1d5da" : "none"};
 `;

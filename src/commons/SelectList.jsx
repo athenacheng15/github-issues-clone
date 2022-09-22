@@ -18,6 +18,7 @@ const Wrapper = styled.div`
 	right: ${(props) => props.right};
 	top: ${(props) => props.top};
 	display: ${(props) => (props.isShown ? "initial" : "none")};
+	z-index: 1;
 `;
 
 const ListBox = styled.div`
@@ -39,6 +40,18 @@ const ListBox = styled.div`
 		border-style: solid;
 		border-width: 0 8px 9px 8px;
 		border-color: transparent transparent #ffffff transparent;
+	}
+	::before {
+		position: absolute;
+		content: "";
+		top: -10px;
+		right: 7px;
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 0 10px 11px 10px;
+		border-color: transparent transparent #cccccc transparent;
+		z-index: -1;
 	}
 `;
 
