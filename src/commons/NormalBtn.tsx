@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export default function NormalBtn({ text }) {
+interface Props {
+	text: string;
+}
+
+export default function NormalBtn({ text }: Props) {
 	return <Btn>{text}</Btn>;
 }
 

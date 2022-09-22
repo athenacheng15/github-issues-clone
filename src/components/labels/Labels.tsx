@@ -12,9 +12,19 @@ import {
 	TriangleDownIcon,
 } from "@primer/octicons-react";
 
+type RepoLabels = {
+	color: string;
+	defaule: boolean;
+	description: string;
+	id: number;
+	name: string;
+	node_id: string;
+	url: string;
+}[];
+
 export default function Labels() {
 	const [sortListVis, setSortListVis] = useState(false);
-	const [repoLabels, setRepoLabels] = useState([]);
+	const [repoLabels, setRepoLabels] = useState<RepoLabels>([]);
 
 	useEffect(() => {
 		async function getLabels() {
@@ -41,7 +51,7 @@ export default function Labels() {
 				</FunctionBar>
 				<ListBox>
 					<ListHeader>
-						<LabelsCount>12 labels</LabelsCount>
+						<LabelsCount>{repoLabels.length} labels</LabelsCount>
 						<SortBtn onClick={() => setSortListVis(!sortListVis)}>
 							Sort <TriangleDownIcon />
 							<SelectBox textList={sortList} isShown={sortListVis} />

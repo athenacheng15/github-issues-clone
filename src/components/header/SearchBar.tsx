@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
-export default function SearchBar({ width, max }) {
+interface Props {
+	width: string;
+	max: string;
+}
+
+export default function SearchBar({ width, max }: Props) {
 	return (
 		<Wrapper width={width} max={max}>
 			<SearchInput placeholder="Search or jump to..." />
@@ -10,8 +15,8 @@ export default function SearchBar({ width, max }) {
 }
 
 const Wrapper = styled.div`
-	width: ${(props) => props.width};
-	max-width: ${(props) => props.max};
+	width: ${(props: Props) => props.width};
+	max-width: ${(props: Props) => props.max};
 	height: 30px;
 	border: solid 1px rgb(87, 96, 106);
 	border-radius: 6px;

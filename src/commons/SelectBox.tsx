@@ -1,7 +1,16 @@
 import styled from "styled-components";
 import { CheckIcon } from "@primer/octicons-react";
 
-export default function SelectBox({ textList, isShown }) {
+interface BoxProps {
+	textList: string[];
+	isShown: boolean;
+}
+
+interface ItemProps {
+	text: string;
+}
+
+export default function SelectBox({ textList, isShown }: BoxProps) {
 	return (
 		<>
 			<Wrapper isShown={isShown}>
@@ -14,7 +23,7 @@ export default function SelectBox({ textList, isShown }) {
 	);
 }
 
-function ContentItem({ text }) {
+function ContentItem({ text }: ItemProps) {
 	return (
 		<Content>
 			<CheckBtn>
@@ -25,7 +34,10 @@ function ContentItem({ text }) {
 	);
 }
 
-const Wrapper = styled.div`
+interface WrapperProps {
+	isShown?: boolean;
+}
+const Wrapper = styled.div<WrapperProps>`
 	position: absolute;
 	right: 0;
 	top: 25px;

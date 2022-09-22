@@ -1,5 +1,18 @@
 import styled from "styled-components";
-export default function SelectList({ right, top, listitems, isShown }) {
+
+interface ListProps {
+	right: string;
+	top: string;
+	listitems: string[];
+	isShown: boolean;
+}
+
+export default function SelectList({
+	right,
+	top,
+	listitems,
+	isShown,
+}: ListProps) {
 	return (
 		<>
 			<Wrapper right={right} top={top} isShown={isShown}>
@@ -13,7 +26,13 @@ export default function SelectList({ right, top, listitems, isShown }) {
 	);
 }
 
-const Wrapper = styled.div`
+interface WrapperProps {
+	right: string;
+	top: string;
+	isShown: boolean;
+}
+
+const Wrapper = styled.div<WrapperProps>`
 	position: absolute;
 	right: ${(props) => props.right};
 	top: ${(props) => props.top};

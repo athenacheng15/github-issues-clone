@@ -4,7 +4,18 @@ import Label from "./Label";
 import SelectList from "../../commons/SelectList";
 import { KebabHorizontalIcon } from "@primer/octicons-react";
 
-export default function LabelBar({ labelText, bgColor, description }) {
+interface BarProps {
+	labelText: string;
+	bgColor: string;
+	description: string;
+	id: number;
+}
+
+export default function LabelBar({
+	labelText,
+	bgColor,
+	description,
+}: BarProps) {
 	const [dotListVis, setDotListVis] = useState(false);
 	return (
 		<Wrapper>

@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
-export default function Label({ labelText, bgColor }) {
+interface LabelProps {
+	labelText: string;
+	bgColor: string;
+}
+
+export default function Label({ labelText, bgColor }: LabelProps) {
 	function lightOrDark(color = bgColor) {
 		const r = parseInt(color.slice(1, 3), 16);
 		const g = parseInt(color.slice(3, 5), 16);
@@ -22,7 +27,11 @@ export default function Label({ labelText, bgColor }) {
 	);
 }
 
-const LabelBtn = styled.button`
+interface BtnProps {
+	bgColor: string;
+}
+
+const LabelBtn = styled.button<BtnProps>`
 	width: auto;
 	height: 24px;
 	font-size: 12px;

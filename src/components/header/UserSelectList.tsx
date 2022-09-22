@@ -1,7 +1,13 @@
 import styled from "styled-components";
 import { SmileyIcon } from "@primer/octicons-react";
 
-export default function UserSelectList({ right, top, isShown }) {
+interface Props {
+	right: string;
+	top: string;
+	isShown: boolean;
+}
+
+export default function UserSelectList({ right, top, isShown }: Props) {
 	return (
 		<>
 			<Wrapper right={right} top={top} isShown={isShown}>
@@ -43,7 +49,7 @@ const listitems2 = ["Upgrade", "Feature preview", "Help", "Settings"];
 
 const Wrapper = styled.div`
 	position: absolute;
-	right: ${(props) => props.right};
+	right: ${(props: Props) => props.right};
 	top: ${(props) => props.top};
 	display: ${(props) => (props.isShown ? "initial" : "none")};
 `;

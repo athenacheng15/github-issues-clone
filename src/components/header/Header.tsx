@@ -12,6 +12,10 @@ import SearchBar from "./SearchBar";
 import SelectList from "../../commons/SelectList";
 import UserSelectList from "./UserSelectList";
 
+interface Props {
+	isShown: boolean;
+}
+
 export default function Header() {
 	const [mobileState, setMobileState] = useState(false);
 	const [plusBtnState, setPlusBtnState] = useState(false);
@@ -63,7 +67,7 @@ export default function Header() {
 				</HeaderBox>
 			</Wapper>
 			<MoboleHeaderBox isShown={mobileState}>
-				<SearchBar width="100%" />
+				<SearchBar width="100%" max="" />
 				<MobileLinkBox>
 					{mobileLinkList.map((item, index) => (
 						<MobileHeaderLink key={index}>{item}</MobileHeaderLink>
@@ -241,7 +245,7 @@ const MoboleHeaderBox = styled.div`
 	justify-content: center;
 	flex-wrap: wrap;
 	@media screen and (max-width: 767px) {
-		display: ${(props) => (props.isShown ? "flex" : "none")};
+		display: ${(props: Props) => (props.isShown ? "flex" : "none")};
 	}
 `;
 

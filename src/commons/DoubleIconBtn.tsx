@@ -1,6 +1,13 @@
 import styled from "styled-components";
 
-export default function DoubleIconBtn({ icon1, text1, icon2, text2 }) {
+interface Props {
+	icon1: JSX.Element;
+	text1: string;
+	icon2: JSX.Element;
+	text2: string;
+}
+
+export default function DoubleIconBtn({ icon1, text1, icon2, text2 }: Props) {
 	return (
 		<>
 			<DoubleBtn>
