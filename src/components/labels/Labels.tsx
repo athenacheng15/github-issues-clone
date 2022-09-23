@@ -6,6 +6,7 @@ import LabelBar from "./LabelBar";
 import SelectBox from "../../commons/SelectBox";
 import DoubleIconBtn from "../../commons/DoubleIconBtn";
 import ContentSearchBar from "../../commons/ContentSearchBar";
+import NewLabel from "./NewLabel";
 import {
 	TagIcon,
 	MilestoneIcon,
@@ -49,6 +50,7 @@ export default function Labels() {
 					<ContentSearchBar />
 					<NormalBtn text="New label" />
 				</FunctionBar>
+				<NewLabel />
 				<ListBox>
 					<ListHeader>
 						<LabelsCount>{repoLabels.length} labels</LabelsCount>

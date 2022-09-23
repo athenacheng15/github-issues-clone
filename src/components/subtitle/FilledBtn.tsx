@@ -1,12 +1,20 @@
 import styled from "styled-components";
 
+interface BtnProps {
+	icon: JSX.Element;
+	btnText: string;
+	num?: number;
+	dotDisplay?: boolean;
+	isActive: boolean;
+}
+
 export default function FilledBtn({
 	icon,
 	btnText,
 	num,
 	dotDisplay,
 	isActive,
-}) {
+}: BtnProps) {
 	return (
 		<>
 			<Wrapper isActive={isActive}>
@@ -19,7 +27,12 @@ export default function FilledBtn({
 		</>
 	);
 }
-const Wrapper = styled.div`
+
+interface ActiveProp {
+	isActive: boolean;
+}
+
+const Wrapper = styled.div<ActiveProp>`
 	width: auto;
 	height: 48px;
 	display: flex;
@@ -29,7 +42,7 @@ const Wrapper = styled.div`
 	border-bottom: ${(props) => (props.isActive ? "solid 2px #fd8C73" : "none")};
 `;
 
-const FilledButton = styled.button`
+const FilledButton = styled.button<ActiveProp>`
 	width: auto;
 	height: 30px;
 	display: flex;
@@ -59,11 +72,11 @@ const IconWrapper = styled.div`
 	fill: #24292f;
 `;
 
-const IconBtn = styled((props) => props.icon)`
-	fill: #24292f;
-`;
+interface DotProp {
+	dotDisplay?: boolean;
+}
 
-const Dot = styled.div`
+const Dot = styled.div<DotProp>`
 	width: 20px;
 	height: 20px;
 	border-radius: 100%;

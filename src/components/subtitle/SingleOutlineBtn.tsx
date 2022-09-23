@@ -1,13 +1,21 @@
 import styled from "styled-components";
 import { TriangleDownIcon } from "@primer/octicons-react";
 
+interface BtnProps {
+	icon: JSX.Element;
+	btnText: string;
+	num?: number;
+	dotDisplay?: boolean;
+	triangleDisplay?: boolean;
+}
+
 export default function SingleOutlineBtn({
 	icon,
 	btnText,
 	num,
 	dotDisplay,
 	triangleDisplay,
-}) {
+}: BtnProps) {
 	return (
 		<>
 			<OutLineBtn>
@@ -43,7 +51,11 @@ const OutLineBtn = styled.button`
 	}
 `;
 
-const Dot = styled.div`
+interface DotProp {
+	dotDisplay?: boolean;
+}
+
+const Dot = styled.div<DotProp>`
 	width: 20px;
 	height: 20px;
 	border-radius: 100%;
@@ -54,6 +66,10 @@ const Dot = styled.div`
 	display: ${(props) => (props.dotDisplay ? "initial" : "none")};
 `;
 
-const TriangleBox = styled.div`
+interface TriangleProp {
+	triangleDisplay?: boolean;
+}
+
+const TriangleBox = styled.div<TriangleProp>`
 	display: ${(props) => (props.triangleDisplay ? "initial" : "none")};
 `;
