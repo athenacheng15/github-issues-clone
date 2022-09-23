@@ -7,7 +7,7 @@ export default function NewLabel() {
 		<>
 			<Wrapper>
 				<Label labelText="Label preview" bgColor="#DBC0CB" />
-				<CreateBar />
+				<CreateBar bgColor="#DBC0CB" />
 			</Wrapper>
 		</>
 	);
@@ -15,7 +15,7 @@ export default function NewLabel() {
 
 const Wrapper = styled.div`
 	width: 100%;
-	height: 150px;
+	height: auto;
 	border: solid 1px #d1d5da;
 	border-radius: 6px;
 	background-color: #f6f8fa;

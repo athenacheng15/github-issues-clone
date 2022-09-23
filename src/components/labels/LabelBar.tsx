@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import Label from "./Label";
 import SelectList from "../../commons/SelectList";
+import CreateBar from "./CreateBar";
 import { KebabHorizontalIcon } from "@primer/octicons-react";
 
 interface BarProps {
@@ -41,17 +42,19 @@ export default function LabelBar({
 					isShown={dotListVis}
 				/>
 			</DotBox>
+			<CreateBar bgColor={bgColor} />
 		</Wrapper>
 	);
 }
 
 const Wrapper = styled.div`
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: space-between;
 	align-items: center;
-	padding: 0 16px;
+	padding: 16px;
 	width: 100%;
-	height: 55px;
+	height: auto;
 	border: solid 1px #d1d5da;
 	border-top: none;
 

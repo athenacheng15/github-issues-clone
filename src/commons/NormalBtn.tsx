@@ -2,19 +2,32 @@ import styled from "styled-components";
 
 interface Props {
 	text: string;
+	width: string;
+	colorType: string;
 }
 
-export default function NormalBtn({ text }: Props) {
-	return <Btn>{text}</Btn>;
+export default function NormalBtn({ text, width, colorType }: Props) {
+	return (
+		<Btn width={width} colorType={colorType}>
+			{text}
+		</Btn>
+	);
 }
 
-const Btn = styled.button`
-	width: 100px;
+interface BtnPrpos {
+	width: string;
+	colorType: string;
+}
+
+const Btn = styled.button<BtnPrpos>`
+	width: ${(props) => props.width};
 	height: 32px;
-	color: #ffffff;
-	background-color: #2da44e;
+	color: ${(props) => (props.colorType === "green" ? "#ffffff" : "#24292f")};
+	background-color: ${(props) =>
+		props.colorType === "green" ? "#2da44e" : "none"};
 	text-align: center;
-	border: solid 1px #4d9053;
+	border: solid 1px
+		${(props) => (props.colorType === "green" ? "#4d9053" : "#d1d5da")};
 	border-radius: 6px;
 	font-size: 14px;
 	font-weight: 500;

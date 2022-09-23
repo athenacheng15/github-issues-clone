@@ -35,7 +35,7 @@ export default function Labels() {
 						text2="Milestone"
 					/>
 					<ContentSearchBar />
-					<NormalBtn text="New label" />
+					<NormalBtn text="New label" width="100px" colorType="green" />
 				</FunctionBar>
 				<NewLabel />
 				<ListBox>
