@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "issue-page"
+  },
+  "targets": {
+    "issue-page": {
+      "hosting": {
+        "issuepage": [
+          "issue-page"
+        ],
+        "storybook": [
+          "hanegithubissueproject"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
