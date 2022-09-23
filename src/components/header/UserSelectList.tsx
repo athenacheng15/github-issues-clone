@@ -52,6 +52,7 @@ const Wrapper = styled.div`
 	right: ${(props: Props) => props.right};
 	top: ${(props) => props.top};
 	display: ${(props) => (props.isShown ? "initial" : "none")};
+	z-index: 1;
 `;
 
 const ListBox = styled.div`

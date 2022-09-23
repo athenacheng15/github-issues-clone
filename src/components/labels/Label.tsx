@@ -1,9 +1,6 @@
 import styled from "styled-components";
 
-interface LabelProps {
-	labelText: string;
-	bgColor: string;
-}
+import { LabelProps } from "../../models/LabelsType";
 
 export default function Label({ labelText, bgColor }: LabelProps) {
 	function lightOrDark(color = bgColor) {

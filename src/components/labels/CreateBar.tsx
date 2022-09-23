@@ -1,6 +1,12 @@
 import styled from "styled-components";
+import { useState } from "react";
 
 export default function CreateBar() {
+	const [labelData, setLabelData] = useState({
+		labelName: "",
+		decription: "",
+		color: "",
+	});
 	return <></>;
 }
 
@@ -9,8 +15,6 @@ const formInputs = [
 	{ label: "Description", key: "description" },
 	{ label: "Color", key: "color" },
 ];
-
-const fontData = [];
 
 const FormLegend = styled.legend`
 	line-height: 19px;

@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import api from "../../utils/api";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import NormalBtn from "../../commons/NormalBtn";
 import LabelBar from "./LabelBar";
 import SelectBox from "../../commons/SelectBox";
@@ -13,29 +12,17 @@ import {
 	TriangleDownIcon,
 } from "@primer/octicons-react";
 
-type RepoLabels = {
-	color: string;
-	defaule: boolean;
-	description: string;
-	id: number;
-	name: string;
-	node_id: string;
-	url: string;
-}[];
+import { useGetLabelsQuery } from "../../services/labelsApi";
 
 export default function Labels() {
 	const [sortListVis, setSortListVis] = useState(false);
-	const [repoLabels, setRepoLabels] = useState<RepoLabels>([]);
 
-	useEffect(() => {
-		async function getLabels() {
-			const data = await api.getLabels();
-			setRepoLabels(data);
-		}
-		getLabels();
-	}, []);
+	const { data, error, isLoading, isFetching, isSuccess } = useGetLabelsQuery({
+		user: "athenacheng15",
+		repository: "issue_test",
+	});
 
-	console.log(repoLabels);
+	console.log(data);
 
 	return (
 		<>
@@ -53,13 +40,13 @@ export default function Labels() {
 				<NewLabel />
 				<ListBox>
 					<ListHeader>
-						<LabelsCount>{repoLabels.length} labels</LabelsCount>
+						<LabelsCount>{data?.length} labels</LabelsCount>
 						<SortBtn onClick={() => setSortListVis(!sortListVis)}>
 							Sort <TriangleDownIcon />
 							<SelectBox textList={sortList} isShown={sortListVis} />
 						</SortBtn>
 					</ListHeader>
-					{repoLabels.map((item) => (
+					{data?.map((item) => (
 						<LabelBar
 							key={item.id}
 							id={item.id}
