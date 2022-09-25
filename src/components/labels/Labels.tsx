@@ -17,7 +17,7 @@ import { useGetLabelsQuery } from "../../services/labelsApi";
 export default function Labels() {
 	const [sortListVis, setSortListVis] = useState(false);
 	const [newLabelVis, setNewLabelVis] = useState(false);
-	const { data, error, isLoading, isFetching, isSuccess } = useGetLabelsQuery({
+	const { data } = useGetLabelsQuery({
 		owner: "athenacheng15",
 		repo: "issue_test",
 	});

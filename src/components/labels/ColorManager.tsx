@@ -36,7 +36,7 @@ export default function ColorManager({
 	const [editLabel] = useEditLabelMutation();
 	const [createLabel] = useCreateLabelMutation();
 	const [colorCode, setColorCode] = useState(`#${newLabel.color}`);
-
+	const [colorPlateVis, setColorPlateVis] = useState(false);
 	const [forbiddenSubmit, setForbiddenSubmit] = useState(true);
 	const colorValidate = /^([0-9A-F]{3}){1,2}$/i;
 	const colorChecked = colorValidate.test(colorCode.split("#")[1]);
@@ -179,7 +179,27 @@ export default function ColorManager({
 						value={colorCode.toUpperCase()}
 						onChange={changeColor}
 						falseColor={!colorChecked}
+						onClick={() => setColorPlateVis(true)}
+						// onBlur={() => setColorPlateVis(false)}
 					/>
+					<PlateWrapper isShown={colorPlateVis}>
+						<PlateBox>
+							<PlateText>Choose from default colors:</PlateText>
+							<PlateGroup>
+								{defaultColors.map((color) => (
+									<ColorPlateBtn
+										key={color}
+										bgColor={`#${color}`}
+										onClick={() => {
+											setColorCode(`#${color}`);
+											setNewLabel({ ...newLabel, color: color });
+											setColorPlateVis(false);
+										}}
+									/>
+								))}
+							</PlateGroup>
+						</PlateBox>
+					</PlateWrapper>
 				</FormGroup>
 				<BtnGroup>
 					<BtnWrapper onClick={handleCancel}>
@@ -198,6 +218,25 @@ export default function ColorManager({
 		</>
 	);
 }
+
+const defaultColors = [
+	"b60205",
+	"d93f0b",
+	"fbca04",
+	"0e8a16",
+	"006b75",
+	"1d76db",
+	"0052cc",
+	"5319e7",
+	"e99695",
+	"f9d0c4",
+	"fef2c0",
+	"c2e0c6",
+	"bfdadc",
+	"c5def5",
+	"bfd4f2",
+	"d4c5f9",
+];
 
 interface WrapperProps {
 	isShown?: boolean;
@@ -231,6 +270,7 @@ const FormGroup = styled.div<FormGroupProps>`
 	margin-bottom: 8px;
 	margin-right: 16px;
 	width: ${(props) => props.width};
+	position: relative;
 
 	@media screen and (max-width: 1011px) {
 		width: 28%;
@@ -273,6 +313,10 @@ const FormControl = styled.input<FormControlProps>`
 	color: ${(props) => (props.falseColor ? "red" : "default")};
 	::placeholder {
 		color: #57606a;
+	}
+	:focus {
+		background-color: #ffffff;
+		border: 2px solid #0969da;
 	}
 	@media screen and (max-width: 767px) {
 		width: ${(props) => props.width2 || "100%"};
@@ -318,4 +362,73 @@ const BtnGroup = styled.div`
 const BtnWrapper = styled.button`
 	width: auto;
 	height: auto;
+`;
+
+const PlateWrapper = styled.div<WrapperProps>`
+	position: absolute;
+	left: 32px;
+	top: 60px;
+	z-index: 2;
+	display: ${(props) => (props.isShown ? "initial" : "none")};
+`;
+
+const PlateBox = styled.div`
+	position: relative;
+	width: 232px;
+	height: 100px;
+	border: 1px solid #cccccc;
+	background-color: #ffffff;
+	border-radius: 6px;
+	padding: 8px 0 8px 8px;
+
+	::after {
+		position: absolute;
+		content: "";
+		top: -9px;
+		left: 16px;
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 0 8px 9px 8px;
+		border-color: transparent transparent #ffffff transparent;
+	}
+	::before {
+		position: absolute;
+		content: "";
+		top: -10px;
+		left: 14px;
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 0 10px 11px 10px;
+		border-color: transparent transparent #cccccc transparent;
+		z-index: -1;
+	}
+`;
+
+const PlateText = styled.p`
+	font-size: 12px;
+	color: #57606a;
+`;
+
+const PlateGroup = styled.div`
+	width: 100%;
+	height: auto;
+	display: flex;
+	flex-wrap: wrap;
+	& > *:not(:last-child) {
+		margin-right: 3px;
+	}
+`;
+
+interface PlatrBtnProp {
+	bgColor: string;
+}
+const ColorPlateBtn = styled.button<PlatrBtnProp>`
+	width: 24px;
+	height: 24px;
+	background-color: ${(props) => props.bgColor};
+	border-radius: 6px;
+	margin: 4px 0;
+	cursor: pointer;
 `;

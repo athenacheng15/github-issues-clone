@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useState } from "react";
-import Label from "./Label";
 import SelectList from "../../commons/SelectList";
 import ColorManager from "./ColorManager";
 import { KebabHorizontalIcon } from "@primer/octicons-react";
