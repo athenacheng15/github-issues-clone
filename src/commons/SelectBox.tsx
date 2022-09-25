@@ -47,6 +47,7 @@ const Wrapper = styled.div<WrapperProps>`
 	border: solid 1px #d1d5da;
 	border-radius: 6px;
 	display: ${(props) => (props.isShown ? "initial" : "none")};
+	z-index: 1;
 `;
 
 const TitleText = styled.p`
