@@ -16,10 +16,10 @@ import { useGetLabelsQuery } from "../../services/labelsApi";
 
 export default function Labels() {
 	const [sortListVis, setSortListVis] = useState(false);
-
+	const [newLabelVis, setNewLabelVis] = useState(false);
 	const { data, error, isLoading, isFetching, isSuccess } = useGetLabelsQuery({
-		user: "athenacheng15",
-		repository: "issue_test",
+		owner: "athenacheng15",
+		repo: "issue_test",
 	});
 
 	console.log(data);
@@ -35,9 +35,11 @@ export default function Labels() {
 						text2="Milestone"
 					/>
 					<ContentSearchBar />
-					<NormalBtn text="New label" width="100px" colorType="green" />
+					<BtnWrapper onClick={() => setNewLabelVis(!newLabelVis)}>
+						<NormalBtn text="New label" width="100px" colorType="green" />
+					</BtnWrapper>
 				</FunctionBar>
-				<NewLabel />
+				<NewLabel isShown={newLabelVis} />
 				<ListBox>
 					<ListHeader>
 						<LabelsCount>{data?.length} labels</LabelsCount>
@@ -51,7 +53,7 @@ export default function Labels() {
 							key={item.id}
 							id={item.id}
 							labelText={item.name}
-							bgColor={`#${item.color}`}
+							bgColor={item.color}
 							description={item.description}
 						/>
 					))}
@@ -91,6 +93,11 @@ const FunctionBar = styled.div`
 			margin-bottom: 16px;
 		}
 	}
+`;
+
+const BtnWrapper = styled.button`
+	width: auto;
+	height: auto;
 `;
 
 const ListBox = styled.div`

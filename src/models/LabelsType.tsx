@@ -21,3 +21,16 @@ export interface LabelProps {
 	labelText: string;
 	bgColor: string;
 }
+
+// export interface CreateLabelKey {
+// 	name: string;
+// 	description: string;
+// 	color: string;
+// }
+
+export interface EditLabelKey {
+	// new_name?: string;
+	name: string;
+	description: string;
+	color: string;
+}

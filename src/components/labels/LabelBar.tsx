@@ -2,8 +2,9 @@ import styled from "styled-components";
 import { useState } from "react";
 import Label from "./Label";
 import SelectList from "../../commons/SelectList";
-import CreateBar from "./CreateBar";
+import ColorManager from "./ColorManager";
 import { KebabHorizontalIcon } from "@primer/octicons-react";
+import { useDeleteLabelsMutation } from "../../services/labelsApi";
 
 interface BarProps {
 	labelText: string;
@@ -17,37 +18,69 @@ export default function LabelBar({
 	bgColor,
 	description,
 }: BarProps) {
+	const [colorManagerVis, setColorManagerVis] = useState(false);
 	const [dotListVis, setDotListVis] = useState(false);
+
+	const [deleteLabel] = useDeleteLabelsMutation();
+	const [randomColorCode, setRandomColorCode] = useState(
+		Math.floor(Math.random() * 16777215).toString(16)
+	);
+	const [newLabel, setNewLabel] = useState({
+		name: "Axian",
+		description: "18 years old genius.",
+		color: bgColor,
+	});
+
+	async function handleDeleteLabel() {
+		await deleteLabel({
+			owner: "athenacheng15",
+			repo: "issue_test",
+			name: labelText,
+		});
+	}
+
 	return (
 		<Wrapper>
-			<LabelBox>
+			{/* <LabelBox>
 				<Label labelText={labelText} bgColor={bgColor}></Label>
-			</LabelBox>
-			<Discription>{description}</Discription>
-			<Used>
-				<TextBtn></TextBtn>
-			</Used>
-			<EditAndDelete>
-				<TextBtn>Edit</TextBtn>
-				<TextBtn>Delete</TextBtn>
-			</EditAndDelete>
-			<DotBox>
-				<DotBtn onClick={() => setDotListVis(!dotListVis)}>
-					<KebabHorizontalIcon />
-				</DotBtn>
-				<SelectList
-					right="-2px"
-					top="30px"
-					listitems={["Edit", "Delete"]}
-					isShown={dotListVis}
-				/>
-			</DotBox>
-			<CreateBar bgColor={bgColor} />
+			</LabelBox> */}
+			<DataBox>
+				<Discription isShown={!colorManagerVis}>{description}</Discription>
+				<Used>
+					<TextBtn></TextBtn>
+				</Used>
+				<EditAndDelete>
+					<TextBtn onClick={() => setColorManagerVis(!colorManagerVis)}>
+						Edit
+					</TextBtn>
+					<TextBtn onClick={handleDeleteLabel}>Delete</TextBtn>
+				</EditAndDelete>
+				<DotBox>
+					<DotBtn onClick={() => setDotListVis(!dotListVis)}>
+						<KebabHorizontalIcon />
+					</DotBtn>
+					<SelectList
+						right="-2px"
+						top="30px"
+						listitems={["Edit", "Delete"]}
+						isShown={dotListVis}
+					/>
+				</DotBox>
+			</DataBox>
+			<ColorManager
+				labelText={labelText}
+				bgColor={bgColor}
+				isShown={colorManagerVis}
+				submitType={"Save changes"}
+				newLabel={newLabel}
+				setNewLabel={setNewLabel}
+			/>
 		</Wrapper>
 	);
 }
 
 const Wrapper = styled.div`
+	position: relative;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
@@ -64,14 +97,25 @@ const Wrapper = styled.div`
 	}
 `;
 
-const LabelBox = styled.div`
-	width: 25%;
+const DataBox = styled.div`
+	width: 100%;
+	height: auto;
+	position: absolute;
+	display: flex;
+	justify-content: flex-end;
+	right: 16px;
+	top: 16px;
 `;
 
-const Discription = styled.p`
+interface DiscriptionProps {
+	isShown: boolean;
+}
+
+const Discription = styled.p<DiscriptionProps>`
 	width: 35%;
 	font-size: 12px;
 	color: #57606a;
+	display: ${(props) => (props.isShown ? "initial" : "none")};
 	@media screen and (max-width: 767px) {
 		display: none;
 	}

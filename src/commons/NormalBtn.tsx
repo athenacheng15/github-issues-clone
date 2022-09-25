@@ -34,6 +34,7 @@ const Btn = styled.button<BtnPrpos>`
 	white-space: nowrap;
 	cursor: pointer;
 	:hover {
-		background-color: #56a058;
+		background-color: ${(props) =>
+			props.colorType === "green" ? "#56a058" : "#f2f2f2"};
 	}
 `;

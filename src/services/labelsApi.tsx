@@ -1,66 +1,88 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { LabelProps, RepoLabels, NewLabel } from "../models/LabelsType";
+import {
+	LabelProps,
+	RepoLabels,
+	NewLabel,
+	EditLabelKey,
+} from "../models/LabelsType";
 
 interface GetLabelParams {
-	user: string;
-	repository: string;
+	owner: string;
+	repo: string;
 }
 
 interface CreateLabelParams {
-	user: string;
-	repository: string;
-	label: LabelProps;
+	owner: string;
+	repo: string;
+	label?: EditLabelKey;
 }
 
 interface EditLabelParams {
-	user: string;
-	repository: string;
-	labelName: string;
-	newLabel: NewLabel;
+	owner: string;
+	repo: string;
+	name: string;
+	label: EditLabelKey;
 }
 
 interface DeleteLabelParams {
-	user: string;
-	repository: string;
-	labelName: string;
+	owner: string;
+	repo: string;
+	name: string;
 }
 
 export const labelsApi = createApi({
-	reducerPath: "getLabelsApi",
+	reducerPath: "labelsApi",
+	tagTypes: ["Label"],
 	baseQuery: fetchBaseQuery({
 		baseUrl: "https://api.github.com/repos",
 	}),
 	endpoints: (builder) => ({
 		getLabels: builder.query<RepoLabels[], GetLabelParams>({
-			query: ({ user, repository }) => `/${user}/${repository}/labels`,
+			query: ({ owner, repo }) => `/${owner}/${repo}/labels`,
+			providesTags: ["Label"],
 		}),
-		createLabels: builder.mutation<void, CreateLabelParams>({
-			query: ({ user, repository, label }) => ({
-				url: `/${user}/${repository}/labels`,
+		createLabel: builder.mutation<void, CreateLabelParams>({
+			query: ({ owner, repo, label }) => ({
+				url: `/${owner}/${repo}/labels`,
 				method: "POST",
 				body: label,
+				headers: new Headers({
+					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
+					Accept: "application/vnd.github+json",
+				}),
 			}),
+			invalidatesTags: ["Label"],
 		}),
-		editLabels: builder.mutation<void, EditLabelParams>({
-			query: ({ user, repository, labelName, newLabel }) => ({
-				url: `/${user}/${repository}/labels/${labelName}`,
+		editLabel: builder.mutation<void, EditLabelParams>({
+			query: ({ owner, repo, name, label }) => ({
+				url: `/${owner}/${repo}/labels/${name}`,
 				method: "PATCH",
-				body: newLabel,
+				body: label,
+				headers: new Headers({
+					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
+					Accept: "application/vnd.github+json",
+				}),
 			}),
+			invalidatesTags: ["Label"],
 		}),
 		deleteLabels: builder.mutation<void, DeleteLabelParams>({
-			query: ({ user, repository, labelName }) => ({
-				url: `/${user}/${repository}/labels/${labelName}`,
+			query: ({ owner, repo, name }) => ({
+				url: `/${owner}/${repo}/labels/${name}`,
 				method: "DELETE",
-				body: { user, repository, labelName },
+				body: { owner, repo, name },
+				headers: new Headers({
+					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
+					Accept: "application/vnd.github+json",
+				}),
 			}),
+			invalidatesTags: ["Label"],
 		}),
 	}),
 });
 
 export const {
 	useGetLabelsQuery,
-	useCreateLabelsMutation,
-	useEditLabelsMutation,
+	useCreateLabelMutation,
+	useEditLabelMutation,
 	useDeleteLabelsMutation,
 } = labelsApi;
