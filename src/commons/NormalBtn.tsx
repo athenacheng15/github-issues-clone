@@ -4,11 +4,12 @@ interface Props {
 	text: string;
 	width: string;
 	colorType: string;
+	disabled?: boolean;
 }
 
-export default function NormalBtn({ text, width, colorType }: Props) {
+export default function NormalBtn({ text, width, colorType, disabled }: Props) {
 	return (
-		<Btn width={width} colorType={colorType}>
+		<Btn width={width} colorType={colorType} disabled={disabled}>
 			{text}
 		</Btn>
 	);
@@ -17,6 +18,7 @@ export default function NormalBtn({ text, width, colorType }: Props) {
 interface BtnPrpos {
 	width: string;
 	colorType: string;
+	disabled?: boolean;
 }
 
 const Btn = styled.button<BtnPrpos>`
@@ -32,8 +34,9 @@ const Btn = styled.button<BtnPrpos>`
 	font-size: 14px;
 	font-weight: 500;
 	white-space: nowrap;
-	cursor: pointer;
-	:hover {
+	opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+	cursor: ${(props) => (props.disabled ? "default" : "pointer")};
+	:hover:not([disabled]) {
 		background-color: ${(props) =>
 			props.colorType === "green" ? "#56a058" : "#f2f2f2"};
 	}

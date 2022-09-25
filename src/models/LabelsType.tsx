@@ -18,7 +18,7 @@ export interface NewLabel {
 }
 
 export interface LabelProps {
-	labelText: string;
+	labelText?: string;
 	bgColor: string;
 }
 
@@ -29,8 +29,8 @@ export interface LabelProps {
 // }
 
 export interface EditLabelKey {
-	// new_name?: string;
-	name: string;
+	name?: string;
+	new_name?: string;
 	description: string;
 	color: string;
 }

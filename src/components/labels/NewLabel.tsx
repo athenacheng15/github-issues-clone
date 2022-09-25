@@ -1,20 +1,20 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import { EditLabelKey } from "../../models/LabelsType";
 import ColorManager from "./ColorManager";
+import { generateRendomColor } from "../../utils/colorCalc";
 
 interface NewlabelProps {
 	isShown: boolean;
+	setNewLabelVis?: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function NewLabel({ isShown }: NewlabelProps) {
-	const [randomColorCode, setRandomColorCode] = useState(
-		Math.floor(Math.random() * 16777215).toString(16)
-	);
+export default function NewLabel({ isShown, setNewLabelVis }: NewlabelProps) {
+	const [randomColorCode, setRandomColorCode] = useState(generateRendomColor());
 
-	const [newLabel, setNewLabel] = useState({
+	const [newLabel, setNewLabel] = useState<EditLabelKey>({
 		name: "",
-		description: "18 years old genius.",
+		description: "",
 		color: randomColorCode,
 	});
 
@@ -25,9 +25,11 @@ export default function NewLabel({ isShown }: NewlabelProps) {
 					bgColor={newLabel.color}
 					isShown={true}
 					submitType={"Create label"}
-					labelText={newLabel.name === "" ? "Label preview" : newLabel.name}
+					labelText={newLabel.name}
+					description={newLabel.description}
 					newLabel={newLabel}
 					setNewLabel={setNewLabel}
+					setNewLabelVis={setNewLabelVis}
 				/>
 			</Wrapper>
 		</>

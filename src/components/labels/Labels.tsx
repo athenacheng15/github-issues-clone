@@ -39,7 +39,7 @@ export default function Labels() {
 						<NormalBtn text="New label" width="100px" colorType="green" />
 					</BtnWrapper>
 				</FunctionBar>
-				<NewLabel isShown={newLabelVis} />
+				<NewLabel isShown={newLabelVis} setNewLabelVis={setNewLabelVis} />
 				<ListBox>
 					<ListHeader>
 						<LabelsCount>{data?.length} labels</LabelsCount>

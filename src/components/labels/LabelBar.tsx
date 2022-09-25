@@ -5,6 +5,7 @@ import SelectList from "../../commons/SelectList";
 import ColorManager from "./ColorManager";
 import { KebabHorizontalIcon } from "@primer/octicons-react";
 import { useDeleteLabelsMutation } from "../../services/labelsApi";
+import { EditLabelKey } from "../../models/LabelsType";
 
 interface BarProps {
 	labelText: string;
@@ -18,16 +19,14 @@ export default function LabelBar({
 	bgColor,
 	description,
 }: BarProps) {
-	const [colorManagerVis, setColorManagerVis] = useState(false);
+	const [editAreaVis, setEditAreaVis] = useState(false);
 	const [dotListVis, setDotListVis] = useState(false);
 
 	const [deleteLabel] = useDeleteLabelsMutation();
-	const [randomColorCode, setRandomColorCode] = useState(
-		Math.floor(Math.random() * 16777215).toString(16)
-	);
-	const [newLabel, setNewLabel] = useState({
-		name: "Axian",
-		description: "18 years old genius.",
+
+	const [newLabel, setNewLabel] = useState<EditLabelKey>({
+		name: labelText,
+		description: description,
 		color: bgColor,
 	});
 
@@ -41,18 +40,13 @@ export default function LabelBar({
 
 	return (
 		<Wrapper>
-			{/* <LabelBox>
-				<Label labelText={labelText} bgColor={bgColor}></Label>
-			</LabelBox> */}
 			<DataBox>
-				<Discription isShown={!colorManagerVis}>{description}</Discription>
+				<Discription isShown={!editAreaVis}>{description}</Discription>
 				<Used>
 					<TextBtn></TextBtn>
 				</Used>
 				<EditAndDelete>
-					<TextBtn onClick={() => setColorManagerVis(!colorManagerVis)}>
-						Edit
-					</TextBtn>
+					<TextBtn onClick={() => setEditAreaVis(!editAreaVis)}>Edit</TextBtn>
 					<TextBtn onClick={handleDeleteLabel}>Delete</TextBtn>
 				</EditAndDelete>
 				<DotBox>
@@ -70,10 +64,12 @@ export default function LabelBar({
 			<ColorManager
 				labelText={labelText}
 				bgColor={bgColor}
-				isShown={colorManagerVis}
+				description={description}
+				isShown={editAreaVis}
 				submitType={"Save changes"}
 				newLabel={newLabel}
 				setNewLabel={setNewLabel}
+				setEditAreaVis={setEditAreaVis}
 			/>
 		</Wrapper>
 	);

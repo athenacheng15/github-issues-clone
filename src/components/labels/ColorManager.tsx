@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import React, { useState, useRef, Dispatch, SetStateAction } from "react";
+import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { SyncIcon } from "@primer/octicons-react";
 import NormalBtn from "../../commons/NormalBtn";
-import lightOrDark from "../../utils/colorCalc";
+import { lightOrDark, generateRendomColor } from "../../utils/colorCalc";
 import Label from "./Label";
 import {
 	useEditLabelMutation,
@@ -14,9 +14,12 @@ interface Props {
 	bgColor: string;
 	isShown?: boolean;
 	submitType: string;
-	labelText: string;
+	labelText?: string;
+	description: string;
 	newLabel: EditLabelKey;
 	setNewLabel: Dispatch<SetStateAction<EditLabelKey>>;
+	setNewLabelVis?: Dispatch<SetStateAction<boolean>>;
+	setEditAreaVis?: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function ColorManager({
@@ -24,15 +27,27 @@ export default function ColorManager({
 	isShown,
 	submitType,
 	labelText,
+	description,
 	newLabel,
 	setNewLabel,
+	setNewLabelVis,
+	setEditAreaVis,
 }: Props) {
 	const [editLabel] = useEditLabelMutation();
 	const [createLabel] = useCreateLabelMutation();
 	const [colorCode, setColorCode] = useState(`#${newLabel.color}`);
 
+	const [forbiddenSubmit, setForbiddenSubmit] = useState(true);
+	const colorValidate = /^([0-9A-F]{3}){1,2}$/i;
+	const colorChecked = colorValidate.test(colorCode.split("#")[1]);
+
+	useEffect(() => {
+		checkInput();
+	}, [newLabel]);
+
 	function changeName(e: React.FormEvent<HTMLInputElement>) {
 		const target = e.target as HTMLInputElement;
+		checkInput();
 		setNewLabel({ ...newLabel, name: target.value });
 	}
 
@@ -43,8 +58,8 @@ export default function ColorManager({
 
 	function changeColor(e: React.FormEvent<HTMLInputElement>) {
 		const target = e.target as HTMLInputElement;
-		const colorValidate = /^[0-9a-f]{3}([0-9a-f]{3})?$/i;
 		const formatInputColorvalue = target.value.split("#")[1];
+		checkInput();
 		setColorCode(target.value);
 
 		if (target.value.length === 0) {
@@ -57,11 +72,10 @@ export default function ColorManager({
 		}
 	}
 
-	function handleSubmit() {
-		if (submitType === "Create label") {
-			handleCreateLabel();
-		} else if (submitType === "Save changes") {
-			handleEditLabel();
+	function checkInput() {
+		setForbiddenSubmit(true);
+		if (newLabel.name !== "" && colorChecked) {
+			setForbiddenSubmit(false);
 		}
 	}
 
@@ -77,15 +91,49 @@ export default function ColorManager({
 		await editLabel({
 			owner: "athenacheng15",
 			repo: "issue_test",
-			name: "Axian",
-			label: newLabel,
+			name: labelText,
+			label: {
+				new_name: newLabel.name,
+				description: newLabel.description,
+				color: newLabel.color,
+			},
 		});
+	}
+
+	function handleSubmit() {
+		if (submitType === "Create label") {
+			handleCreateLabel();
+			setNewLabelVis && setNewLabelVis(false);
+			const randomColor = generateRendomColor();
+			setNewLabel({
+				name: "",
+				description: "",
+				color: randomColor,
+			});
+			setColorCode(randomColor);
+		} else if (submitType === "Save changes") {
+			handleEditLabel();
+			setEditAreaVis && setEditAreaVis(false);
+		}
+	}
+
+	function handleCancel() {
+		setNewLabel({
+			name: labelText,
+			description: description,
+			color: bgColor,
+		});
+		setNewLabelVis && setNewLabelVis(false);
+		setEditAreaVis && setEditAreaVis(false);
 	}
 
 	return (
 		<>
 			<LabelWrapper>
-				<Label labelText={labelText} bgColor={newLabel.color} />
+				<Label
+					labelText={newLabel.name === "" ? "Label preview" : newLabel.name}
+					bgColor={newLabel.color}
+				/>
 			</LabelWrapper>
 			<Wrapper isShown={isShown}>
 				<FormGroup width="23%">
@@ -93,6 +141,7 @@ export default function ColorManager({
 					<FormControl
 						width="100%"
 						placeholder="Label name"
+						value={newLabel.name}
 						onChange={changeName}
 					/>
 				</FormGroup>
@@ -101,6 +150,7 @@ export default function ColorManager({
 					<FormControl
 						width="100%"
 						placeholder="Description (optional)"
+						value={newLabel.description}
 						onChange={changeDescription}
 					/>
 				</FormGroup>
@@ -109,9 +159,7 @@ export default function ColorManager({
 					<ColorBtn
 						bgColor={`#${newLabel.color}`}
 						onClick={() => {
-							const randomColor = Math.floor(Math.random() * 16777215).toString(
-								16
-							);
+							const randomColor = generateRendomColor();
 							setNewLabel({
 								...newLabel,
 								color: randomColor,
@@ -130,14 +178,20 @@ export default function ColorManager({
 						maxLength={7}
 						value={colorCode.toUpperCase()}
 						onChange={changeColor}
+						falseColor={!colorChecked}
 					/>
 				</FormGroup>
 				<BtnGroup>
-					<BtnWrapper>
+					<BtnWrapper onClick={handleCancel}>
 						<NormalBtn text="Cancel" width="80px" colorType="white" />
 					</BtnWrapper>
-					<BtnWrapper onClick={handleSubmit}>
-						<NormalBtn text={submitType} width="115px" colorType="green" />
+					<BtnWrapper onClick={handleSubmit} disabled={forbiddenSubmit}>
+						<NormalBtn
+							text={submitType}
+							width="115px"
+							colorType="green"
+							disabled={forbiddenSubmit}
+						/>
 					</BtnWrapper>
 				</BtnGroup>
 			</Wrapper>
@@ -204,6 +258,7 @@ const FormLabel = styled.label`
 interface FormControlProps {
 	width: string;
 	width2?: string;
+	falseColor?: boolean;
 }
 
 const FormControl = styled.input<FormControlProps>`
@@ -215,6 +270,7 @@ const FormControl = styled.input<FormControlProps>`
 	font-size: 14px;
 	font-weight: 400;
 	padding-left: 8px;
+	color: ${(props) => (props.falseColor ? "red" : "default")};
 	::placeholder {
 		color: #57606a;
 	}

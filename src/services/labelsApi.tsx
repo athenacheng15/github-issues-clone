@@ -14,13 +14,13 @@ interface GetLabelParams {
 interface CreateLabelParams {
 	owner: string;
 	repo: string;
-	label?: EditLabelKey;
+	label: EditLabelKey;
 }
 
 interface EditLabelParams {
 	owner: string;
 	repo: string;
-	name: string;
+	name?: string;
 	label: EditLabelKey;
 }
 
