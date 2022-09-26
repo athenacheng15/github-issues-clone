@@ -26,6 +26,7 @@ const Wrapper = styled.div`
 	align-items: center;
 	justify-content: space-between;
 	transition: width 0.5s ease-in-out, background-color 0.01s ease-in-out;
+	background-color: transparent;
 	:focus-within {
 		width: 100%;
 		background-color: #ffffff;
@@ -35,6 +36,8 @@ const Wrapper = styled.div`
 const SearchInput = styled.input`
 	font-size: 14px;
 	color: rgb(209, 213, 218);
+	border: none;
+	background-color: transparent;
 	:focus-within {
 		background-color: #ffffff;
 		color: rgb(87, 96, 106);
@@ -51,6 +54,7 @@ const SlashBtn = styled.button`
 	border: solid 1px rgb(87, 96, 106);
 	border-radius: 3px;
 	color: rgb(209, 213, 218);
+	background-color: transparent;
 	text-align: center;
 	font-size: 8px;
 	font-weight: 100;

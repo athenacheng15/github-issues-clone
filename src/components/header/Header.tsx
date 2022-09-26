@@ -189,6 +189,8 @@ const ArrowList = styled.button`
 	height: auto;
 	padding-left: 16px;
 	align-items: center;
+	background-color: transparent;
+	border: none;
 	cursor: pointer;
 	:hover {
 		fill: #cccccc;
@@ -199,6 +201,8 @@ const ArrowList = styled.button`
 `;
 
 const BellBtn = styled(BellIcon)`
+	background-color: transparent;
+	border: none;
 	cursor: pointer;
 	:hover {
 		fill: #cccccc;
@@ -206,6 +210,9 @@ const BellBtn = styled(BellIcon)`
 `;
 
 const PlusBtn = styled(PlusIcon)`
+	background-color: transparent;
+	border: none;
+
 	${ArrowList}:hover & {
 		fill: #cccccc;
 	}
