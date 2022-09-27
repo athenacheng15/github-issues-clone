@@ -2,10 +2,14 @@ import styled from "styled-components";
 import { LabelProps } from "../../models/LabelsType";
 import { lightOrDark } from "../../utils/colorCalc";
 
-export default function Label({ labelText, bgColor }: LabelProps) {
+export default function Label({ labelText, bgColor, padding }: LabelProps) {
 	return (
 		<>
-			<LabelBtn bgColor={`#${bgColor}`} color={lightOrDark(`#${bgColor}`)}>
+			<LabelBtn
+				bgColor={`#${bgColor}`}
+				color={lightOrDark(`#${bgColor}`)}
+				padding={padding}
+			>
 				{labelText}
 			</LabelBtn>
 		</>
@@ -14,15 +18,17 @@ export default function Label({ labelText, bgColor }: LabelProps) {
 
 interface BtnProps {
 	bgColor: string;
+	padding?: string;
 }
 
 const LabelBtn = styled.button<BtnProps>`
 	width: auto;
-	height: 24px;
+	height: auto;
 	font-size: 12px;
 	font-weight: 500;
 	border-radius: 12px;
-	padding: 0 12px;
+	margin-right: 4px;
+	padding: ${(props) => (props.padding === "s" ? "1px 8px" : "3px 12px")};
 	text-align: center;
 	background-color: ${(props) => props.bgColor};
 	color: ${(props) => (props.color === "light" ? "black" : "white")};

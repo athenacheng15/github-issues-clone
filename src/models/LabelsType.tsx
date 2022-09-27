@@ -20,6 +20,7 @@ export interface NewLabel {
 export interface LabelProps {
 	labelText?: string;
 	bgColor: string;
+	padding?: string;
 }
 
 // export interface CreateLabelKey {

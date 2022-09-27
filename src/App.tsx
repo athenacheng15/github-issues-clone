@@ -7,6 +7,7 @@ import Header from "./components/header/Header";
 import SubTitle from "./components/subtitle/Subtitle";
 import Footer from "./components/Footer";
 import Labels from "./components/labels/Labels";
+import Issues from "./components/issues/Issues";
 
 function App() {
 	return (
@@ -15,7 +16,9 @@ function App() {
 			<GlobalFonts />
 			<Header />
 			<SubTitle />
-			<Labels />
+			<Issues />
+
+			{/* <Labels /> */}
 			<Outlet />
 			<Footer />
 		</>
