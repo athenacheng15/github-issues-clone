@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
 import DoubleIconBtn from "../../commons/DoubleIconBtn";
 import NormalBtn from "../../commons/NormalBtn";
 import IssueBar from "./IssueBar";
@@ -23,9 +23,38 @@ export default function Issues() {
 	const [popLabelVis, setPopLabelVis] = useState(false);
 	const [popAssigneeVis, setPopAssigneeVis] = useState(false);
 
+	const [issueState, setIssueState] = useState("open");
+
+	const filtersList = [
+		{
+			btnName: "Label",
+			visState: popLabelVis,
+			setVisState: setPopLabelVis,
+			component: <PopLabel setPopLabelVis={setPopLabelVis} />,
+		},
+		{
+			btnName: "Assignee",
+			visState: popAssigneeVis,
+			setVisState: setPopAssigneeVis,
+			component: <PopAssignee setPopAssigneeVis={setPopAssigneeVis} />,
+		},
+		{
+			btnName: "Sort",
+			visState: popSortVis,
+			setVisState: setPopSortVis,
+			component: <PopSort setPopSortVis={setPopSortVis} />,
+		},
+	];
+
+	const stateList = [
+		{ stateName: "open", icon: <IssueOpenedIcon />, count: 4, btnText: "Open" },
+		{ stateName: "closed", icon: <CheckIcon />, count: 2, btnText: "Closed" },
+	];
+
 	const { data } = useGetIssuesQuery({
 		owner: "athenacheng15",
 		repo: "issue_test",
+		state: issueState,
 	});
 
 	console.log(data);
@@ -67,19 +96,23 @@ export default function Issues() {
 					</div>
 				</button>
 			</section>
-			<section className="flex px-4 text-[14px] mt-6 L:px-6 XL:absolute XL:top-10 XL:left-[54px] ">
-				<button className="flex w-[auto] items-center mr-4">
-					<div className="mr-2 flex  items-center ">
-						<IssueOpenedIcon />
-					</div>
-					4 Open
-				</button>
-				<button className="flex w-[auto] items-center ">
-					<div className="mr-2 flex  items-center ">
-						<CheckIcon />
-					</div>
-					2 Closed
-				</button>
+			<section
+				className={
+					"flex px-4 text-[14px] mt-6 L:px-6 XL:absolute XL:top-10 XL:left-[54px]"
+				}
+			>
+				{stateList.map((item) => (
+					<button
+						key={item.stateName}
+						className={`flex w-[auto] items-center mr-4 cursor-pointer ${
+							issueState === item.stateName ? "text-black" : "text-[#57606a]"
+						}`}
+						onClick={() => setIssueState(item.stateName)}
+					>
+						<div className="mr-2 flex  items-center ">{item.icon}</div>
+						{item.count} {item.btnText}
+					</button>
+				))}
 			</section>
 			<section className="mt-4 M:mx-4 L:mx-6 XL:mx-8">
 				<header className="flex items-center p-4 border border-[#d1d5da] border-solid bg-[#f6f8fa] text-[14px] text-[#57606a] M:rounded-t-[6px]">
@@ -90,48 +123,15 @@ export default function Issues() {
 						></input>
 					</div>
 					<div className="flex w-[100%] justify-between  M:justify-start XL:justify-end">
-						<div className="relative">
-							<button
-								className="px-4 flex items-center hover:cursor-pointer"
-								onClick={() => setPopLabelVis(!popLabelVis)}
-							>
-								<p>Label</p>
-								<div className="hidden M:inline">
-									<TriangleDownIcon />
-								</div>
-							</button>
-							<div className={` ${popLabelVis ? "block" : "hidden"}`}>
-								<PopLabel setPopLabelVis={setPopLabelVis} />
-							</div>
-						</div>
-						<div className="relative">
-							<button
-								className=" px-4 flex items-center hover:cursor-pointer "
-								onClick={() => setPopAssigneeVis(!popAssigneeVis)}
-							>
-								<p>Assignee</p>
-								<div className="hidden M:inline">
-									<TriangleDownIcon />
-								</div>
-							</button>
-							<div className={` ${popAssigneeVis ? "block" : "hidden"}`}>
-								<PopAssignee setPopAssigneeVis={setPopAssigneeVis} />
-							</div>
-						</div>
-						<div className="relative">
-							<button
-								className=" px-4 flex items-center hover:cursor-pointer "
-								onClick={() => setPopSortVis(!popSortVis)}
-							>
-								<p>Sort</p>
-								<div className="hidden M:inline">
-									<TriangleDownIcon />
-								</div>
-							</button>
-							<div className={` ${popSortVis ? "block" : "hidden"}`}>
-								<PopSort setPopSortVis={setPopSortVis} />
-							</div>
-						</div>
+						{filtersList.map((item) => (
+							<FilterTypeButton
+								key={item.btnName}
+								btnName={item.btnName}
+								visState={item.visState}
+								setVisState={item.setVisState}
+								component={item.component}
+							/>
+						))}
 					</div>
 				</header>
 				<div className="w rounded-b-[6px] M:border M:border-t-0 M:border-[#d1d5da] M:border-solid ">
@@ -144,10 +144,41 @@ export default function Issues() {
 							user={item.user}
 							assignees={item.assignees}
 							comments={item.comments}
+							iconState={item.state}
+							stateReason={item.state_reason}
 						/>
 					))}
 				</div>
 			</section>
+		</div>
+	);
+}
+
+interface FilterTypeButtonProps {
+	btnName: string;
+	visState: boolean;
+	setVisState: Dispatch<SetStateAction<boolean>>;
+	component: JSX.Element;
+}
+
+function FilterTypeButton({
+	visState,
+	setVisState,
+	btnName,
+	component,
+}: FilterTypeButtonProps) {
+	return (
+		<div className="relative">
+			<button
+				className="px-4 flex items-center hover:cursor-pointer"
+				onClick={() => setVisState(!visState)}
+			>
+				<p>{btnName}</p>
+				<div className="hidden M:inline">
+					<TriangleDownIcon />
+				</div>
+			</button>
+			<div className={` ${visState ? "block" : "hidden"}`}>{component}</div>
 		</div>
 	);
 }

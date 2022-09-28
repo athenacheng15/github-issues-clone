@@ -33,7 +33,13 @@ export const labelsApi = createApi({
 	}),
 	endpoints: (builder) => ({
 		getLabels: builder.query<RepoLabels[], GetLabelParams>({
-			query: ({ owner, repo }) => `/${owner}/${repo}/labels`,
+			query: ({ owner, repo }) => ({
+				url: `/${owner}/${repo}/labels`,
+				headers: new Headers({
+					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
+					Accept: "application/vnd.github+json",
+				}),
+			}),
 			providesTags: ["Label"],
 		}),
 		createLabel: builder.mutation<void, CreateLabelParams>({

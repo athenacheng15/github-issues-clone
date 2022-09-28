@@ -1,22 +1,17 @@
 import { XIcon } from "@primer/octicons-react";
 import { Dispatch, SetStateAction } from "react";
-
-const itemList = [
-	"aaaaa",
-	"bbbbb",
-	"yayaya",
-	"hahahahah",
-	"asdfghjkl",
-	"???",
-	"?!!!",
-	"===",
-];
+import { useGetLabelsQuery } from "../../services/labelsApi";
 
 interface LabelProps {
 	setPopLabelVis: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function PopLabel({ setPopLabelVis }: LabelProps) {
+	const { data } = useGetLabelsQuery({
+		owner: "athenacheng15",
+		repo: "issue_test",
+	});
+
 	return (
 		<>
 			<div
@@ -47,20 +42,21 @@ export default function PopLabel({ setPopLabelVis }: LabelProps) {
 							</p>
 						</button>
 						<div className="flex flex-wrap">
-							{itemList.map((item) => (
+							{data?.map((item) => (
 								<button
-									key={item}
-									id={item}
+									key={item.id}
+									id={item.name}
 									className="flex  w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2"
 								>
-									<div className="w-4 h-4 mt-1 rounded-lg bg-[#D36E70]"></div>
+									<div
+										style={{ backgroundColor: `#${item.color}` }}
+										className="w-4 h-4 rounded-lg"
+									></div>
 									<div className="pl-2">
 										<p>
-											<strong>{item}</strong>
+											<strong>{item.name}</strong>
 										</p>
-										<p className="text-[#57606a]">
-											<strong>Good for newComers</strong>
-										</p>
+										<p className="text-[#57606a]">{item.description}</p>
 									</div>
 								</button>
 							))}

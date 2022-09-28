@@ -1,5 +1,6 @@
 import { XIcon } from "@primer/octicons-react";
 import { Dispatch, SetStateAction } from "react";
+import { useGetAssigneeQuery } from "../../services/issuesApi";
 
 const itemList = ["athenacheng15", "Somebody"];
 
@@ -8,6 +9,10 @@ interface AssigneeProps {
 }
 
 export default function PopAssignee({ setPopAssigneeVis }: AssigneeProps) {
+	const { data } = useGetAssigneeQuery({
+		owner: "athenacheng15",
+		repo: "issue_test",
+	});
 	return (
 		<>
 			<div
@@ -38,17 +43,19 @@ export default function PopAssignee({ setPopAssigneeVis }: AssigneeProps) {
 							</p>
 						</button>
 						<div className="flex flex-wrap">
-							{itemList.map((item) => (
+							{data?.map((item) => (
 								<button
-									key={item}
-									id={item}
+									key={item.id}
 									className="flex items-center w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2"
 								>
-									<img className="w-5 h-5 mt-1 rounded-full bg-[#D36E70]"></img>
+									<img
+										src={item.avatar_url}
+										className="w-5 h-5 mt-1 rounded-full"
+									></img>
 									<p className="ml-2">
-										<strong>{item}</strong>
+										<strong>{item.login}</strong>
 									</p>
-									<p className="ml-2 text-[#57606a] ">Good for newComers</p>
+									<p className="ml-2 text-[#57606a] "></p>
 								</button>
 							))}
 						</div>

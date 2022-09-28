@@ -1,4 +1,9 @@
-import { IssueOpenedIcon, CommentIcon } from "@primer/octicons-react";
+import {
+	IssueOpenedIcon,
+	CommentIcon,
+	IssueClosedIcon,
+	SkipIcon,
+} from "@primer/octicons-react";
 import { RepoLabels } from "../../models/LabelsType";
 import { UserDefaultData } from "../../models/IssuesType";
 import Label from "../labels/Label";
@@ -10,6 +15,8 @@ interface IssueBarProp {
 	user: UserDefaultData;
 	assignees: UserDefaultData[];
 	comments: number;
+	iconState?: string;
+	stateReason: string | null;
 }
 
 export default function IssueBar({
@@ -19,6 +26,8 @@ export default function IssueBar({
 	user,
 	assignees,
 	comments,
+	iconState,
+	stateReason,
 }: IssueBarProp) {
 	return (
 		<>
@@ -30,7 +39,13 @@ export default function IssueBar({
 					></input>
 				</div>
 				<div className="mr-2">
-					<IssueOpenedIcon fill="#1a7f37" />
+					{iconState === "open" ? (
+						<IssueOpenedIcon fill="#1a7f37" />
+					) : stateReason === "completed" ? (
+						<IssueClosedIcon fill="#8250df" />
+					) : (
+						<SkipIcon fill="#57606a" />
+					)}
 				</div>
 
 				<div className="w-[100%] items-center L:flex L:flex-wrap">
@@ -52,9 +67,9 @@ export default function IssueBar({
 						#{number} opened 9 days ago by {user.login}
 					</p>
 				</div>
-				<div className="flex mt-1 space-x-[-10px] hover:space-x-1">
+				<div className="flex mt-1 space-x-[-10px] hover:space-x-1 ">
 					{assignees.map((assignee) => (
-						<div key={assignee.id} className="w-5 h-5 ">
+						<div key={assignee.id} className="w-5 h-5 transition-all">
 							<img className="rounded-xl" src={assignee.avatar_url}></img>
 						</div>
 					))}
