@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { labelsApi } from "../services/labelsApi";
+import { issuesApi } from "../services/issuesApi";
 
 export const store = configureStore({
 	reducer: {

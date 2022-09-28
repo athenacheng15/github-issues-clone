@@ -23,12 +23,6 @@ export interface LabelProps {
 	padding?: string;
 }
 
-// export interface CreateLabelKey {
-// 	name: string;
-// 	description: string;
-// 	color: string;
-// }
-
 export interface EditLabelKey {
 	name?: string;
 	new_name?: string;

@@ -1,7 +1,25 @@
 import { IssueOpenedIcon, CommentIcon } from "@primer/octicons-react";
+import { RepoLabels } from "../../models/LabelsType";
+import { UserDefaultData } from "../../models/IssuesType";
 import Label from "../labels/Label";
 
-export default function IssueBar() {
+interface IssueBarProp {
+	title: string;
+	labels: RepoLabels[];
+	number: number;
+	user: UserDefaultData;
+	assignees: UserDefaultData[];
+	comments: number;
+}
+
+export default function IssueBar({
+	title,
+	labels,
+	number,
+	user,
+	assignees,
+	comments,
+}: IssueBarProp) {
 	return (
 		<>
 			<div className="flex px-4 py-2 border-0 border-b border-[#d1d5da] border-solid last:rounded-b-[6px] cursor-pointer hover:bg-[#f6f8fa] M:last:border-b-0">
@@ -15,27 +33,39 @@ export default function IssueBar() {
 					<IssueOpenedIcon fill="#1a7f37" />
 				</div>
 
-				<div className="w-[100%]">
-					<p className="mb-[-2px]">
-						<strong>wow wowo wow</strong>
+				<div className="w-[100%] items-center L:flex L:flex-wrap">
+					<p className="mb-[-2px] ">
+						<strong>{title}</strong>
 					</p>
 
-					<div className="mb-1">
-						<Label labelText="hahaha" bgColor="d5cdb2" padding="s" />
-						<Label labelText="question" bgColor="d876e3" padding="s" />
-						<Label labelText="wow" bgColor="a583d3" padding="s" />
+					<div className="mb-1 L:ml-2">
+						{labels.map((label) => (
+							<Label
+								key={label.id}
+								labelText={label.name}
+								bgColor={label.color}
+								padding="s"
+							/>
+						))}
 					</div>
-					<p className="text-[#57606a] text-xs ">
-						#1 opened 9 days ago by athenacheng15
+					<p className="text-[#57606a] text-xs w-[100%] L:mt-1">
+						#{number} opened 9 days ago by {user.login}
 					</p>
 				</div>
-				<div className="flex mt-1">
-					<div className="w-5 h-5 rounded-xl bg-[#d5cdb2]"></div>
-					<div className="w-5 h-5 rounded-xl bg-[#646B63] ml-[-10px] hover:ml-[3px]"></div>
+				<div className="flex mt-1 space-x-[-10px] hover:space-x-1">
+					{assignees.map((assignee) => (
+						<div key={assignee.id} className="w-5 h-5 ">
+							<img className="rounded-xl" src={assignee.avatar_url}></img>
+						</div>
+					))}
 				</div>
-				<div className="flex text-xs font-medium text-[#57606a] ml-10 mt-1">
+				<div
+					className={`flex text-xs font-medium text-[#57606a] ml-10 mt-1 ${
+						comments === 0 ? "invisible" : "visible"
+					}`}
+				>
 					<CommentIcon />
-					<p className="ml-1">1</p>
+					<p className="ml-1">{comments}</p>
 				</div>
 			</div>
 		</>

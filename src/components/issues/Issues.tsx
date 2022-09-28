@@ -15,11 +15,20 @@ import {
 	CheckIcon,
 } from "@primer/octicons-react";
 
+import { useGetIssuesQuery } from "../../services/issuesApi";
+
 export default function Issues() {
 	const [popFilterVis, setPopFilterVis] = useState(false);
 	const [popSortVis, setPopSortVis] = useState(false);
 	const [popLabelVis, setPopLabelVis] = useState(false);
 	const [popAssigneeVis, setPopAssigneeVis] = useState(false);
+
+	const { data } = useGetIssuesQuery({
+		owner: "athenacheng15",
+		repo: "issue_test",
+	});
+
+	console.log(data);
 
 	return (
 		<div className="w-[100%] h-[auto] max-w-[1280px]   m-[auto] M:relative">
@@ -126,11 +135,17 @@ export default function Issues() {
 					</div>
 				</header>
 				<div className="w rounded-b-[6px] M:border M:border-t-0 M:border-[#d1d5da] M:border-solid ">
-					<IssueBar />
-					<IssueBar />
-					<IssueBar />
-					<IssueBar />
-					<IssueBar />
+					{data?.map((item) => (
+						<IssueBar
+							key={item.id}
+							title={item.title}
+							labels={item.labels}
+							number={item.number}
+							user={item.user}
+							assignees={item.assignees}
+							comments={item.comments}
+						/>
+					))}
 				</div>
 			</section>
 		</div>

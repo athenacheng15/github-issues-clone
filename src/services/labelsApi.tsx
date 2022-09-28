@@ -1,10 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-	LabelProps,
-	RepoLabels,
-	NewLabel,
-	EditLabelKey,
-} from "../models/LabelsType";
+import { RepoLabels, EditLabelKey } from "../models/LabelsType";
 
 interface GetLabelParams {
 	owner: string;
@@ -32,7 +27,7 @@ interface DeleteLabelParams {
 
 export const labelsApi = createApi({
 	reducerPath: "labelsApi",
-	tagTypes: ["Label"],
+	tagTypes: ["Label", "Issues"],
 	baseQuery: fetchBaseQuery({
 		baseUrl: "https://api.github.com/repos",
 	}),
