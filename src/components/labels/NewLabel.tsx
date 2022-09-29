@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState, Dispatch, SetStateAction } from "react";
 import { EditLabelKey } from "../../models/LabelsType";
 import ColorManager from "./ColorManager";
-import { generateRendomColor } from "../../utils/colorCalc";
+import { generateRendomColor } from "../../utils/utils";
 
 interface NewlabelProps {
 	isShown: boolean;

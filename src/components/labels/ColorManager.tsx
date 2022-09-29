@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { SyncIcon } from "@primer/octicons-react";
 import NormalBtn from "../../commons/NormalBtn";
-import { lightOrDark, generateRendomColor } from "../../utils/colorCalc";
+import { lightOrDark, generateRendomColor } from "../../utils/utils";
 import Label from "./Label";
 import {
 	useEditLabelMutation,

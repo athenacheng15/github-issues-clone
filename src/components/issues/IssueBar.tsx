@@ -7,6 +7,7 @@ import {
 import { RepoLabels } from "../../models/LabelsType";
 import { UserDefaultData } from "../../models/IssuesType";
 import Label from "../labels/Label";
+import { timeCalc } from "../../utils/utils";
 
 interface IssueBarProp {
 	title: string;
@@ -17,6 +18,7 @@ interface IssueBarProp {
 	comments: number;
 	iconState?: string;
 	stateReason: string | null;
+	time: string;
 }
 
 export default function IssueBar({
@@ -28,6 +30,7 @@ export default function IssueBar({
 	comments,
 	iconState,
 	stateReason,
+	time,
 }: IssueBarProp) {
 	return (
 		<>
@@ -64,7 +67,7 @@ export default function IssueBar({
 						))}
 					</div>
 					<p className="text-[#57606a] text-xs w-[100%] L:mt-1">
-						#{number} opened 9 days ago by {user.login}
+						#{number} opened {timeCalc(time)} by {user.login}
 					</p>
 				</div>
 				<div className="flex mt-1 space-x-[-10px] hover:space-x-1 ">

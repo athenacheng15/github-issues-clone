@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { LabelProps } from "../../models/LabelsType";
-import { lightOrDark } from "../../utils/colorCalc";
+import { lightOrDark } from "../../utils/utils";
 
 export default function Label({ labelText, bgColor, padding }: LabelProps) {
 	return (

@@ -1,13 +1,17 @@
 import { XIcon, CheckIcon } from "@primer/octicons-react";
 import { Dispatch, SetStateAction } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../../app/store";
+
+import { handelSort } from "../../app/issueSlice";
 
 const itemList = [
-	"Newest",
-	"Oldest",
-	"Most Commented",
-	"Least Commented",
-	"Recently updateed",
-	"Least recently updateed",
+	{ name: "Newest", query: "created" },
+	{ name: "Oldest", query: "created-asc" },
+	{ name: "Most Commented", query: "comments" },
+	{ name: "Least Commented", query: "comments-asc" },
+	{ name: "Recently updateed", query: "updated" },
+	{ name: "Least recently updateed", query: "updated-asc" },
 ];
 
 interface SortProps {
@@ -15,6 +19,9 @@ interface SortProps {
 }
 
 export default function PopSort({ setPopSortVis }: SortProps) {
+	const sort = useSelector((state: RootState) => state.queries.sort);
+	const dispatch = useDispatch();
+
 	return (
 		<>
 			<div
@@ -36,14 +43,24 @@ export default function PopSort({ setPopSortVis }: SortProps) {
 						<div className="flex flex-wrap ">
 							{itemList.map((item) => (
 								<button
-									key={item}
-									id={item}
+									key={item.name}
+									id={item.name}
 									className="flex items-center w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2"
+									onClick={() => {
+										item.query === sort
+											? dispatch(handelSort(""))
+											: dispatch(handelSort(item.query));
+										setPopSortVis(false);
+									}}
 								>
-									<div>
+									<div
+										className={`${
+											item.query === sort ? "visible" : "invisible"
+										}`}
+									>
 										<CheckIcon />
 									</div>
-									<p className="pl-2">{item}</p>
+									<p className="pl-2">{item.name}</p>
 								</button>
 							))}
 						</div>

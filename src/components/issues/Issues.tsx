@@ -1,4 +1,6 @@
 import { useState, Dispatch, SetStateAction } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../../app/store";
 import DoubleIconBtn from "../../commons/DoubleIconBtn";
 import NormalBtn from "../../commons/NormalBtn";
 import IssueBar from "./IssueBar";
@@ -16,6 +18,17 @@ import {
 } from "@primer/octicons-react";
 
 import { useGetIssuesQuery } from "../../services/issuesApi";
+import {
+	handelIssueStatus,
+	addLabelQuery,
+	handelAssignee,
+	handelSort,
+} from "../../app/issueSlice";
+
+const stateList = [
+	{ stateName: "open", icon: <IssueOpenedIcon />, btnText: "Open" },
+	{ stateName: "closed", icon: <CheckIcon />, btnText: "Closed" },
+];
 
 export default function Issues() {
 	const [popFilterVis, setPopFilterVis] = useState(false);
@@ -23,7 +36,26 @@ export default function Issues() {
 	const [popLabelVis, setPopLabelVis] = useState(false);
 	const [popAssigneeVis, setPopAssigneeVis] = useState(false);
 
-	const [issueState, setIssueState] = useState("open");
+	const issueStatus = useSelector(
+		(state: RootState) => state.queries.issueStatus
+	);
+
+	const sort = useSelector((state: RootState) => state.queries.sort);
+
+	const dispatch = useDispatch();
+
+	const { data } = useGetIssuesQuery({
+		owner: "athenacheng15",
+		repo: "issue_test",
+		query: {
+			issueStatus: issueStatus ? `state=${issueStatus}&` : "",
+			labels: [],
+			assignee: "",
+			sort: sort ? `sort=${sort}` : "",
+		},
+	});
+
+	console.log(data);
 
 	const filtersList = [
 		{
@@ -45,21 +77,6 @@ export default function Issues() {
 			component: <PopSort setPopSortVis={setPopSortVis} />,
 		},
 	];
-
-	const stateList = [
-		{ stateName: "open", icon: <IssueOpenedIcon />, count: 4, btnText: "Open" },
-		{ stateName: "closed", icon: <CheckIcon />, count: 2, btnText: "Closed" },
-	];
-
-	const queryList = [];
-
-	const { data } = useGetIssuesQuery({
-		owner: "athenacheng15",
-		repo: "issue_test",
-		state: issueState,
-	});
-
-	console.log(data);
 
 	return (
 		<div className="w-[100%] h-[auto] max-w-[1280px]   m-[auto] M:relative">
@@ -107,12 +124,14 @@ export default function Issues() {
 					<button
 						key={item.stateName}
 						className={`flex w-[auto] items-center mr-4 cursor-pointer ${
-							issueState === item.stateName ? "text-black" : "text-[#57606a]"
+							issueStatus === item.stateName
+								? "text-black font-semibold"
+								: "text-[#57606a]"
 						}`}
-						onClick={() => setIssueState(item.stateName)}
+						onClick={() => dispatch(handelIssueStatus(item.stateName))}
 					>
 						<div className="mr-2 flex  items-center ">{item.icon}</div>
-						{item.count} {item.btnText}
+						{item.btnText}
 					</button>
 				))}
 			</section>
@@ -148,6 +167,7 @@ export default function Issues() {
 							comments={item.comments}
 							iconState={item.state}
 							stateReason={item.state_reason}
+							time={item.created_at}
 						/>
 					))}
 				</div>
