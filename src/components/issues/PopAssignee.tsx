@@ -1,8 +1,9 @@
-import { XIcon } from "@primer/octicons-react";
+import { XIcon, CheckIcon } from "@primer/octicons-react";
 import { Dispatch, SetStateAction } from "react";
 import { useGetAssigneeQuery } from "../../services/issuesApi";
-
-const itemList = ["athenacheng15", "Somebody"];
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../../app/store";
+import { handelAssignee } from "../../app/issueSlice";
 
 interface AssigneeProps {
 	setPopAssigneeVis: Dispatch<SetStateAction<boolean>>;
@@ -13,6 +14,10 @@ export default function PopAssignee({ setPopAssigneeVis }: AssigneeProps) {
 		owner: "athenacheng15",
 		repo: "issue_test",
 	});
+
+	const assignee = useSelector((state: RootState) => state.queries.assignee);
+
+	const dispatch = useDispatch();
 	return (
 		<>
 			<div
@@ -47,15 +52,27 @@ export default function PopAssignee({ setPopAssigneeVis }: AssigneeProps) {
 								<button
 									key={item.id}
 									className="flex items-center w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2"
+									onClick={() => {
+										item.login === assignee
+											? dispatch(handelAssignee(""))
+											: dispatch(handelAssignee(item.login));
+										setPopAssigneeVis(false);
+									}}
 								>
+									<div
+										className={`${
+											item.login === assignee ? "visible" : "invisible"
+										}`}
+									>
+										<CheckIcon />
+									</div>
 									<img
 										src={item.avatar_url}
-										className="w-5 h-5 mt-1 rounded-full"
+										className="w-5 h-5 mt-1 ml-1 rounded-full"
 									></img>
 									<p className="ml-2">
 										<strong>{item.login}</strong>
 									</p>
-									<p className="ml-2 text-[#57606a] "></p>
 								</button>
 							))}
 						</div>

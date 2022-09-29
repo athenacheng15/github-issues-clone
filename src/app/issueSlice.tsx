@@ -1,5 +1,7 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import _ from "lodash";
 
 export interface IssueQueryStringState {
 	issueStatus?: string;
@@ -22,8 +24,12 @@ const issueQueryStringSlice = createSlice({
 		handelIssueStatus: (state, action: PayloadAction<string>) => {
 			state.issueStatus = action.payload;
 		},
-		addLabelQuery: (state, action: PayloadAction<string>) => {
-			state.labels?.push(action.payload);
+		handleLabelQuery: (state, action: PayloadAction<string>) => {
+			state.labels?.includes(action.payload)
+				? _.remove(state.labels, (item) => {
+						return item === action.payload;
+				  })
+				: state.labels?.push(action.payload);
 		},
 		handelAssignee: (state, action: PayloadAction<string>) => {
 			state.assignee = action.payload;
@@ -34,6 +40,10 @@ const issueQueryStringSlice = createSlice({
 	},
 });
 
-export const { handelIssueStatus, addLabelQuery, handelAssignee, handelSort } =
-	issueQueryStringSlice.actions;
+export const {
+	handelIssueStatus,
+	handleLabelQuery,
+	handelAssignee,
+	handelSort,
+} = issueQueryStringSlice.actions;
 export default issueQueryStringSlice.reducer;

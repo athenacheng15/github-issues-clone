@@ -18,12 +18,7 @@ import {
 } from "@primer/octicons-react";
 
 import { useGetIssuesQuery } from "../../services/issuesApi";
-import {
-	handelIssueStatus,
-	addLabelQuery,
-	handelAssignee,
-	handelSort,
-} from "../../app/issueSlice";
+import { handelIssueStatus } from "../../app/issueSlice";
 
 const stateList = [
 	{ stateName: "open", icon: <IssueOpenedIcon />, btnText: "Open" },
@@ -39,8 +34,9 @@ export default function Issues() {
 	const issueStatus = useSelector(
 		(state: RootState) => state.queries.issueStatus
 	);
-
+	const assignee = useSelector((state: RootState) => state.queries.assignee);
 	const sort = useSelector((state: RootState) => state.queries.sort);
+	const labels = useSelector((state: RootState) => state.queries.labels);
 
 	const dispatch = useDispatch();
 
@@ -49,9 +45,9 @@ export default function Issues() {
 		repo: "issue_test",
 		query: {
 			issueStatus: issueStatus ? `state=${issueStatus}&` : "",
-			labels: [],
-			assignee: "",
-			sort: sort ? `sort=${sort}` : "",
+			labels: labels?.length !== 0 ? `labels=${labels?.join()}&` : "",
+			assignee: assignee ? `assignee=${assignee}&` : "",
+			sort: sort ? `sort=${sort}&` : "",
 		},
 	});
 

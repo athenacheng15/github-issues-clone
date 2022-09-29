@@ -70,9 +70,9 @@ export default function IssueBar({
 						#{number} opened {timeCalc(time)} by {user.login}
 					</p>
 				</div>
-				<div className="flex mt-1 space-x-[-10px] hover:space-x-1 ">
+				<div className="flex mt-1 space-x-[-15px] hover:space-x-1 ">
 					{assignees.map((assignee) => (
-						<div key={assignee.id} className="w-5 h-5 transition-all">
+						<div key={assignee.id} className="w-5 h-5 last:ml-1 transition-all">
 							<img className="rounded-xl" src={assignee.avatar_url}></img>
 						</div>
 					))}
