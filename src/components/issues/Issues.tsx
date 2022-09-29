@@ -51,6 +51,8 @@ export default function Issues() {
 		{ stateName: "closed", icon: <CheckIcon />, count: 2, btnText: "Closed" },
 	];
 
+	const queryList = [];
+
 	const { data } = useGetIssuesQuery({
 		owner: "athenacheng15",
 		repo: "issue_test",

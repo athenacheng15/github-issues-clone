@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { supabase } from "../client";
+import { supabase } from "../utils/client";
 
-export default function LoginBtn() {
+export default function LoginPage() {
 	const [user, setUser] = useState(null);
 
 	useEffect(() => {

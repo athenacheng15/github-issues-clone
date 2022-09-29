@@ -6,6 +6,10 @@ import { Provider } from "react-redux";
 import { store } from "./app/store";
 import "./index.css";
 
+import LoginPage from "./components/LoginPage";
+import Labels from "./components/labels/Labels";
+import Issues from "./components/issues/Issues";
+
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
 );
@@ -14,10 +18,10 @@ root.render(
 		<BrowserRouter>
 			<Routes>
 				<Route path="/" element={<App />}>
-					{/* <Route index element={<Issues />} />
-				<Route path="issue/:id" element={<Issue />} />
-				<Route path="new_issue" element={<NewIssue />} />
-				<Route path="label" element={<Labels />} /> */}
+					<Route index element={<LoginPage />} />
+					<Route path="issues" element={<Issues />} />
+					<Route path="labels" element={<Labels />} />
+					{/* <Route path="*" element={<Navigate to="/" replace />} /> */}
 				</Route>
 			</Routes>
 		</BrowserRouter>
