@@ -1,10 +1,13 @@
 import { XIcon, CheckIcon } from "@primer/octicons-react";
 import { Dispatch, SetStateAction } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../../app/store";
+import { handelFilters } from "../../app/issueSlice";
 
 const itemList = [
-	"Your issues",
-	"Everything assigned to you",
-	"Everything mentioning you",
+	{ name: "Your issues", query: "creator=" },
+	{ name: "Everything assigned to you", query: "assignee=" },
+	{ name: "Everything mentioning you", query: "mentioned=" },
 ];
 
 interface FilterProps {
@@ -12,6 +15,9 @@ interface FilterProps {
 }
 
 export default function PopFilter({ setPopFilterVis }: FilterProps) {
+	const dispatch = useDispatch();
+	const filters = useSelector((state: RootState) => state.queries.filters);
+
 	return (
 		<>
 			<div
@@ -31,14 +37,24 @@ export default function PopFilter({ setPopFilterVis }: FilterProps) {
 						<div className="flex flex-wrap">
 							{itemList.map((item) => (
 								<button
-									key={item}
-									id={item}
+									key={item.name}
+									id={item.name}
 									className="flex items-center w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2"
+									onClick={() => {
+										item.query === filters
+											? dispatch(handelFilters(""))
+											: dispatch(handelFilters(item.query));
+										setPopFilterVis(false);
+									}}
 								>
-									<div>
+									<div
+										className={`${
+											item.query === filters ? "visible" : "invisible"
+										}`}
+									>
 										<CheckIcon />
 									</div>
-									<p className="pl-2">{item}</p>
+									<p className="pl-2">{item.name}</p>
 								</button>
 							))}
 						</div>

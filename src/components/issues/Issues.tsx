@@ -37,6 +37,7 @@ export default function Issues() {
 	const assignee = useSelector((state: RootState) => state.queries.assignee);
 	const sort = useSelector((state: RootState) => state.queries.sort);
 	const labels = useSelector((state: RootState) => state.queries.labels);
+	const filters = useSelector((state: RootState) => state.queries.filters);
 
 	const dispatch = useDispatch();
 
@@ -48,6 +49,7 @@ export default function Issues() {
 			labels: labels?.length !== 0 ? `labels=${labels?.join()}&` : "",
 			assignee: assignee ? `assignee=${assignee}&` : "",
 			sort: sort ? `sort=${sort}&` : "",
+			filters: filters ? `${filters}athenacheng15` : "",
 		},
 	});
 

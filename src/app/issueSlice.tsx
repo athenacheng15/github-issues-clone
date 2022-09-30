@@ -8,6 +8,7 @@ export interface IssueQueryStringState {
 	labels?: string[];
 	assignee?: string;
 	sort?: string;
+	filters?: string;
 }
 
 const initialState: IssueQueryStringState = {
@@ -15,6 +16,7 @@ const initialState: IssueQueryStringState = {
 	labels: [],
 	assignee: "",
 	sort: "",
+	filters: "",
 };
 
 const issueQueryStringSlice = createSlice({
@@ -37,6 +39,9 @@ const issueQueryStringSlice = createSlice({
 		handelSort: (state, action: PayloadAction<string>) => {
 			state.sort = action.payload;
 		},
+		handelFilters: (state, action: PayloadAction<string>) => {
+			state.filters = action.payload;
+		},
 	},
 });
 
@@ -45,5 +50,6 @@ export const {
 	handleLabelQuery,
 	handelAssignee,
 	handelSort,
+	handelFilters,
 } = issueQueryStringSlice.actions;
 export default issueQueryStringSlice.reducer;
