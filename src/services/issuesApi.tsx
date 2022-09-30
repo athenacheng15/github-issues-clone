@@ -18,13 +18,14 @@ interface IssueQueryStringState {
 	assignee?: string;
 	sort?: string;
 	filters?: string;
+	page?: number | string;
 }
 
 export const issuesApi = labelsApi.injectEndpoints({
 	endpoints: (builder) => ({
 		getIssues: builder.query<DefaultRepoIssues[], GetIssuesParams>({
 			query: ({ owner, repo, query }) => ({
-				url: `/${owner}/${repo}/issues?${query.issueStatus}${query.labels}${query.assignee}${query.sort}${query.filters}`,
+				url: `/${owner}/${repo}/issues?${query.issueStatus}${query.labels}${query.assignee}${query.sort}${query.filters}${query.page}`,
 				headers: new Headers({
 					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
 					Accept: "application/vnd.github+json",

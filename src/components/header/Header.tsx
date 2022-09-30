@@ -11,6 +11,7 @@ import {
 import SearchBar from "./SearchBar";
 import SelectList from "../../commons/SelectList";
 import UserSelectList from "./UserSelectList";
+import { supabase } from "../../utils/client";
 
 interface Props {
 	isShown: boolean;
@@ -230,17 +231,6 @@ const UserImage = styled.div`
 	height: 20px;
 	border-radius: 100%;
 	background-color: azure;
-	::after {
-		content: "";
-		position: absolute;
-		width: 14px;
-		height: 14px;
-		border-radius: 7px;
-		border: solid 2px rgb(36, 41, 47);
-		right: -7px;
-		top: -5px;
-		background-image: linear-gradient(#54a3ff, #006eed);
-	}
 `;
 
 const MoboleHeaderBox = styled.div`

@@ -9,6 +9,7 @@ export interface IssueQueryStringState {
 	assignee?: string;
 	sort?: string;
 	filters?: string;
+	page: number;
 }
 
 const initialState: IssueQueryStringState = {
@@ -17,6 +18,7 @@ const initialState: IssueQueryStringState = {
 	assignee: "",
 	sort: "",
 	filters: "",
+	page: 1,
 };
 
 const issueQueryStringSlice = createSlice({
@@ -33,6 +35,9 @@ const issueQueryStringSlice = createSlice({
 				  })
 				: state.labels?.push(action.payload);
 		},
+		cleanLabelQuery: (state) => {
+			state.labels = [];
+		},
 		handelAssignee: (state, action: PayloadAction<string>) => {
 			state.assignee = action.payload;
 		},
@@ -42,14 +47,33 @@ const issueQueryStringSlice = createSlice({
 		handelFilters: (state, action: PayloadAction<string>) => {
 			state.filters = action.payload;
 		},
+		nextPage: (state) => {
+			state.page += 1;
+		},
+		prevPage: (state) => {
+			state.page > 1 ? (state.page -= 1) : state.page;
+		},
+
+		resetQuery: (state) => {
+			state.issueStatus = "";
+			state.labels = [];
+			state.assignee = "";
+			state.sort = "";
+			state.filters = "";
+			state.page = 1;
+		},
 	},
 });
 
 export const {
 	handelIssueStatus,
 	handleLabelQuery,
+	cleanLabelQuery,
 	handelAssignee,
 	handelSort,
 	handelFilters,
+	nextPage,
+	prevPage,
+	resetQuery,
 } = issueQueryStringSlice.actions;
 export default issueQueryStringSlice.reducer;

@@ -15,10 +15,18 @@ import {
 	TriangleDownIcon,
 	IssueOpenedIcon,
 	CheckIcon,
+	XIcon,
+	ChevronRightIcon,
+	ChevronLeftIcon,
 } from "@primer/octicons-react";
 
 import { useGetIssuesQuery } from "../../services/issuesApi";
-import { handelIssueStatus } from "../../app/issueSlice";
+import {
+	handelIssueStatus,
+	resetQuery,
+	nextPage,
+	prevPage,
+} from "../../app/issueSlice";
 
 const stateList = [
 	{ stateName: "open", icon: <IssueOpenedIcon />, btnText: "Open" },
@@ -31,6 +39,7 @@ export default function Issues() {
 	const [popLabelVis, setPopLabelVis] = useState(false);
 	const [popAssigneeVis, setPopAssigneeVis] = useState(false);
 
+	const currentState = useSelector((state: RootState) => state.queries);
 	const issueStatus = useSelector(
 		(state: RootState) => state.queries.issueStatus
 	);
@@ -38,6 +47,7 @@ export default function Issues() {
 	const sort = useSelector((state: RootState) => state.queries.sort);
 	const labels = useSelector((state: RootState) => state.queries.labels);
 	const filters = useSelector((state: RootState) => state.queries.filters);
+	const page = useSelector((state: RootState) => state.queries.page);
 
 	const dispatch = useDispatch();
 
@@ -50,6 +60,7 @@ export default function Issues() {
 			assignee: assignee ? `assignee=${assignee}&` : "",
 			sort: sort ? `sort=${sort}&` : "",
 			filters: filters ? `${filters}athenacheng15` : "",
+			page: page ? `page=${page}` : 1,
 		},
 	});
 
@@ -113,9 +124,20 @@ export default function Issues() {
 					</div>
 				</button>
 			</section>
+			<section>
+				<button
+					className="flex items-center w-[100%] h-[auto] mt-4 ml-4 text-[#57606a] text-sm font-black cursor-pointer hover:text-[#0969da] L:ml-6 XL:ml-8"
+					onClick={() => dispatch(resetQuery())}
+				>
+					<div className="flex w-4 h-4 mr-2 bg-[#57606a] rounded">
+						<XIcon fill="white" />
+					</div>
+					Clear current search query, filters, and sorts
+				</button>
+			</section>
 			<section
 				className={
-					"flex px-4 text-[14px] mt-6 L:px-6 XL:absolute XL:top-10 XL:left-[54px]"
+					"flex px-4 text-[14px] mt-4 L:px-6 XL:absolute XL:top-[84px] XL:left-[54px]"
 				}
 			>
 				{stateList.map((item) => (
@@ -137,7 +159,7 @@ export default function Issues() {
 				<header className="flex items-center p-4 border border-[#d1d5da] border-solid bg-[#f6f8fa] text-[14px] text-[#57606a] M:rounded-t-[6px]">
 					<div className="hidden M:inline">
 						<input
-							className="w-3 h-3 border border-[#57606a] border-solid rounded-[2px]"
+							className="w-3 h-3 border border-[#57606a] border-solid rounded-[2px] L:"
 							type="checkbox"
 						></input>
 					</div>
@@ -153,22 +175,62 @@ export default function Issues() {
 						))}
 					</div>
 				</header>
-				<div className="w rounded-b-[6px] M:border M:border-t-0 M:border-[#d1d5da] M:border-solid ">
-					{data?.map((item) => (
-						<IssueBar
-							key={item.id}
-							title={item.title}
-							labels={item.labels}
-							number={item.number}
-							user={item.user}
-							assignees={item.assignees}
-							comments={item.comments}
-							iconState={item.state}
-							stateReason={item.state_reason}
-							time={item.created_at}
-						/>
-					))}
+				<div className=" rounded-b-[6px] M:border M:border-t-0 M:border-[#d1d5da] M:border-solid ">
+					{data?.length === 0 ? (
+						<div className="flex flex-wrap justify-center py-20 text-center">
+							<div className="w-[100%] mb-8">
+								<IssueOpenedIcon fill="#57606a" size={24} />
+							</div>
+							<h1 className="w-[100%] mb-5 text-2xl font-black">
+								No results matched your search.
+							</h1>
+							<p className="w-[100%] text-[#57606a]">
+								You could search
+								<span className="text-[#0969da]"> all of GitHub</span> or try an
+								<span className="text-[#0969da]">advanced search.</span>
+							</p>
+						</div>
+					) : (
+						data?.map((item) => (
+							<IssueBar
+								key={item.id}
+								title={item.title}
+								labels={item.labels}
+								number={item.number}
+								user={item.user}
+								assignees={item.assignees}
+								comments={item.comments}
+								iconState={item.state}
+								stateReason={item.state_reason}
+								time={item.created_at}
+							/>
+						))
+					)}
 				</div>
+			</section>
+			<section className="flex justify-center items-center mt-4 h-10 text-xs">
+				<button
+					className={`flex items-center w-[auto]h-[auto] p-2 mr-4  rounded-md ${
+						page === 1
+							? "text-[#57606a]"
+							: "text-[#0969da] hover:border hover:border-[#d1d5da] hover:border-solid cursor-pointer"
+					}`}
+					onClick={() => dispatch(prevPage())}
+				>
+					<ChevronLeftIcon /> <p className="ml-1">Previous</p>
+				</button>
+				<p>{page}</p>
+				<button
+					className={`flex items-center w-[auto]h-[auto] p-2 ml-4  rounded-md ${
+						data?.length === 0
+							? "text-[#57606a]"
+							: "text-[#0969da] hover:border hover:border-[#d1d5da] hover:border-solid cursor-pointer"
+					}`}
+					disabled={data?.length === 0}
+					onClick={() => dispatch(nextPage())}
+				>
+					<p className="mr-1">Next</p> <ChevronRightIcon />
+				</button>
 			</section>
 		</div>
 	);

@@ -35,7 +35,7 @@ export default function IssueBar({
 	return (
 		<>
 			<div className="flex px-4 py-2 border-0 border-b border-[#d1d5da] border-solid last:rounded-b-[6px] cursor-pointer hover:bg-[#f6f8fa] M:last:border-b-0">
-				<div className="mr-4 pt-[2px] hidden M:inline">
+				<div className="mr-4 pt-[2px] hidden L:inline">
 					<input
 						className="w-3 h-3 border border-[#57606a] border-solid rounded-[2px]"
 						type="checkbox"
@@ -70,7 +70,7 @@ export default function IssueBar({
 						#{number} opened {timeCalc(time)} by {user.login}
 					</p>
 				</div>
-				<div className="flex mt-1 space-x-[-15px] hover:space-x-1 ">
+				<div className=" invisible flex mt-1 space-x-[-15px] hover:space-x-1 M:visible ">
 					{assignees.map((assignee) => (
 						<div key={assignee.id} className="w-5 h-5 last:ml-1 transition-all">
 							<img className="rounded-xl" src={assignee.avatar_url}></img>
@@ -78,8 +78,8 @@ export default function IssueBar({
 					))}
 				</div>
 				<div
-					className={`flex text-xs font-medium text-[#57606a] ml-10 mt-1 ${
-						comments === 0 ? "invisible" : "visible"
+					className={`invisible flex text-xs font-medium text-[#57606a] ml-10 mt-1 ${
+						comments === 0 ? "M:invisible" : "M:visible"
 					}`}
 				>
 					<CommentIcon />
