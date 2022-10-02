@@ -5,17 +5,27 @@ interface Props {
 	text1: string;
 	icon2: JSX.Element;
 	text2: string;
+	num1?: number;
+	num2?: number;
 }
 
-export default function DoubleIconBtn({ icon1, text1, icon2, text2 }: Props) {
+export default function DoubleIconBtn({
+	icon1,
+	text1,
+	icon2,
+	text2,
+	num1,
+	num2,
+}: Props) {
 	return (
 		<>
 			<DoubleBtn>
 				<OutLineBtnLeft>
-					{icon1} <div>{text1}</div>
+					{icon1} <div>{text1}</div> <Dot isShown={num1}>{num1}</Dot>
 				</OutLineBtnLeft>
 				<OutLineBtnRight>
 					{icon2} <div>{text2}</div>
+					<Dot isShown={num2}>{num2}</Dot>
 				</OutLineBtnRight>
 			</DoubleBtn>
 		</>
@@ -31,6 +41,22 @@ const DoubleBtn = styled.div`
 	@media screen and (max-width: 767px) {
 		flex: auto;
 	}
+`;
+interface DotProp {
+	isShown?: number;
+}
+
+const Dot = styled.div<DotProp>`
+	width: auto;
+	min-width: 17px;
+	height: 17;
+	border-radius: 10px;
+	text-align: center;
+	font-size: 12px;
+	margin-left: 4px;
+	padding: 0 6px;
+	background-color: #e8e9ea;
+	display: ${(props) => (props.isShown === undefined ? "none" : "initial")};
 `;
 
 const OutLineBtn = styled.button`

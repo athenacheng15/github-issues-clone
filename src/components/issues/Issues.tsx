@@ -20,6 +20,7 @@ import {
 	ChevronLeftIcon,
 } from "@primer/octicons-react";
 
+import { useGetLabelsQuery } from "../../services/labelsApi";
 import { useGetIssuesQuery } from "../../services/issuesApi";
 import {
 	handelIssueStatus,
@@ -63,6 +64,11 @@ export default function Issues() {
 			filters: filters ? `${filters}athenacheng15&` : "",
 			page: page ? `page=${page}&` : 1,
 		},
+	});
+
+	const { data: labelData } = useGetLabelsQuery({
+		owner: "athenacheng15",
+		repo: "issue_test",
 	});
 
 	function handleInputText() {
@@ -162,6 +168,8 @@ export default function Issues() {
 						text1="Labels"
 						icon2={<MilestoneIcon />}
 						text2="Milestones"
+						num1={labelData?.length}
+						num2={0}
 					/>
 				</div>
 				<button>
