@@ -1,5 +1,5 @@
 import { XIcon, CheckIcon } from "@primer/octicons-react";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
 import { useGetLabelsQuery } from "../../services/labelsApi";
@@ -17,6 +17,8 @@ export default function PopLabel({ setPopLabelVis }: LabelProps) {
 
 	const labels = useSelector((state: RootState) => state.queries.labels);
 	const dispatch = useDispatch();
+
+	const [inputText, setInputText] = useState("");
 
 	return (
 		<>
@@ -40,6 +42,8 @@ export default function PopLabel({ setPopLabelVis }: LabelProps) {
 							<input
 								className="w-[100%] pl-3 h-8 border border-[#d1d5da] border-solid rounded-md focus:border-[#0969da] focus:border-2"
 								placeholder="Filter labels"
+								value={inputText}
+								onChange={(e) => setInputText(e.target.value)}
 							></input>
 						</div>
 						<button
@@ -58,9 +62,12 @@ export default function PopLabel({ setPopLabelVis }: LabelProps) {
 								<button
 									key={item.id}
 									id={item.name}
-									className="flex  w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2"
+									className={`${
+										item.name.includes(inputText) ? "flex" : "hidden"
+									}  w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2`}
 									onClick={() => {
 										dispatch(handleLabelQuery(item.name));
+										setInputText("");
 										setPopLabelVis(false);
 									}}
 								>

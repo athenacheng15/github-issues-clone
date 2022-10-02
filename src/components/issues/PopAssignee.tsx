@@ -1,5 +1,5 @@
 import { XIcon, CheckIcon } from "@primer/octicons-react";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useGetAssigneeQuery } from "../../services/issuesApi";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
@@ -16,8 +16,9 @@ export default function PopAssignee({ setPopAssigneeVis }: AssigneeProps) {
 	});
 
 	const assignee = useSelector((state: RootState) => state.queries.assignee);
-
 	const dispatch = useDispatch();
+
+	const [inputText, setInputText] = useState("");
 	return (
 		<>
 			<div
@@ -40,10 +41,12 @@ export default function PopAssignee({ setPopAssigneeVis }: AssigneeProps) {
 							<input
 								className="w-[100%] pl-3 h-8 border border-[#d1d5da] border-solid rounded-md focus:border-[#0969da] focus:border-2"
 								placeholder="Filter users"
+								value={inputText}
+								onChange={(e) => setInputText(e.target.value)}
 							></input>
 						</div>
 						<button
-							className="flex w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2"
+							className="w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2"
 							onClick={() => {
 								dispatch(handelAssignee(""));
 								setPopAssigneeVis(false);
@@ -57,12 +60,19 @@ export default function PopAssignee({ setPopAssigneeVis }: AssigneeProps) {
 							{data?.map((item) => (
 								<button
 									key={item.id}
-									className="flex items-center w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2"
+									className={`${
+										item.login
+											.toLocaleLowerCase()
+											.includes(inputText.toLocaleLowerCase())
+											? "flex"
+											: "hidden"
+									} flex items-center w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2`}
 									onClick={() => {
 										item.login === assignee
 											? dispatch(handelAssignee(""))
 											: dispatch(handelAssignee(item.login));
 										setPopAssigneeVis(false);
+										setInputText("");
 									}}
 								>
 									<div

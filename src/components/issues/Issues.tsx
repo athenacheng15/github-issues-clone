@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
 import DoubleIconBtn from "../../commons/DoubleIconBtn";
@@ -38,6 +38,7 @@ export default function Issues() {
 	const [popSortVis, setPopSortVis] = useState(false);
 	const [popLabelVis, setPopLabelVis] = useState(false);
 	const [popAssigneeVis, setPopAssigneeVis] = useState(false);
+	const [inputValue, setInputValue] = useState("");
 
 	const currentState = useSelector((state: RootState) => state.queries);
 	const issueStatus = useSelector(
@@ -59,10 +60,57 @@ export default function Issues() {
 			labels: labels?.length !== 0 ? `labels=${labels?.join()}&` : "",
 			assignee: assignee ? `assignee=${assignee}&` : "",
 			sort: sort ? `sort=${sort}&` : "",
-			filters: filters ? `${filters}athenacheng15` : "",
-			page: page ? `page=${page}` : 1,
+			filters: filters ? `${filters}athenacheng15&` : "",
+			page: page ? `page=${page}&` : 1,
 		},
 	});
+
+	function handleInputText() {
+		let text = "is:issue";
+		if (issueStatus === "") {
+			text += ` is:open`;
+		} else {
+			text += ` is:${issueStatus}`;
+		}
+
+		if (filters === "creator=") {
+			text += ` author:@me`;
+		} else if (filters === "assignee=") {
+			text += ` assignee:@me`;
+		} else if (filters === "mentioned=") {
+			text += ` metions:@me`;
+		}
+
+		if (labels?.length !== 0) {
+			const allLabels = labels?.reduce((acc, cur) => {
+				acc += ` label:${cur}`;
+				return acc;
+			}, "");
+			text += allLabels;
+		}
+
+		if (sort !== "") {
+			text += ` is:${sort}`;
+		}
+
+		if (assignee !== "") {
+			text += ` assignee:${assignee}`;
+		}
+
+		return text;
+	}
+
+	useEffect(() => setInputValue(handleInputText()), [currentState]);
+
+	function defaultState() {
+		return (
+			issueStatus === "" &&
+			labels?.length === 0 &&
+			assignee === "" &&
+			sort === "" &&
+			filters === ""
+		);
+	}
 
 	console.log(data);
 
@@ -98,9 +146,10 @@ export default function Issues() {
 						Filters
 						<TriangleDownIcon />
 					</button>
-					<div className="w-[100%] h-8 rounded-r-[6px] border border-[#d1d5da] border-solid bg-[#f6f8fa] flex items-center px-[14px]">
-						<input className="w-[100%]"></input>
-					</div>
+					<input
+						className="w-[100%] h-8 font-normal text-[#57606a] rounded-r-[6px] border border-l-0 border-[#d1d5da] border-solid bg-[#f6f8fa] flex items-center px-[14px] focus:border-[#0969da] focus:border-2 focus:bg-[#ffffff]"
+						value={inputValue}
+					></input>
 					<div
 						className={`order-first z-[1] ${popFilterVis ? "block" : "hidden"}`}
 					>
@@ -124,21 +173,21 @@ export default function Issues() {
 					</div>
 				</button>
 			</section>
-			<section>
+			<section className={defaultState() ? "hidden" : "block"}>
 				<button
-					className="flex items-center w-[100%] h-[auto] mt-4 ml-4 text-[#57606a] text-sm font-black cursor-pointer hover:text-[#0969da] L:ml-6 XL:ml-8"
+					className="flex items-center w-[100%] h-[auto] mt-4 ml-4 text-[#57606a] text-sm font-black cursor-pointer hover:last:text-[#0969da]  L:ml-6 XL:ml-8"
 					onClick={() => dispatch(resetQuery())}
 				>
-					<div className="flex w-4 h-4 mr-2 bg-[#57606a] rounded">
+					<div className="flex w-4 h-4 mr-2 bg-[#57606a] rounded hover:bg-[#0969da]">
 						<XIcon fill="white" />
 					</div>
-					Clear current search query, filters, and sorts
+					<p>Clear current search query, filters, and sorts</p>
 				</button>
 			</section>
 			<section
-				className={
-					"flex px-4 text-[14px] mt-4 L:px-6 XL:absolute XL:top-[84px] XL:left-[54px]"
-				}
+				className={`flex px-4 text-[14px] mt-4 L:px-6 XL:absolute ${
+					defaultState() ? "XL:top-[48px]" : "XL:top-[84px]"
+				} XL:left-[54px]`}
 			>
 				{stateList.map((item) => (
 					<button
@@ -159,7 +208,7 @@ export default function Issues() {
 				<header className="flex items-center p-4 border border-[#d1d5da] border-solid bg-[#f6f8fa] text-[14px] text-[#57606a] M:rounded-t-[6px]">
 					<div className="hidden M:inline">
 						<input
-							className="w-3 h-3 border border-[#57606a] border-solid rounded-[2px] L:"
+							className="w-3 h-3 border border-[#57606a] border-solid rounded-[2px]"
 							type="checkbox"
 						></input>
 					</div>

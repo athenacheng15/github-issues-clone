@@ -2,7 +2,7 @@ import { XIcon, CheckIcon } from "@primer/octicons-react";
 import { Dispatch, SetStateAction } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
-import { handelFilters } from "../../app/issueSlice";
+import { handelFilters, resetQuery } from "../../app/issueSlice";
 
 const itemList = [
 	{ name: "Your issues", query: "creator=" },
@@ -41,6 +41,7 @@ export default function PopFilter({ setPopFilterVis }: FilterProps) {
 									id={item.name}
 									className="flex items-center w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2"
 									onClick={() => {
+										dispatch(resetQuery());
 										item.query === filters
 											? dispatch(handelFilters(""))
 											: dispatch(handelFilters(item.query));
