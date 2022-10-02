@@ -1,9 +1,11 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Label from "../components/labels/Label";
+
 export default {
 	title: "Label",
 	component: Label,
+
 	argTypes: {
 		bgColor: {
 			control: "text",

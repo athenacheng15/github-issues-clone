@@ -1,11 +1,11 @@
 export interface RepoLabels {
 	color: string;
-	defaule: boolean;
-	description: string;
+	defaule?: boolean;
+	description?: string;
 	id: number;
 	name: string;
-	node_id: string;
-	url: string;
+	node_id?: string;
+	url?: string;
 }
 
 export interface NewLabel {
@@ -13,7 +13,7 @@ export interface NewLabel {
 	repo: string;
 	name: string;
 	new_name: string;
-	description: string;
+	description?: string;
 	color: string;
 }
 
@@ -26,6 +26,6 @@ export interface LabelProps {
 export interface EditLabelKey {
 	name?: string;
 	new_name?: string;
-	description: string;
+	description?: string;
 	color: string;
 }

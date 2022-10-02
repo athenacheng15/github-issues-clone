@@ -15,7 +15,7 @@ interface Props {
 	isShown?: boolean;
 	submitType: string;
 	labelText?: string;
-	description: string;
+	description?: string;
 	newLabel: EditLabelKey;
 	setNewLabel: Dispatch<SetStateAction<EditLabelKey>>;
 	setNewLabelVis?: Dispatch<SetStateAction<boolean>>;

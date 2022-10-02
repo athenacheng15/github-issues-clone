@@ -9,7 +9,7 @@ import { EditLabelKey } from "../../models/LabelsType";
 interface BarProps {
 	labelText: string;
 	bgColor: string;
-	description: string;
+	description?: string;
 	id: number;
 }
 

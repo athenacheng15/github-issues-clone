@@ -1,32 +1,43 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import IssueBar from "../components/issues/IssueBar";
-import { Provider } from "react-redux";
-import { store } from "../app/store";
-import Label from "../components/labels/Label";
-import { useGetIssuesQuery } from "../services/issuesApi";
+
 export default {
 	title: "IssueBar",
 	component: IssueBar,
+
+	argTypes: {
+		iconState: {
+			options: ["open", "closed"],
+			control: { type: "radio" },
+		},
+		stateReason: {
+			options: ["completed", "no planned"],
+			control: { type: "radio" },
+		},
+	},
 } as ComponentMeta<typeof IssueBar>;
 
-const { data } = useGetIssuesQuery({
-	owner: "athenacheng15",
-	repo: "issue_test",
-	query: {},
-});
-
 const Template: ComponentStory<typeof IssueBar> = (args) => (
-	<Provider store={store}>
+	<div className="flex width-[500px]">
 		<IssueBar {...args} />
-	</Provider>
+	</div>
 );
 export const Default = Template.bind({});
 
 Default.args = {
-	title: "青蛙到此一遊",
-	number: 4,
-	comments: 2,
+	title: "Issue Title",
+	labels: [{ id: 1, name: "label preview", color: "443ca2", description: "" }],
+	number: 1,
+	user: { login: "jennie" },
+	assignees: [
+		{
+			login: "athenacheng15",
+			avatar_url: "https://avatars.githubusercontent.com/u/64196504?v=4",
+		},
+	],
+	comments: 5,
 	iconState: "open",
-	time: "2 days ago",
+	stateReason: "",
+	time: "2022-09-29T06:14:25Z",
 };

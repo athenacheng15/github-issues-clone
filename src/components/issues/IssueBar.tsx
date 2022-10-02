@@ -17,7 +17,7 @@ interface IssueBarProp {
 	assignees: UserDefaultData[];
 	comments: number;
 	iconState?: string;
-	stateReason: string | null;
+	stateReason?: string | null;
 	time: string;
 }
 
@@ -34,7 +34,7 @@ export default function IssueBar({
 }: IssueBarProp) {
 	return (
 		<>
-			<div className="flex px-4 py-2 border-0 border-b border-[#d1d5da] border-solid last:rounded-b-[6px] cursor-pointer hover:bg-[#f6f8fa] M:last:border-b-0">
+			<div className="flex px-4 py-2 border-0 border-b border-[#d1d5da] border-solid last:rounded-b-[6px] hover:bg-[#f6f8fa] M:last:border-b-0">
 				<div className="mr-4 pt-[2px] hidden L:inline">
 					<input
 						className="w-3 h-3 border border-[#57606a] border-solid rounded-[2px]"
@@ -52,9 +52,9 @@ export default function IssueBar({
 				</div>
 
 				<div className="w-[100%] items-center L:flex L:flex-wrap">
-					<p className="mb-[-2px] ">
+					<button className="mb-[-2px] cursor-pointer hover:text-[#0969da]">
 						<strong>{title}</strong>
-					</p>
+					</button>
 
 					<div className="mb-1 L:ml-2">
 						{labels.map((label) => (
