@@ -260,6 +260,7 @@ export default function Issues() {
 								iconState={item.state}
 								stateReason={item.state_reason}
 								time={item.created_at}
+								body={item.body}
 							/>
 						))
 					)}

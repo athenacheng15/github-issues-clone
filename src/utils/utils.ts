@@ -52,3 +52,26 @@ export function timeCalc(time: string) {
 		}`;
 	}
 }
+
+export function timeCalc2(time: string) {
+	const createdTime = new Date(time).getTime();
+
+	const monthNamesEn = [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"May",
+		"June",
+		"July",
+		"Aug",
+		"Sep",
+		"Oct",
+		"Nov",
+		"Dec",
+	];
+
+	return `${monthNamesEn[new Date(time).getMonth()]} ${new Date(
+		time
+	).getDate()}`;
+}

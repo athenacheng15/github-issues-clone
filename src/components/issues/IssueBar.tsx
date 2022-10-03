@@ -7,7 +7,7 @@ import {
 import { RepoLabels } from "../../models/LabelsType";
 import { UserDefaultData } from "../../models/IssuesType";
 import Label from "../labels/Label";
-import { timeCalc } from "../../utils/utils";
+import { timeCalc, timeCalc2 } from "../../utils/utils";
 
 interface IssueBarProp {
 	title: string;
@@ -19,6 +19,7 @@ interface IssueBarProp {
 	iconState?: string;
 	stateReason?: string | null;
 	time: string;
+	body: string;
 }
 
 export default function IssueBar({
@@ -31,6 +32,7 @@ export default function IssueBar({
 	iconState,
 	stateReason,
 	time,
+	body,
 }: IssueBarProp) {
 	return (
 		<>
@@ -51,9 +53,48 @@ export default function IssueBar({
 					)}
 				</div>
 
-				<div className="w-[100%] items-center L:flex L:flex-wrap">
-					<button className="mb-[-2px] cursor-pointer hover:text-[#0969da]">
-						<strong>{title}</strong>
+				<div className="w-[100%] items-center L:flex L:flex-wrap relative">
+					<button className="mb-[-2px] group cursor-pointer ">
+						<div className="hidden group-hover:block absolute p-4 w-[340px] h-[auto] border border-[#d1d5da] border-solid rounded-[6px] bg-white bottom-12">
+							<div className="flex text-xs text-[#57606a]">
+								<p> athenacheng15/issue_test on {timeCalc2(time)}</p>
+							</div>
+							<div className="flex pt-2 items-center">
+								{iconState === "open" ? (
+									<IssueOpenedIcon fill="#1a7f37" />
+								) : stateReason === "completed" ? (
+									<IssueClosedIcon fill="#8250df" />
+								) : (
+									<SkipIcon fill="#57606a" />
+								)}
+								<p className="text-sm font-bold ml-1">{title}</p>
+								<p className="text-sm text-[#57606a] ml-1">#{number}</p>
+							</div>
+							<div
+								className={`h-[auto] flex-wrap mb-4 ${
+									body === null ? "hidden" : "flex"
+								}`}
+							>
+								<p className="pl-5 text-sm text-[#57606a]">
+									{`${
+										body === null || body.length < 80
+											? body
+											: body.substring(0, 80)
+									}...`}
+								</p>
+							</div>
+							<div className="pl-4 ">
+								{labels.map((label) => (
+									<Label
+										key={label.id}
+										labelText={label.name}
+										bgColor={label.color}
+										padding="s"
+									/>
+								))}
+							</div>
+						</div>
+						<strong className="hover:text-[#0969da]">{title}</strong>
 					</button>
 
 					<div className="mb-1 L:ml-2">
