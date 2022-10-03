@@ -57,7 +57,13 @@ export default function IssueBar({
 					<button className="mb-[-2px] group cursor-pointer ">
 						<div className="hidden group-hover:block absolute p-4 w-[340px] h-[auto] border border-[#d1d5da] border-solid rounded-[6px] bg-white bottom-12">
 							<div className="flex text-xs text-[#57606a]">
-								<p> athenacheng15/issue_test on {timeCalc2(time)}</p>
+								<p>
+									{" "}
+									<span className="underline hover:text-[#0969da]">
+										athenacheng15/issue_test
+									</span>{" "}
+									on {timeCalc2(time)}
+								</p>
 							</div>
 							<div className="flex pt-2 items-center">
 								{iconState === "open" ? (
@@ -79,8 +85,8 @@ export default function IssueBar({
 									{`${
 										body === null || body.length < 80
 											? body
-											: body.substring(0, 80)
-									}...`}
+											: body.substring(0, 80) + "..."
+									}`}
 								</p>
 							</div>
 							<div className="pl-4 ">

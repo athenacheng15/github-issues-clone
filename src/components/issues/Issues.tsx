@@ -183,13 +183,15 @@ export default function Issues() {
 			</section>
 			<section className={defaultState() ? "hidden" : "block"}>
 				<button
-					className="flex items-center w-[100%] h-[auto] mt-4 ml-4 text-[#57606a] text-sm font-black cursor-pointer hover:last:text-[#0969da]  L:ml-6 XL:ml-8"
+					className="flex items-center group w-[100%] h-[auto] mt-4 ml-4 text-[#57606a] text-sm font-black cursor-pointer L:ml-6 XL:ml-8"
 					onClick={() => dispatch(resetQuery())}
 				>
-					<div className="flex w-4 h-4 mr-2 bg-[#57606a] rounded hover:bg-[#0969da]">
+					<div className="flex w-4 h-4 mr-2 bg-[#57606a] rounded group-hover:bg-[#0969da]">
 						<XIcon fill="white" />
 					</div>
-					<p>Clear current search query, filters, and sorts</p>
+					<p className="group-hover:text-[#0969da] ">
+						Clear current search query, filters, and sorts
+					</p>
 				</button>
 			</section>
 			<section
