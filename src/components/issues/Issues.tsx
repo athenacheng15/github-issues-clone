@@ -23,7 +23,7 @@ import {
 import { useGetLabelsQuery } from "../../services/labelsApi";
 import { useGetIssuesQuery } from "../../services/issuesApi";
 import {
-	handelIssueStatus,
+	handleIssueStatus,
 	resetQuery,
 	nextPage,
 	prevPage,
@@ -207,7 +207,7 @@ export default function Issues() {
 								? "text-black font-semibold"
 								: "text-[#57606a]"
 						}`}
-						onClick={() => dispatch(handelIssueStatus(item.stateName))}
+						onClick={() => dispatch(handleIssueStatus(item.stateName))}
 					>
 						<div className="mr-2 flex  items-center ">{item.icon}</div>
 						{item.btnText}

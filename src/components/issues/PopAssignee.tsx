@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useGetAssigneeQuery } from "../../services/issuesApi";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
-import { handelAssignee } from "../../app/issueSlice";
+import { handleAssignee } from "../../app/issueSlice";
 
 interface AssigneeProps {
 	setPopAssigneeVis: Dispatch<SetStateAction<boolean>>;
@@ -48,7 +48,7 @@ export default function PopAssignee({ setPopAssigneeVis }: AssigneeProps) {
 						<button
 							className="w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2"
 							onClick={() => {
-								dispatch(handelAssignee(""));
+								dispatch(handleAssignee(""));
 								setPopAssigneeVis(false);
 							}}
 						>
@@ -69,8 +69,8 @@ export default function PopAssignee({ setPopAssigneeVis }: AssigneeProps) {
 									} flex items-center w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2`}
 									onClick={() => {
 										item.login === assignee
-											? dispatch(handelAssignee(""))
-											: dispatch(handelAssignee(item.login));
+											? dispatch(handleAssignee(""))
+											: dispatch(handleAssignee(item.login));
 										setPopAssigneeVis(false);
 										setInputText("");
 									}}

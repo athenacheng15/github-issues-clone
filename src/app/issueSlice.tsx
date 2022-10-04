@@ -25,7 +25,7 @@ const issueQueryStringSlice = createSlice({
 	name: "queries",
 	initialState,
 	reducers: {
-		handelIssueStatus: (state, action: PayloadAction<string>) => {
+		handleIssueStatus: (state, action: PayloadAction<string>) => {
 			state.issueStatus = action.payload;
 		},
 		handleLabelQuery: (state, action: PayloadAction<string>) => {
@@ -38,13 +38,13 @@ const issueQueryStringSlice = createSlice({
 		cleanLabelQuery: (state) => {
 			state.labels = [];
 		},
-		handelAssignee: (state, action: PayloadAction<string>) => {
+		handleAssignee: (state, action: PayloadAction<string>) => {
 			state.assignee = action.payload;
 		},
-		handelSort: (state, action: PayloadAction<string>) => {
+		handleSort: (state, action: PayloadAction<string>) => {
 			state.sort = action.payload;
 		},
-		handelFilters: (state, action: PayloadAction<string>) => {
+		handleFilters: (state, action: PayloadAction<string>) => {
 			state.filters = action.payload;
 		},
 		nextPage: (state) => {
@@ -66,12 +66,12 @@ const issueQueryStringSlice = createSlice({
 });
 
 export const {
-	handelIssueStatus,
+	handleIssueStatus,
 	handleLabelQuery,
 	cleanLabelQuery,
-	handelAssignee,
-	handelSort,
-	handelFilters,
+	handleAssignee,
+	handleSort,
+	handleFilters,
 	nextPage,
 	prevPage,
 	resetQuery,

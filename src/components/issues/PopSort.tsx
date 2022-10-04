@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
 
-import { handelSort } from "../../app/issueSlice";
+import { handleSort } from "../../app/issueSlice";
 
 const itemList = [
 	{ name: "Newest", query: "created" },
@@ -48,8 +48,8 @@ export default function PopSort({ setPopSortVis }: SortProps) {
 									className="flex items-center w-[100%] px-6 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] M:py-2"
 									onClick={() => {
 										item.query === sort
-											? dispatch(handelSort(""))
-											: dispatch(handelSort(item.query));
+											? dispatch(handleSort(""))
+											: dispatch(handleSort(item.query));
 										setPopSortVis(false);
 									}}
 								>
