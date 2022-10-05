@@ -3,14 +3,25 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useGetAssigneeQuery } from "../../services/issuesApi";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
-import { handleAssignee } from "../../app/issueSlice";
+import { handleAssignees } from "../../app/newIssueSlice";
+import User from "../../commons/User";
 
 interface AssigneeProps {
 	setPopAssigneeVis: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function PopAssignee({ setPopAssigneeVis }: AssigneeProps) {
+	const currentContent = useSelector((state: RootState) => state.contents);
+
+	const { data } = useGetAssigneeQuery({
+		owner: "athenacheng15",
+		repo: "issue_test",
+	});
+
 	const [inputText, setInputText] = useState("");
+
+	const dispatch = useDispatch();
+
 	return (
 		<>
 			<div
@@ -41,44 +52,46 @@ export default function PopAssignee({ setPopAssigneeVis }: AssigneeProps) {
 							<XIcon />
 							<p className="ml-1">Clear assignees</p>
 						</button>
-						<User iconVis={true} />
+						{/* <User iconVis={true} /> */}
 						<div className="w-[100%] px-3 py-2 font-normal border-0 border-t border-[#d1d5da] border-solid bg-[#f6f8fa] L:py-2">
 							<p>
 								<strong>Suggestions</strong>
 							</p>
 						</div>
-						<User iconVis={false} />
-						<User iconVis={false} />
-						<User iconVis={false} />
+						{data?.map((item) => (
+							<button
+								key={item.id}
+								className={`${
+									item.login
+										.toLocaleLowerCase()
+										.includes(inputText.toLocaleLowerCase())
+										? "flex"
+										: "hidden"
+								} flex items-center w-[100%] px-4 py-4 font-normal text-sm border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] L:py-2`}
+								onClick={() => {
+									dispatch(handleAssignees(item.login));
+								}}
+							>
+								<div
+									className={`${
+										currentContent.assignees.includes(item.login)
+											? "visible"
+											: "invisible"
+									}`}
+								>
+									<CheckIcon />
+								</div>
+								<img
+									src={item.avatar_url}
+									className="w-5 h-5 mt-1 ml-1 rounded-full"
+								></img>
+								<p className="ml-2">
+									<strong>{item.login}</strong>
+								</p>
+							</button>
+						))}
 					</div>
 				</div>
-			</div>
-		</>
-	);
-}
-
-interface UserProp {
-	iconVis: boolean;
-}
-
-function User({ iconVis }: UserProp) {
-	return (
-		<>
-			<div className="flex flex-wrap">
-				<button
-					className={`flex items-center w-[100%] px-3 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid  cursor-pointer hover:bg-[#0969da] hover:text-[#fff] L:py-2`}
-				>
-					<div className={`${iconVis ? "block" : "invisible"}`}>
-						<CheckIcon />
-					</div>
-					<img
-						src="https://avatars.githubusercontent.com/u/64196504?v=4"
-						className="w-5 h-5 mt-1 ml-1 rounded-full"
-					></img>
-					<p className="ml-2 text-sm">
-						<strong>athenacheng15</strong>
-					</p>
-				</button>
 			</div>
 		</>
 	);

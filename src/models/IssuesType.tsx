@@ -15,7 +15,7 @@ export interface DefaultRepoIssues {
 	body: string;
 	user: UserDefaultData;
 	labels: RepoLabels[];
-	assignee: UserDefaultData;
+	assignee?: UserDefaultData;
 	assignees: UserDefaultData[];
 	milestone: MilestoneDefaultData;
 	comments: number;
@@ -35,7 +35,7 @@ export interface UserDefaultData {
 	login: string;
 	id?: number;
 	node_id?: string;
-	avatar_url?: string;
+	avatar_url: string;
 	gravatar_id?: string;
 	url?: string;
 	html_url?: string;

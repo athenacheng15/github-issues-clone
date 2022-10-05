@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { labelsApi } from "../services/labelsApi";
-import issueQueryStringReducer from "./issueSlice";
+import issueQueryStringSlice from "./issueSlice";
+import newIssueContentSlice from "./newIssueSlice";
 
 export const store = configureStore({
 	reducer: {
 		[labelsApi.reducerPath]: labelsApi.reducer,
-		queries: issueQueryStringReducer,
+		queries: issueQueryStringSlice,
+		contents: newIssueContentSlice,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware().concat(labelsApi.middleware),

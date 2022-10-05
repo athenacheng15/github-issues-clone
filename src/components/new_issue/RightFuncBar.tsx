@@ -1,27 +1,32 @@
 import { useState } from "react";
-import { GearIcon } from "@primer/octicons-react";
+import { useGetAssigneeQuery } from "../../services/issuesApi";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import type { RootState } from "../../app/store";
 import PopAssignee from "./PopAssignee";
 import PopLabel from "./PopLabel";
-import NormalBtn from "../../commons/NormalBtn";
+import BarTool from "./BarTool";
+import Label from "../labels/Label";
 
 export default function RightFuncBar() {
 	const [popAssigneeVis, setPopAssigneeVis] = useState(false);
 	const [popLabelVis, setPopLabelVis] = useState(false);
+
 	const itemList = [
 		{
 			name: "Assignee",
-			defaultText: (
-				<>
-					<p>no one-</p>
-					<a className="cursor-pointer text-[#57606a] hover:text-[#0969da]">
-						assign yourself
-					</a>
-				</>
-			),
+			popVis: popAssigneeVis,
+			setPopVis: setPopAssigneeVis,
+			popOut: <PopAssignee setPopAssigneeVis={setPopAssigneeVis} />,
+			defaultText: "no one-",
+			button: "assign yourself",
 			setting: true,
 		},
 		{
 			name: "Labels",
+			popVis: popLabelVis,
+			setPopVis: setPopLabelVis,
+			popOut: <PopLabel setPopLabelVis={setPopLabelVis} />,
 			defaultText: "None-yet",
 			setting: true,
 		},
@@ -34,14 +39,9 @@ export default function RightFuncBar() {
 		},
 		{
 			name: "Helpful resources",
-			defaultText: (
-				<a
-					className="mt-2 text-xs text-[#0969da] cursor-pointer"
-					href="https://docs.github.com/en/site-policy/github-terms/github-community-guidelines"
-				>
-					GitHub Community Guidelines
-				</a>
-			),
+			defaultText: "",
+			link: "GitHub Community Guidelines",
+			href: "https://docs.github.com/en/site-policy/github-terms/github-community-guidelines",
 			setting: false,
 		},
 	];
@@ -49,50 +49,33 @@ export default function RightFuncBar() {
 		<>
 			<div className="L:w-[240px] XL:w-[256px] h-[500px]">
 				{itemList.map((item, index) => (
-					<div
+					<BarTool
 						key={index}
-						className="relative w-[100%] h-[80px] py-4 border-0 border-b border-[#d1d5da] border-solid "
-					>
-						<button
-							className="flex w-[100%] justify-between cursor-pointer group text-[#57606a]"
-							onClick={() => {
-								item.name === "Assignee"
-									? setPopAssigneeVis(!popAssigneeVis)
-									: item.name === "Labels"
-									? setPopLabelVis(!popLabelVis)
-									: "";
-							}}
-						>
-							<p className="text-xs font-medium group-hover:text-[#0969da]">
-								{item.name}
-							</p>
-							<div
-								className={`group-hover:text-[#0969da] ${
-									item.setting ? "block" : "hidden"
-								}`}
-							>
-								<GearIcon />
-							</div>
-						</button>
-						<div className=" flex text-xs mt-1">{item.defaultText}</div>
-
-						{item.name === "Assignee" ? (
-							<div className={`${popAssigneeVis ? "block" : "hidden"}`}>
-								<PopAssignee setPopAssigneeVis={setPopAssigneeVis} />
-							</div>
-						) : item.name === "Labels" ? (
-							<div className={`${popLabelVis ? "block" : "hidden"}`}>
-								<PopLabel setPopLabelVis={setPopLabelVis} />
-							</div>
-						) : (
-							""
-						)}
-					</div>
+						name={item.name}
+						popVis={item.popVis}
+						setPopVis={item.setPopVis}
+						popOut={item.popOut}
+						setting={item.setting}
+						defaultText={item.defaultText}
+						button={item.button}
+						link={item.link}
+						href={item.href}
+						// content={item.content}
+					/>
 				))}
 			</div>
-			<div className="L:hidden">
-				<NormalBtn text="Submit new issue" width="100%" colorType="green" />
-			</div>
 		</>
+	);
+}
+
+function AssignedUser() {
+	return (
+		<button className="flex items-center w-[100%] text-xs font-bold cursor-pointer hover:text-[#0969da]">
+			<img
+				src="https://avatars.githubusercontent.com/u/64196504?v=4"
+				className="w-5 h-5 mr-2 rounded-full"
+			></img>
+			athenacheng15
+		</button>
 	);
 }

@@ -5,11 +5,23 @@ interface Props {
 	width: string;
 	colorType: string;
 	disabled?: boolean;
+	onClick?: () => void;
 }
 
-export default function NormalBtn({ text, width, colorType, disabled }: Props) {
+export default function NormalBtn({
+	text,
+	width,
+	colorType,
+	disabled,
+	onClick,
+}: Props) {
 	return (
-		<Btn width={width} colorType={colorType} disabled={disabled}>
+		<Btn
+			width={width}
+			colorType={colorType}
+			disabled={disabled}
+			onClick={onClick}
+		>
 			{text}
 		</Btn>
 	);

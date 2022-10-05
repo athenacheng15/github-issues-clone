@@ -1,7 +1,32 @@
+import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import type { RootState } from "../../app/store";
+import { useCreateIssueMutation } from "../../services/newIssueApi";
+import {
+	handleTitle,
+	handleBody,
+	handleLabels,
+	handleAssignees,
+} from "../../app/newIssueSlice";
 import CreateArea from "./CreateArea";
 import RightFuncBar from "./RightFuncBar";
+import NormalBtn from "../../commons/NormalBtn";
 
 export default function NewIssue() {
+	const currentContent = useSelector((state: RootState) => state.contents);
+	const [createIssue] = useCreateIssueMutation();
+	const navigate = useNavigate();
+
+	function handleCreateIssue() {
+		createIssue({
+			owner: "athenacheng15",
+			repo: "issue_test",
+			content: currentContent,
+		});
+		navigate("/issues");
+	}
+
 	return (
 		<>
 			<div className="w-[100%] m-[auto] mt-2 p-4 max-w-[1280px] L:flex L:px-6 XL:px-8">
@@ -12,11 +37,26 @@ export default function NewIssue() {
 "
 					></img>
 					<div className="w-[100%]">
-						<CreateArea />
+						<CreateArea
+							titleDefault={currentContent.title}
+							bodyDefault={currentContent.body}
+							handleTitle={handleTitle}
+							handleBody={handleBody}
+							submitFunc={handleCreateIssue}
+						/>
 					</div>
 				</div>
 				<div className="mt-8 L:mt-0 L:ml-4 XL:ml-6">
 					<RightFuncBar />
+				</div>
+				<div className="L:hidden">
+					<NormalBtn
+						text="Submit new issue"
+						width="100%"
+						colorType="green"
+						onClick={() => handleCreateIssue()}
+						disabled={currentContent.title === ""}
+					/>
 				</div>
 			</div>
 		</>

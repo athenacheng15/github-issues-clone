@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { AnyAction } from "redux";
 import NormalBtn from "../../commons/NormalBtn";
 import {
 	TypographyIcon,
@@ -21,37 +23,46 @@ import {
 	InfoIcon,
 } from "@primer/octicons-react";
 
-const iconList = [
-	{ icon: <QuoteIcon />, order: "order-4", hide: false },
-	{ icon: <CodeIcon />, order: "order-5", hide: false },
-	{ icon: <LinkIcon />, order: "order-6", hide: false },
-	{ icon: <MentionIcon />, order: "order-10", hide: false },
-	{ icon: <ImageIcon />, order: "order-0", hide: true },
-	{ icon: <CrossReferenceIcon />, order: "order-11", hide: false },
-	{ icon: <ReplyIcon />, order: "order-12", hide: false },
-	{ icon: <HeadingIcon />, order: "order-1", hide: false },
-	{ icon: <BoldIcon />, order: "order-2", hide: false },
-	{ icon: <ItalicIcon />, order: "order-3", hide: false },
-	{ icon: <ListUnorderedIcon />, order: "order-7", hide: false },
-	{ icon: <ListOrderedIcon />, order: "order-8", hide: false },
-	{ icon: <TasklistIcon />, order: "order-9", hide: false },
-];
+interface CreateAreaProp {
+	titleDefault: string;
+	bodyDefault: string;
+	handleTitle: (value: string) => AnyAction;
+	handleBody: (value: string) => AnyAction;
+	submitFunc: () => void;
+}
 
-export default function CreateArea() {
+export default function CreateArea({
+	titleDefault,
+	bodyDefault,
+	handleTitle,
+	handleBody,
+	submitFunc,
+}: CreateAreaProp) {
 	const [inputStatus, setInputStatus] = useState("Write");
 	const [bottomVis, setBottomVis] = useState(false);
 	const inputBtnList = [
 		{ name: "Write", action: "" },
 		{ name: "Preview", action: "" },
 	];
+
+	const [titleValue, setTitleValue] = useState<string>(titleDefault);
+	const [bodyValue, setBodyValue] = useState<string>(bodyDefault);
+
+	const dispatch = useDispatch();
+
 	return (
 		<>
 			<div className=" w-[100%] h-[auto] rounded-md L:border L:border-[#d1d5da] L:border-solid pb-2">
 				<section className="L:mx-2">
 					<input
 						autoFocus
-						className="w-[100%] h-8 mt-2 mb-1 pl-4 rounded-[6px] border border-[#d1d5da] border-solid bg-[#f6f8fa] text-[#57606a] placeholder:text-[#57606a] focus:border-[#0969da] focus:border-2 focus:bg-[#ffffff] "
+						className="w-[100%] h-8 mt-2 mb-1 pl-4 rounded-[6px] border border-[#d1d5da] border-solid bg-[#f6f8fa] placeholder:text-[#57606a] focus:border-[#0969da] focus:border-2 focus:bg-[#ffffff] "
 						placeholder="Title"
+						value={titleValue}
+						onChange={(e) => {
+							setTitleValue(e.target.value);
+						}}
+						onBlur={() => dispatch(handleTitle(titleValue))}
 					></input>
 				</section>
 				<div className="XL:flex">
@@ -70,7 +81,11 @@ export default function CreateArea() {
 							</button>
 						))}
 					</section>
-					<section className="py-2 XL:pr-2 XL:border-0 XL:border-b XL:border-[#d1d5da] XL:border-solid">
+					<section
+						className={`py-2 XL:pr-2 XL:border-0 XL:border-b XL:border-[#d1d5da] XL:border-solid ${
+							inputStatus === "Preview" ? "hidden" : "block"
+						}`}
+					>
 						<div className="flex px-2 justify-between text-[#57606a] L:hidden">
 							<button
 								className="flex p-2 ml-1 cursor-pointer  hover:text-[#0969da]"
@@ -117,12 +132,26 @@ export default function CreateArea() {
 				</div>
 
 				<section>
-					<div className="L:mx-2 XL:mt-1">
-						<textarea
-							className="w-[100%] h-[200px] px-2 py-3 mt-2 text-sm rounded-[6px] border border-[#d1d5da] border-solid bg-[#f6f8fa] placeholder:text-[#57606a] focus:border-[#0969da] focus:border-2 L:mt-1"
-							placeholder="Leave a comment"
-						></textarea>
-					</div>
+					{inputStatus === "Write" ? (
+						<div className="L:mx-2 XL:mt-1">
+							<textarea
+								className="w-[100%] h-[200px] px-2 py-3 mt-2 text-sm rounded-[6px] border border-[#d1d5da] border-solid bg-[#f6f8fa] placeholder:text-[#57606a] focus:border-[#0969da] focus:border-2 L:mt-1"
+								placeholder="Leave a comment"
+								value={bodyValue}
+								onChange={(e) => {
+									setBodyValue(e.target.value);
+								}}
+								onBlur={() => dispatch(handleBody(bodyValue))}
+							></textarea>
+						</div>
+					) : (
+						<div className="w-[100%]  px-2 py-3 mt-2 text-sm  L:mt-1 ">
+							<div className="border-0 h-[200px] border-b-2 border-[#d1d5da] border-solid">
+								<p> Nothing to preview</p>
+							</div>
+						</div>
+					)}
+
 					<div className="hidden L:flex justify-between items-center px-2 text-[#57606a]">
 						<a className="text-xs ">
 							<MarkdownIcon />
@@ -132,6 +161,8 @@ export default function CreateArea() {
 							text="Submit new Issue"
 							colorType="green"
 							width="150px"
+							disabled={titleValue === ""}
+							onClick={submitFunc}
 						/>
 					</div>
 				</section>
@@ -151,3 +182,19 @@ export default function CreateArea() {
 		</>
 	);
 }
+
+const iconList = [
+	{ icon: <QuoteIcon />, order: "order-4", hide: false },
+	{ icon: <CodeIcon />, order: "order-5", hide: false },
+	{ icon: <LinkIcon />, order: "order-6", hide: false },
+	{ icon: <MentionIcon />, order: "order-10", hide: false },
+	{ icon: <ImageIcon />, order: "order-0", hide: true },
+	{ icon: <CrossReferenceIcon />, order: "order-11", hide: false },
+	{ icon: <ReplyIcon />, order: "order-12", hide: false },
+	{ icon: <HeadingIcon />, order: "order-1", hide: false },
+	{ icon: <BoldIcon />, order: "order-2", hide: false },
+	{ icon: <ItalicIcon />, order: "order-3", hide: false },
+	{ icon: <ListUnorderedIcon />, order: "order-7", hide: false },
+	{ icon: <ListOrderedIcon />, order: "order-8", hide: false },
+	{ icon: <TasklistIcon />, order: "order-9", hide: false },
+];

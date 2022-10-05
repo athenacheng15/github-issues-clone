@@ -29,7 +29,10 @@ Default.args = {
 	title: "Issue Title",
 	labels: [{ id: 1, name: "label preview", color: "443ca2", description: "" }],
 	number: 1,
-	user: { login: "jennie" },
+	user: {
+		login: "jennie",
+		avatar_url: "https://avatars.githubusercontent.com/u/64196504?v=4",
+	},
 	assignees: [
 		{
 			login: "athenacheng15",

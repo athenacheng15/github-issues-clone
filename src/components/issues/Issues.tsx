@@ -1,5 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import type { RootState } from "../../app/store";
 import DoubleIconBtn from "../../commons/DoubleIconBtn";
 import NormalBtn from "../../commons/NormalBtn";
@@ -52,6 +53,7 @@ export default function Issues() {
 	const page = useSelector((state: RootState) => state.queries.page);
 
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const { data } = useGetIssuesQuery({
 		owner: "athenacheng15",
@@ -174,10 +176,20 @@ export default function Issues() {
 				</div>
 				<button>
 					<div className="L:hidden">
-						<NormalBtn text="New" width="64px" colorType="green" />
+						<NormalBtn
+							text="New"
+							width="64px"
+							colorType="green"
+							onClick={() => navigate("new")}
+						/>
 					</div>
 					<div className="hidden L:inline">
-						<NormalBtn text="New issue" width="100px" colorType="green" />
+						<NormalBtn
+							text="New issue"
+							width="100px"
+							colorType="green"
+							onClick={() => navigate("new")}
+						/>
 					</div>
 				</button>
 			</section>

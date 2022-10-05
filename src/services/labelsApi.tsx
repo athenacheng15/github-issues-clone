@@ -27,7 +27,7 @@ interface DeleteLabelParams {
 
 export const labelsApi = createApi({
 	reducerPath: "labelsApi",
-	tagTypes: ["Label", "Issues"],
+	tagTypes: ["Label", "Issues", "Issue"],
 	baseQuery: fetchBaseQuery({
 		baseUrl: "https://api.github.com/repos",
 	}),

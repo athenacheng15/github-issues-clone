@@ -3,19 +3,19 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
 import { useGetLabelsQuery } from "../../services/labelsApi";
-import { handleLabelQuery, cleanLabelQuery } from "../../app/issueSlice";
+import { handleLabels } from "../../app/newIssueSlice";
 
 interface LabelProps {
 	setPopLabelVis: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function PopLabel({ setPopLabelVis }: LabelProps) {
+	const currentContent = useSelector((state: RootState) => state.contents);
 	const { data } = useGetLabelsQuery({
 		owner: "athenacheng15",
 		repo: "issue_test",
 	});
 
-	const labels = useSelector((state: RootState) => state.queries.labels);
 	const dispatch = useDispatch();
 
 	const [inputText, setInputText] = useState("");
@@ -32,7 +32,7 @@ export default function PopLabel({ setPopLabelVis }: LabelProps) {
 								<strong>Apply labels to this issue</strong>
 							</p>
 							<button
-								className="cursor-pointer"
+								className="cursor-pointer L:invisible"
 								onClick={() => setPopLabelVis(false)}
 							>
 								<XIcon />
@@ -56,14 +56,15 @@ export default function PopLabel({ setPopLabelVis }: LabelProps) {
 									item.name.includes(inputText) ? "flex" : "hidden"
 								}  w-[100%] px-3 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid first:border-t-0 last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] L:py-2`}
 								onClick={() => {
-									dispatch(handleLabelQuery(item.name));
-									setInputText("");
+									dispatch(handleLabels(item.name));
 								}}
 							>
 								<div
-									className={`${
-										labels?.includes(item.name) ? "visible" : "invisible"
-									}`}
+									className={
+										currentContent.labels.includes(item.name)
+											? "block"
+											: "invisible"
+									}
 								>
 									<CheckIcon />
 								</div>
