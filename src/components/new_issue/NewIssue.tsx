@@ -3,12 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import type { RootState } from "../../app/store";
 import { useCreateIssueMutation } from "../../services/newIssueApi";
-import {
-	handleTitle,
-	handleBody,
-	handleLabels,
-	handleAssignees,
-} from "../../app/newIssueSlice";
+import { handleTitle, handleBody, resetAll } from "../../app/newIssueSlice";
 import CreateArea from "./CreateArea";
 import RightFuncBar from "./RightFuncBar";
 import NormalBtn from "../../commons/NormalBtn";
@@ -17,6 +12,7 @@ export default function NewIssue() {
 	const currentContent = useSelector((state: RootState) => state.contents);
 	const [createIssue] = useCreateIssueMutation();
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	function handleCreateIssue() {
 		createIssue({
@@ -24,6 +20,7 @@ export default function NewIssue() {
 			repo: "issue_test",
 			content: currentContent,
 		});
+		dispatch(resetAll());
 		navigate("/issues");
 	}
 

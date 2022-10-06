@@ -1,23 +1,20 @@
 import { XIcon, CheckIcon, PencilIcon } from "@primer/octicons-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import type { RootState } from "../../app/store";
-import { useGetLabelsQuery } from "../../services/labelsApi";
 import { handleLabels } from "../../app/newIssueSlice";
+import { RepoLabels } from "../../models/LabelsType";
 
 interface LabelProps {
 	setPopLabelVis: Dispatch<SetStateAction<boolean>>;
+	data?: RepoLabels[];
 }
 
-export default function PopLabel({ setPopLabelVis }: LabelProps) {
+export default function PopLabel({ setPopLabelVis, data }: LabelProps) {
 	const currentContent = useSelector((state: RootState) => state.contents);
-	const { data } = useGetLabelsQuery({
-		owner: "athenacheng15",
-		repo: "issue_test",
-	});
-
 	const dispatch = useDispatch();
-
+	const navigate = useNavigate();
 	const [inputText, setInputText] = useState("");
 
 	return (
@@ -79,7 +76,10 @@ export default function PopLabel({ setPopLabelVis }: LabelProps) {
 							</button>
 						))}
 					</div>
-					<button className="w-[100%] sticky bottom-0 flex px-8 py-4 font-normal text-[#57606a] border-0 border-t border-[#d1d5da] border-solid first:border-t-0 bg-white last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] L:py-2">
+					<button
+						className="w-[100%] sticky bottom-0 flex px-8 py-4 font-normal text-[#57606a] border-0 border-t border-[#d1d5da] border-solid first:border-t-0 bg-white last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] L:py-2"
+						onClick={() => navigate("/labels")}
+					>
 						<PencilIcon />
 						<p className="pl-2">Edit labels</p>
 					</button>

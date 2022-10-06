@@ -2,7 +2,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
-import Labels from "../components/labels/Labels";
 
 export interface NewIssueContent {
 	title: string;
@@ -42,9 +41,19 @@ const newIssueContentSlice = createSlice({
 				  })
 				: state.assignees.push(action.payload);
 		},
+		resetAssignees: (state) => {
+			state.assignees = [];
+		},
+		resetAll: () => initialState,
 	},
 });
 
-export const { handleTitle, handleBody, handleLabels, handleAssignees } =
-	newIssueContentSlice.actions;
+export const {
+	handleTitle,
+	handleBody,
+	handleLabels,
+	handleAssignees,
+	resetAssignees,
+	resetAll,
+} = newIssueContentSlice.actions;
 export default newIssueContentSlice.reducer;

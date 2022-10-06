@@ -1,25 +1,21 @@
 import { XIcon, CheckIcon } from "@primer/octicons-react";
 import { Dispatch, SetStateAction, useState } from "react";
-import { useGetAssigneeQuery } from "../../services/issuesApi";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
-import { handleAssignees } from "../../app/newIssueSlice";
-import User from "../../commons/User";
+import { handleAssignees, resetAssignees } from "../../app/newIssueSlice";
+import { UserDefaultData } from "../../models/IssuesType";
 
 interface AssigneeProps {
 	setPopAssigneeVis: Dispatch<SetStateAction<boolean>>;
+	data?: UserDefaultData[];
 }
 
-export default function PopAssignee({ setPopAssigneeVis }: AssigneeProps) {
+export default function PopAssignee({
+	setPopAssigneeVis,
+	data,
+}: AssigneeProps) {
 	const currentContent = useSelector((state: RootState) => state.contents);
-
-	const { data } = useGetAssigneeQuery({
-		owner: "athenacheng15",
-		repo: "issue_test",
-	});
-
 	const [inputText, setInputText] = useState("");
-
 	const dispatch = useDispatch();
 
 	return (
@@ -48,7 +44,10 @@ export default function PopAssignee({ setPopAssigneeVis }: AssigneeProps) {
 								onChange={(e) => setInputText(e.target.value)}
 							></input>
 						</div>
-						<button className="flex items-center w-[100%] px-3 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] L:py-2">
+						<button
+							className="flex items-center w-[100%] px-3 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] L:py-2"
+							onClick={() => dispatch(resetAssignees())}
+						>
 							<XIcon />
 							<p className="ml-1">Clear assignees</p>
 						</button>

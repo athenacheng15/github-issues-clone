@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
 import { GearIcon } from "@primer/octicons-react";
-import User from "../../commons/User";
 
 interface BarToolProp {
 	name: string;
@@ -13,7 +12,7 @@ interface BarToolProp {
 	onClick?: () => void;
 	link?: string;
 	href?: string;
-	content?: JSX.Element[];
+	content?: boolean | JSX.Element[];
 }
 
 export default function BarTool({
@@ -57,7 +56,10 @@ export default function BarTool({
 					<div className=" flex text-xs mt-1">
 						{defaultText}
 						{button && (
-							<button className="cursor-pointer text-[#57606a] hover:text-[#0969da]">
+							<button
+								className="cursor-pointer text-[#57606a] hover:text-[#0969da]"
+								onClick={onClick}
+							>
 								{button}
 							</button>
 						)}
@@ -71,7 +73,9 @@ export default function BarTool({
 						)}
 					</div>
 				)}
-				{content && <div className="flex flex-wrap">{content}</div>}
+				{content && (
+					<div className="flex flex-wrap space-y-2 items-end">{content}</div>
+				)}
 
 				{popOut && (
 					<div className={`${popVis ? "block" : "hidden"}`}>{popOut}</div>

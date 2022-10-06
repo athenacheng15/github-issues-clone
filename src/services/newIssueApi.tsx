@@ -26,7 +26,7 @@ export const newIssuesApi = labelsApi.injectEndpoints({
 					Accept: "application/vnd.github+json",
 				}),
 			}),
-			invalidatesTags: ["Issue"],
+			invalidatesTags: ["Issue", "Issues"],
 		}),
 	}),
 	overrideExisting: false,

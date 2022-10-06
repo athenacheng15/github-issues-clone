@@ -23,7 +23,7 @@ interface BtnProps {
 
 const LabelBtn = styled.button<BtnProps>`
 	width: auto;
-	height: auto;
+	height: ${(props) => (props.padding === "s" ? "20px" : "auto")};
 	font-size: 12px;
 	font-weight: 500;
 	border-radius: 12px;
