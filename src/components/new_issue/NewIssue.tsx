@@ -35,8 +35,6 @@ export default function NewIssue() {
 					></img>
 					<div className="w-[100%]">
 						<CreateArea
-							titleDefault={currentContent.title}
-							bodyDefault={currentContent.body}
 							handleTitle={handleTitle}
 							handleBody={handleBody}
 							submitFunc={handleCreateIssue}

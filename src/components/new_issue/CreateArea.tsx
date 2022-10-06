@@ -24,16 +24,12 @@ import {
 } from "@primer/octicons-react";
 
 interface CreateAreaProp {
-	titleDefault: string;
-	bodyDefault: string;
 	handleTitle: (value: string) => AnyAction;
 	handleBody: (value: string) => AnyAction;
 	submitFunc: () => void;
 }
 
 export default function CreateArea({
-	titleDefault,
-	bodyDefault,
 	handleTitle,
 	handleBody,
 	submitFunc,
@@ -45,8 +41,8 @@ export default function CreateArea({
 		{ name: "Preview", action: "" },
 	];
 
-	const [titleValue, setTitleValue] = useState<string>(titleDefault);
-	const [bodyValue, setBodyValue] = useState<string>(bodyDefault);
+	const [titleValue, setTitleValue] = useState<string>("");
+	const [bodyValue, setBodyValue] = useState<string>("");
 
 	const dispatch = useDispatch();
 
