@@ -29,12 +29,12 @@ export const labelsApi = createApi({
 	reducerPath: "labelsApi",
 	tagTypes: ["Label", "Issues", "Issue"],
 	baseQuery: fetchBaseQuery({
-		baseUrl: "https://api.github.com/repos",
+		baseUrl: "https://api.github.com",
 	}),
 	endpoints: (builder) => ({
 		getLabels: builder.query<RepoLabels[], GetLabelParams>({
 			query: ({ owner, repo }) => ({
-				url: `/${owner}/${repo}/labels`,
+				url: `/repos/${owner}/${repo}/labels`,
 				headers: new Headers({
 					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
 					Accept: "application/vnd.github+json",
@@ -44,7 +44,7 @@ export const labelsApi = createApi({
 		}),
 		createLabel: builder.mutation<void, CreateLabelParams>({
 			query: ({ owner, repo, label }) => ({
-				url: `/${owner}/${repo}/labels`,
+				url: `/repos/${owner}/${repo}/labels`,
 				method: "POST",
 				body: label,
 				headers: new Headers({
@@ -56,7 +56,7 @@ export const labelsApi = createApi({
 		}),
 		editLabel: builder.mutation<void, EditLabelParams>({
 			query: ({ owner, repo, name, label }) => ({
-				url: `/${owner}/${repo}/labels/${name}`,
+				url: `/repos/${owner}/${repo}/labels/${name}`,
 				method: "PATCH",
 				body: label,
 				headers: new Headers({
@@ -68,7 +68,7 @@ export const labelsApi = createApi({
 		}),
 		deleteLabels: builder.mutation<void, DeleteLabelParams>({
 			query: ({ owner, repo, name }) => ({
-				url: `/${owner}/${repo}/labels/${name}`,
+				url: `/repos/${owner}/${repo}/labels/${name}`,
 				method: "DELETE",
 				body: { owner, repo, name },
 				headers: new Headers({

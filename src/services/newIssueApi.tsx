@@ -18,7 +18,7 @@ export const newIssuesApi = labelsApi.injectEndpoints({
 	endpoints: (builder) => ({
 		createIssue: builder.mutation<DefaultRepoIssues[], CreateIssueParams>({
 			query: ({ owner, repo, content }) => ({
-				url: `/${owner}/${repo}/issues`,
+				url: `/repos/${owner}/${repo}/issues`,
 				method: "POST",
 				body: content,
 				headers: new Headers({

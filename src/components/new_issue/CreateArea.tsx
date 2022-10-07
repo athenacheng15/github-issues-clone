@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
+import TextareaMarkdown, {
+	TextareaMarkdownRef,
+} from "textarea-markdown-editor";
 import NormalBtn from "../../commons/NormalBtn";
 import {
 	TypographyIcon,
@@ -22,6 +25,10 @@ import {
 	MarkdownIcon,
 	InfoIcon,
 } from "@primer/octicons-react";
+import ReactMarkdown from "react-markdown";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { markdownStyle, commands } from "../../utils/markdownStyle";
 
 interface CreateAreaProp {
 	handleTitle: (value: string) => AnyAction;
@@ -43,8 +50,43 @@ export default function CreateArea({
 
 	const [titleValue, setTitleValue] = useState<string>("");
 	const [bodyValue, setBodyValue] = useState<string>("");
-
 	const dispatch = useDispatch();
+	const ref = useRef<TextareaMarkdownRef>(null);
+	const iconList = [
+		{
+			icon: <QuoteIcon />,
+			order: "order-4",
+			hide: false,
+			action: "block-quotes",
+		},
+		{ icon: <CodeIcon />, order: "order-5", hide: false, action: "code" },
+		{ icon: <LinkIcon />, order: "order-6", hide: false, action: "link" },
+		{ icon: <MentionIcon />, order: "order-10", hide: false, action: "" },
+		{ icon: <ImageIcon />, order: "order-0", hide: true, action: "image" },
+		{
+			icon: <CrossReferenceIcon />,
+			order: "order-11",
+			hide: false,
+			action: "",
+		},
+		{ icon: <ReplyIcon />, order: "order-12", hide: false, action: "" },
+		{ icon: <HeadingIcon />, order: "order-1", hide: false, action: "h3" },
+		{ icon: <BoldIcon />, order: "order-2", hide: false, action: "bold" },
+		{ icon: <ItalicIcon />, order: "order-3", hide: false, action: "italic" },
+		{
+			icon: <ListUnorderedIcon />,
+			order: "order-7",
+			hide: false,
+			action: "unordered-list",
+		},
+		{
+			icon: <ListOrderedIcon />,
+			order: "order-8",
+			hide: false,
+			action: "ordered-list",
+		},
+		{ icon: <TasklistIcon />, order: "order-9", hide: false, action: "" },
+	];
 
 	return (
 		<>
@@ -71,7 +113,9 @@ export default function CreateArea({
 										? "bg-[#ffffff] border-b-0 L:border L:border-[#d1d5da] L:border-solid L:shadow-[0_1px_0px_rgba(255,255,255,1)]"
 										: "L:border-0 L:last:border-l-0"
 								} `}
-								onClick={() => setInputStatus(item.name)}
+								onClick={() => {
+									setInputStatus(item.name);
+								}}
 							>
 								{item.name}
 							</button>
@@ -95,6 +139,7 @@ export default function CreateArea({
 									<button
 										key={item.order}
 										className="flex w-8 h-8 p-2 ml-1 cursor-pointer  hover:text-[#0969da]"
+										onClick={() => ref.current?.trigger(item.action)}
 									>
 										{item.icon}
 									</button>
@@ -108,6 +153,7 @@ export default function CreateArea({
 								<button
 									key={item.order}
 									className="flex w-8 h-8 p-2 ml-1 cursor-pointer text-[#57606a] hover:text-[#0969da]"
+									onClick={() => ref.current?.trigger(item.action)}
 								>
 									{item.icon}
 								</button>
@@ -119,6 +165,7 @@ export default function CreateArea({
 									key={item.order}
 									className={` flex items-center justify-center w-8 h-8 p-1 cursor-pointer text-[#57606a] hover:text-[#0969da] 
 								${item.order} ${item.hide && "hidden"}`}
+									onClick={() => ref.current?.trigger(item.action)}
 								>
 									{item.icon}
 								</button>
@@ -130,7 +177,7 @@ export default function CreateArea({
 				<section>
 					{inputStatus === "Write" ? (
 						<div className="L:mx-2 XL:mt-1">
-							<textarea
+							<TextareaMarkdown
 								className="w-[100%] h-[200px] px-2 py-3 mt-2 text-sm rounded-[6px] border border-[#d1d5da] border-solid bg-[#f6f8fa] placeholder:text-[#57606a] focus:border-[#0969da] focus:border-2 L:mt-1"
 								placeholder="Leave a comment"
 								value={bodyValue}
@@ -138,12 +185,46 @@ export default function CreateArea({
 									setBodyValue(e.target.value);
 								}}
 								onBlur={() => dispatch(handleBody(bodyValue))}
-							></textarea>
+								ref={ref}
+								commands={commands}
+							></TextareaMarkdown>
 						</div>
 					) : (
-						<div className="w-[100%]  px-2 py-3 mt-2 text-sm  L:mt-1 ">
-							<div className="border-0 h-[200px] border-b-2 border-[#d1d5da] border-solid">
-								<p> Nothing to preview</p>
+						<div className="w-[100%]  px-2 py-4 mt-2 text-sm  L:mt-1 ">
+							<div className="border-0 h-[auto] min-h-[200px] px-2 border-b-2 border-[#d1d5da] border-solid pb-10">
+								{bodyValue === "" ? (
+									"Nothing to preview"
+								) : (
+									<div className=" text-[#24292f] text-sm">
+										<ReactMarkdown
+											components={{
+												code({ node, inline, className, children, ...props }) {
+													const match = /language-(\w+)/.exec(className || "");
+													return !inline && match ? (
+														<SyntaxHighlighter
+															language={match[1]}
+															style={docco}
+															PreTag="div"
+															{...props}
+														>
+															{String(children).replace(/\n$/, "")}
+														</SyntaxHighlighter>
+													) : (
+														<code
+															className="text-xs bg-[rgba(175,184,193,0.2)] p-[2px] rounded-[4px]"
+															{...props}
+														>
+															{children}
+														</code>
+													);
+												},
+												...markdownStyle,
+											}}
+										>
+											{bodyValue.replace(/\n\r?/g, "\n\r")}
+										</ReactMarkdown>
+									</div>
+								)}
 							</div>
 						</div>
 					)}
@@ -178,19 +259,3 @@ export default function CreateArea({
 		</>
 	);
 }
-
-const iconList = [
-	{ icon: <QuoteIcon />, order: "order-4", hide: false },
-	{ icon: <CodeIcon />, order: "order-5", hide: false },
-	{ icon: <LinkIcon />, order: "order-6", hide: false },
-	{ icon: <MentionIcon />, order: "order-10", hide: false },
-	{ icon: <ImageIcon />, order: "order-0", hide: true },
-	{ icon: <CrossReferenceIcon />, order: "order-11", hide: false },
-	{ icon: <ReplyIcon />, order: "order-12", hide: false },
-	{ icon: <HeadingIcon />, order: "order-1", hide: false },
-	{ icon: <BoldIcon />, order: "order-2", hide: false },
-	{ icon: <ItalicIcon />, order: "order-3", hide: false },
-	{ icon: <ListUnorderedIcon />, order: "order-7", hide: false },
-	{ icon: <ListOrderedIcon />, order: "order-8", hide: false },
-	{ icon: <TasklistIcon />, order: "order-9", hide: false },
-];
