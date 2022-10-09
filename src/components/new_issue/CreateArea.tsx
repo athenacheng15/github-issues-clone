@@ -35,6 +35,79 @@ interface CreateAreaProp {
 	handleBody: (value: string) => AnyAction;
 	submitFunc: () => void;
 }
+const iconGorup1 = [
+	{
+		icon: <HeadingIcon />,
+		action: "h3",
+		description: "Add heading text",
+	},
+	{
+		icon: <BoldIcon />,
+		action: "bold",
+		description: "Add bold text, <Cmd+b>",
+	},
+	{
+		icon: <ItalicIcon />,
+		action: "italic",
+		description: "Add italic text, <Cmd+i>",
+	},
+];
+const iconGorup2 = [
+	{
+		icon: <QuoteIcon />,
+		action: "block-quotes",
+		description: "Add a quote, <Cmd+Shift+.>",
+	},
+	{
+		icon: <CodeIcon />,
+		action: "code",
+		description: "Add code, <Cmd+e>",
+	},
+	{
+		icon: <LinkIcon />,
+		action: "link",
+		description: "Add a link, <Cmd+k>",
+	},
+];
+const iconGorup3 = [
+	{
+		icon: <ListUnorderedIcon />,
+		action: "unordered-list",
+		description: "Add a bulleted list, <Cmd+Shift+8>",
+	},
+	{
+		icon: <ListOrderedIcon />,
+		action: "ordered-list",
+		description: "Add a numbered list, <Cmd+Shift+7>",
+	},
+	{
+		icon: <TasklistIcon />,
+		action: "",
+		description: "Add a task list, <Cmd+Shift+l>",
+	},
+];
+const iconGorup4 = [
+	{
+		icon: <MentionIcon />,
+		action: "",
+		description: "Directly mention a user or team",
+	},
+	{
+		icon: <ImageIcon />,
+		action: "image",
+		description: "Attach an image or video",
+	},
+	{
+		icon: <CrossReferenceIcon />,
+		action: "",
+		description: "Reference an issue, pull request, or discussion",
+	},
+	{
+		icon: <ReplyIcon />,
+		action: "",
+		description: "Add saved reply",
+	},
+];
 
 export default function CreateArea({
 	handleTitle,
@@ -52,41 +125,6 @@ export default function CreateArea({
 	const [bodyValue, setBodyValue] = useState<string>("");
 	const dispatch = useDispatch();
 	const ref = useRef<TextareaMarkdownRef>(null);
-	const iconList = [
-		{
-			icon: <QuoteIcon />,
-			order: "order-4",
-			hide: false,
-			action: "block-quotes",
-		},
-		{ icon: <CodeIcon />, order: "order-5", hide: false, action: "code" },
-		{ icon: <LinkIcon />, order: "order-6", hide: false, action: "link" },
-		{ icon: <MentionIcon />, order: "order-10", hide: false, action: "" },
-		{ icon: <ImageIcon />, order: "order-0", hide: true, action: "image" },
-		{
-			icon: <CrossReferenceIcon />,
-			order: "order-11",
-			hide: false,
-			action: "",
-		},
-		{ icon: <ReplyIcon />, order: "order-12", hide: false, action: "" },
-		{ icon: <HeadingIcon />, order: "order-1", hide: false, action: "h3" },
-		{ icon: <BoldIcon />, order: "order-2", hide: false, action: "bold" },
-		{ icon: <ItalicIcon />, order: "order-3", hide: false, action: "italic" },
-		{
-			icon: <ListUnorderedIcon />,
-			order: "order-7",
-			hide: false,
-			action: "unordered-list",
-		},
-		{
-			icon: <ListOrderedIcon />,
-			order: "order-8",
-			hide: false,
-			action: "ordered-list",
-		},
-		{ icon: <TasklistIcon />, order: "order-9", hide: false, action: "" },
-	];
 
 	return (
 		<>
@@ -111,7 +149,7 @@ export default function CreateArea({
 								className={` w-[50%] px-4 border border-[#d1d5da] border-solid bg-[#f6f8fa] last:border-l-0 cursor-pointer L:w-[auto] L:ml-2 L:bg-[#ffffff] L:last:border-l L:border-b-0 L:rounded-t-md ${
 									item.name === inputStatus
 										? "bg-[#ffffff] border-b-0 L:border L:border-[#d1d5da] L:border-solid L:shadow-[0_1px_0px_rgba(255,255,255,1)]"
-										: "L:border-0 L:last:border-l-0"
+										: "L:border-0 L:last:border-l-0 text-[#57606a] hover:text-black"
 								} `}
 								onClick={() => {
 									setInputStatus(item.name);
@@ -135,13 +173,17 @@ export default function CreateArea({
 								{bottomVis ? <ChevronDownIcon /> : <ChevronUpIcon />}
 							</button>
 							<div className="flex">
-								{iconList.slice(0, 7).map((item) => (
+								{[...iconGorup2, ...iconGorup4].map((item, index) => (
 									<button
-										key={item.order}
-										className="flex w-8 h-8 p-2 ml-1 cursor-pointer  hover:text-[#0969da]"
+										key={index}
+										className="group relative flex w-8 h-8 p-2 ml-1 cursor-pointer  hover:text-[#0969da]"
 										onClick={() => ref.current?.trigger(item.action)}
+										disabled={item.action === ""}
 									>
 										{item.icon}
+										<div className="absolute hidden right-0 bottom-[-40px] whitespace-nowrap items-center nowrap px-3 w-[auto] h-[30px] bg-[#24292f] text-white text-xs rounded-md group-hover:flex">
+											{item.description}
+										</div>
 									</button>
 								))}
 							</div>
@@ -149,27 +191,43 @@ export default function CreateArea({
 						<div
 							className={`flex px-2 ${bottomVis ? "block" : "hidden"} L:hidden`}
 						>
-							{iconList.slice(7, iconList.length).map((item) => (
+							{[...iconGorup1, ...iconGorup3].map((item, index) => (
 								<button
-									key={item.order}
-									className="flex w-8 h-8 p-2 ml-1 cursor-pointer text-[#57606a] hover:text-[#0969da]"
+									key={index}
+									className="group relative flex w-8 h-8 p-2 ml-1 cursor-pointer text-[#57606a] hover:text-[#0969da]"
 									onClick={() => ref.current?.trigger(item.action)}
+									disabled={item.action === ""}
 								>
 									{item.icon}
+									<div className="absolute hidden left-0 bottom-[-40px] whitespace-nowrap items-center nowrap px-3 w-[auto] h-[30px] bg-[#24292f] text-white text-xs rounded-md group-hover:flex">
+										{item.description}
+									</div>
 								</button>
 							))}
 						</div>
 						<div className="hidden L:flex L:ml-3">
-							{iconList.map((item) => (
-								<button
-									key={item.order}
-									className={` flex items-center justify-center w-8 h-8 p-1 cursor-pointer text-[#57606a] hover:text-[#0969da] 
-								${item.order} ${item.hide && "hidden"}`}
-									onClick={() => ref.current?.trigger(item.action)}
-								>
-									{item.icon}
-								</button>
-							))}
+							{[...iconGorup1, ...iconGorup2, ...iconGorup3, ...iconGorup4].map(
+								(item, index) => (
+									<button
+										key={index}
+										className={`group relative flex items-center justify-center w-8 h-8 p-1 cursor-pointer text-[#57606a] hover:text-[#0969da] 
+								 ${item.action === "image" && "hidden"}`}
+										onClick={() => ref.current?.trigger(item.action)}
+										disabled={item.action === ""}
+									>
+										{item.icon}
+										<div
+											className={`absolute hidden bottom-[-40px] whitespace-nowrap items-center nowrap px-3 w-[auto] h-[30px] bg-[#24292f] text-white text-xs rounded-md group-hover:flex ${
+												item.action === "h3" || item.action === "bold"
+													? "left-0"
+													: "right-0"
+											}`}
+										>
+											{item.description}
+										</div>
+									</button>
+								)
+							)}
 						</div>
 					</section>
 				</div>
@@ -178,7 +236,7 @@ export default function CreateArea({
 					{inputStatus === "Write" ? (
 						<div className="L:mx-2 XL:mt-1">
 							<TextareaMarkdown
-								className="w-[100%] h-[200px] px-2 py-3 mt-2 text-sm rounded-[6px] border border-[#d1d5da] border-solid bg-[#f6f8fa] placeholder:text-[#57606a] focus:border-[#0969da] focus:border-2 L:mt-1"
+								className="w-[100%] h-[200px] px-2 py-3 mt-2 text-sm rounded-[6px] border border-[#d1d5da] border-solid bg-[#f6f8fa] placeholder:text-[#57606a] focus:border-[#0969da] focus:border-2 focus:bg-[#ffffff] L:mt-1"
 								placeholder="Leave a comment"
 								value={bodyValue}
 								onChange={(e) => {

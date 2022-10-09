@@ -1,37 +1,67 @@
 import styled from "styled-components";
 import { SmileyIcon } from "@primer/octicons-react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { LoginState } from "../../app/userSlice";
+import { supabase } from "../../utils/client";
+import { resetLogin } from "../../app/userSlice";
 
 interface Props {
 	right: string;
 	top: string;
 	isShown: boolean;
+	user: LoginState;
 }
 
-export default function UserSelectList({ right, top, isShown }: Props) {
+export default function UserSelectList({ right, top, isShown, user }: Props) {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	async function signOut() {
+		await supabase.auth.signOut();
+		dispatch(resetLogin());
+	}
+
 	return (
-		<>
-			<Wrapper right={right} top={top} isShown={isShown}>
-				<ListBox>
-					<UserDataText>
-						Signed in as <strong>UserNameeee</strong>
-					</UserDataText>
-					<Line />
-					<StatusBtn>
-						<SmileyIcon /> Set status
-					</StatusBtn>
-					<Line />
-					{listitems1.map((item, index) => (
-						<LinkText key={index}>{item}</LinkText>
-					))}
-					<Line />
-					{listitems2.map((item, index) => (
-						<LinkText key={index}>{item}</LinkText>
-					))}
-					<Line />
-					<LinkText>Sign out</LinkText>
-				</ListBox>
-			</Wrapper>
-		</>
+		<Wrapper right={right} top={top} isShown={isShown}>
+			<ListBox>
+				<UserDataText>
+					{user.login ? (
+						<div>
+							Signed in as<strong> {user.login}</strong>
+						</div>
+					) : (
+						"Please Login"
+					)}
+				</UserDataText>
+				{user.login && (
+					<>
+						<Line />
+						<StatusBtn>
+							<SmileyIcon /> Set status
+						</StatusBtn>
+						<Line />
+						{listitems1.map((item, index) => (
+							<LinkText key={index}>{item}</LinkText>
+						))}
+						<Line />
+						{listitems2.map((item, index) => (
+							<LinkText key={index}>{item}</LinkText>
+						))}
+						<Line />
+
+						<LinkText
+							onClick={() => {
+								signOut();
+								navigate("/");
+							}}
+						>
+							Sign out
+						</LinkText>
+					</>
+				)}
+			</ListBox>
+		</Wrapper>
 	);
 }
 
@@ -47,9 +77,15 @@ const listitems1 = [
 
 const listitems2 = ["Upgrade", "Feature preview", "Help", "Settings"];
 
-const Wrapper = styled.div`
+interface WrapperProp {
+	right: string;
+	top: string;
+	isShown: boolean;
+}
+
+const Wrapper = styled.div<WrapperProp>`
 	position: absolute;
-	right: ${(props: Props) => props.right};
+	right: ${(props) => props.right};
 	top: ${(props) => props.top};
 	display: ${(props) => (props.isShown ? "initial" : "none")};
 	z-index: 1;

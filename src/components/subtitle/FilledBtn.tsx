@@ -6,6 +6,7 @@ interface BtnProps {
 	num?: number;
 	dotDisplay?: boolean;
 	isActive: boolean;
+	onClick?: () => void;
 }
 
 export default function FilledBtn({
@@ -14,11 +15,12 @@ export default function FilledBtn({
 	num,
 	dotDisplay,
 	isActive,
+	onClick,
 }: BtnProps) {
 	return (
 		<>
 			<Wrapper isActive={isActive}>
-				<FilledButton isActive={isActive}>
+				<FilledButton isActive={isActive} onClick={onClick}>
 					<IconWrapper>{icon}</IconWrapper>
 					<div>{btnText}</div>
 					<Dot dotDisplay={dotDisplay}>{num}</Dot>

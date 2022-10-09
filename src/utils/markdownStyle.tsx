@@ -44,4 +44,7 @@ export const markdownStyle = {
 	a: ({ node, ...props }) => (
 		<a className="text-[#0969da] hover:underline" {...props} />
 	),
+	ul: ({ node, ...props }) => <ul className="pl-4 mt-4" {...props} />,
+	ol: ({ node, ...props }) => <ol className="pl-4 mt-4" {...props} />,
+	li: ({ node, ...props }) => <li className="mt-1" {...props} />,
 };

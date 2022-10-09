@@ -30,10 +30,12 @@ button {
 }
 
 /* Remove list styles (bullets/numbers) */
-ol,
 ul,
 menu {
-	list-style: none;
+	list-style: initial;
+}
+ol{
+	list-style: decimal;
 }
 
 /* For images to not be able to exceed their container */

@@ -1,5 +1,8 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, Dispatch, SetStateAction } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../../app/store";
+import { useNavigate } from "react-router-dom";
 import {
 	MarkGithubIcon,
 	TriangleDownIcon,
@@ -11,7 +14,6 @@ import {
 import SearchBar from "./SearchBar";
 import SelectList from "../../commons/SelectList";
 import UserSelectList from "./UserSelectList";
-import { supabase } from "../../utils/client";
 
 interface Props {
 	isShown: boolean;
@@ -21,6 +23,9 @@ export default function Header() {
 	const [mobileState, setMobileState] = useState(false);
 	const [plusBtnState, setPlusBtnState] = useState(false);
 	const [userBtnState, setUserBtnState] = useState(false);
+	const user = useSelector((state: RootState) => state.login);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	return (
 		<>
@@ -61,9 +66,16 @@ export default function Header() {
 							setPlusBtnState(false);
 						}}
 					>
-						<UserImage />
+						<UserImage>
+							<Avatar src={user.avatar_url} />
+						</UserImage>
 						<TriangleBtn fill="#FFFFFF" size="small" />
-						<UserSelectList right="35px" top="48px" isShown={userBtnState} />
+						<UserSelectList
+							right="35px"
+							top="48px"
+							isShown={userBtnState}
+							user={user}
+						/>
 					</ArrowList>
 				</HeaderBox>
 			</Wapper>
@@ -227,10 +239,17 @@ const TriangleBtn = styled(TriangleDownIcon)`
 
 const UserImage = styled.div`
 	position: relative;
+	display: flex;
+	align-items: center;
 	width: 20px;
 	height: 20px;
 	border-radius: 100%;
 	background-color: azure;
+`;
+
+const Avatar = styled.img`
+	display: ${(props) => (props.src === "" ? "none" : "initial")};
+	border-radius: 100%;
 `;
 
 const MoboleHeaderBox = styled.div`

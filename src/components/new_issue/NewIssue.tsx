@@ -15,6 +15,7 @@ export default function NewIssue() {
 	const dispatch = useDispatch();
 
 	function handleCreateIssue() {
+		dispatch(handleBody(currentContent.body.replace(/\n\r?/g, "\n\r")));
 		createIssue({
 			owner: "athenacheng15",
 			repo: "issue_test",

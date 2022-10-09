@@ -1,7 +1,9 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import SingleOutlineBtn from "./SingleOutlineBtn";
 import DoubleOutlineBtn from "./DoubleOutlineBtn";
 import FilledBtn from "./FilledBtn";
+import { useGetIssuesQuery } from "../../services/issuesApi";
 import {
 	RepoIcon,
 	PinIcon,
@@ -20,6 +22,30 @@ import {
 } from "@primer/octicons-react";
 
 export default function SubTitle() {
+	const navigate = useNavigate();
+	const { data } = useGetIssuesQuery({
+		owner: "athenacheng15",
+		repo: "issue_test",
+		query: {},
+	});
+	const fillBtnList = [
+		{ icon: <CodeIcon fill="#57606a" />, text: "Code" },
+		{
+			icon: <IssueOpenedIcon fill="#57606a" />,
+			text: "Issues",
+			dotDisplay: true,
+			num: data?.length,
+			action: () => navigate("/issues"),
+		},
+		{ icon: <GitPullRequestIcon fill="#57606a" />, text: "Pull requests" },
+		{ icon: <PlayIcon fill="#57606a" />, text: "Actions" },
+		{ icon: <TableIcon fill="#57606a" />, text: "Projects" },
+		{ icon: <BookIcon fill="#57606a" />, text: "Wiki" },
+		{ icon: <ShieldIcon fill="#57606a" />, text: "Security" },
+		{ icon: <GraphIcon fill="#57606a" />, text: "Insights" },
+		{ icon: <GearIcon fill="#57606a" />, text: "Settings" },
+	];
+
 	return (
 		<>
 			<Wrapper>
@@ -66,6 +92,7 @@ export default function SubTitle() {
 							dotDisplay={item.dotDisplay}
 							num={item.num}
 							isActive={item.text === "Issues"}
+							onClick={item.action}
 						/>
 					))}
 				</ButtomBox>
@@ -73,23 +100,6 @@ export default function SubTitle() {
 		</>
 	);
 }
-
-const fillBtnList = [
-	{ icon: <CodeIcon fill="#57606a" />, text: "Code" },
-	{
-		icon: <IssueOpenedIcon fill="#57606a" />,
-		text: "Issues",
-		dotDisplay: true,
-		num: 1,
-	},
-	{ icon: <GitPullRequestIcon fill="#57606a" />, text: "Pull requests" },
-	{ icon: <PlayIcon fill="#57606a" />, text: "Actions" },
-	{ icon: <TableIcon fill="#57606a" />, text: "Projects" },
-	{ icon: <BookIcon fill="#57606a" />, text: "Wiki" },
-	{ icon: <ShieldIcon fill="#57606a" />, text: "Security" },
-	{ icon: <GraphIcon fill="#57606a" />, text: "Insights" },
-	{ icon: <GearIcon fill="#57606a" />, text: "Settings" },
-];
 
 const Wrapper = styled.div`
 	position: relative;
