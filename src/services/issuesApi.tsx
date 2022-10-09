@@ -2,8 +2,8 @@ import { DefaultRepoIssues, UserDefaultData } from "../models/IssuesType";
 import { labelsApi } from "./labelsApi";
 
 interface GetIssuesParams {
-	owner: string;
-	repo: string;
+	owner: string | null;
+	repo: string | null;
 	query: IssueQueryStringState;
 }
 

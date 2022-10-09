@@ -10,6 +10,7 @@ import NormalBtn from "../../commons/NormalBtn";
 
 export default function NewIssue() {
 	const currentContent = useSelector((state: RootState) => state.contents);
+	const loginUser = useSelector((state: RootState) => state.login);
 	const [createIssue] = useCreateIssueMutation();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -17,8 +18,8 @@ export default function NewIssue() {
 	function handleCreateIssue() {
 		dispatch(handleBody(currentContent.body.replace(/\n\r?/g, "\n\r")));
 		createIssue({
-			owner: "athenacheng15",
-			repo: "issue_test",
+			owner: loginUser.login,
+			repo: localStorage.getItem("repo"),
 			content: currentContent,
 		});
 		dispatch(resetAll());

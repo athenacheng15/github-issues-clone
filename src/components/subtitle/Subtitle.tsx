@@ -20,9 +20,12 @@ import {
 	GraphIcon,
 	GearIcon,
 } from "@primer/octicons-react";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
 
 export default function SubTitle() {
 	const navigate = useNavigate();
+	const loginUser = useSelector((state: RootState) => state.login);
 	const { data } = useGetIssuesQuery({
 		owner: "athenacheng15",
 		repo: "issue_test",
@@ -52,9 +55,15 @@ export default function SubTitle() {
 				<UpperBox>
 					<TitleBox>
 						<RepoIcon size={16} fill="rgb(87, 96, 106)" />
-						<UserName>user_name</UserName>
+						<UserName>
+							{loginUser.login ? loginUser.login : "User Name"}
+						</UserName>
 						<span>/</span>
-						<RepoName>repo_name</RepoName>
+						<RepoName>
+							{localStorage.getItem("repo")
+								? localStorage.getItem("repo")
+								: "Repo Name"}
+						</RepoName>
 						<LabelBtn>Public</LabelBtn>
 					</TitleBox>
 					<OutLineBtnBox>

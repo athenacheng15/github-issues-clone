@@ -43,6 +43,7 @@ const loginSlice = createSlice({
 		resetLogin: (state) => {
 			state.login = "";
 			state.avatar_url = "";
+			localStorage.setItem("repo", "");
 		},
 	},
 });

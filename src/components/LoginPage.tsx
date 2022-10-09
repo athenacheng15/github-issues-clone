@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { useEffect } from "react";
 import { supabase } from "../utils/client";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../app/store";
+import { useGetReposQuery } from "../services/reposApi";
 import {
 	setLogin,
 	setAvatar,
@@ -38,13 +39,40 @@ export default function LoginPage() {
 		await dispatch(resetLogin());
 	}
 
+	const { data } = useGetReposQuery({
+		username: loginUser.login,
+	});
+
 	console.log(loginUser);
+	console.log(data);
 
 	if (loginUser.login) {
 		return (
 			<>
-				<UserText>Hello {loginUser.login}</UserText>
-				<UserImage src={loginUser.avatar_url}></UserImage>
+				<LoginWrapper>
+					<RepoBox>
+						<UserData>
+							<UserImage src={loginUser.avatar_url}></UserImage>
+							<UserText>
+								<strong>{loginUser.login}</strong>
+							</UserText>
+							<UserText>Please Select a repo</UserText>
+						</UserData>
+						<ItemBox>
+							{data?.map((repo) => (
+								<RepoItem
+									key={repo.id}
+									onClick={() => {
+										localStorage.setItem("repo", repo.name);
+										navigate("/issues");
+									}}
+								>
+									{repo.name}
+								</RepoItem>
+							))}
+						</ItemBox>
+					</RepoBox>
+				</LoginWrapper>
 				<Login onClick={signOut}>Sign out</Login>
 			</>
 		);
@@ -63,17 +91,60 @@ export default function LoginPage() {
 	);
 }
 
+const RepoBox = styled.div`
+	width: 300px;
+	height: 400px;
+	border: 2px solid #24292f;
+	border-radius: 24px;
+	margin-top: 24px;
+	margin-bottom: 24px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 12px;
+`;
+
+const UserData = styled.div`
+	width: auto;
+	height: auto;
+`;
+
 const UserImage = styled.img`
-	width: 180px;
-	height: 180px;
-	margin-left: 50px;
-	border-radius: 25px;
+	width: 60px;
+	height: 60px;
+	border-radius: 100%;
+	margin: auto;
 `;
 
 const UserText = styled.p`
-	margin-top: 200px;
-	font-size: 20px;
-	margin-left: 50px;
+	width: 100%;
+	font-size: 14px;
+	text-align: center;
+`;
+
+const ItemBox = styled.div`
+	width: auto;
+	height: 250px;
+	overflow-y: scroll;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+`;
+
+const RepoItem = styled.button`
+	width: 220px;
+	height: 50px;
+	background-color: #eee;
+	border-radius: 6px;
+	margin-top: 6px;
+	text-align: center;
+	font-size: 16px;
+	font-weight: 600;
+	cursor: pointer;
+	:hover {
+		color: #fff;
+		background-color: #24292f;
+	}
 `;
 
 const LoginWrapper = styled.div`
@@ -81,7 +152,9 @@ const LoginWrapper = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 200px;
+	flex-wrap: wrap;
+	height: auto;
+	min-height: 250px;
 `;
 
 const Login = styled.button`
@@ -96,6 +169,7 @@ const Login = styled.button`
 	border-radius: 10px;
 	display: flex;
 	align-items: center;
+	margin: auto;
 	:hover {
 		color: white;
 		background-color: #27292f;

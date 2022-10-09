@@ -2,8 +2,8 @@ import { DefaultRepoIssues } from "../models/IssuesType";
 import { labelsApi } from "./labelsApi";
 
 interface CreateIssueParams {
-	owner: string;
-	repo: string;
+	owner: string | null;
+	repo: string | null;
 	content: ContentState;
 }
 

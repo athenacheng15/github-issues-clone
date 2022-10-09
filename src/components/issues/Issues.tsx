@@ -1,6 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import type { RootState } from "../../app/store";
 import DoubleIconBtn from "../../commons/DoubleIconBtn";
 import NormalBtn from "../../commons/NormalBtn";
@@ -43,6 +43,7 @@ export default function Issues() {
 	const [inputValue, setInputValue] = useState("");
 
 	const currentState = useSelector((state: RootState) => state.queries);
+	const loginUser = useSelector((state: RootState) => state.login);
 	const issueStatus = useSelector(
 		(state: RootState) => state.queries.issueStatus
 	);
@@ -56,8 +57,8 @@ export default function Issues() {
 	const navigate = useNavigate();
 
 	const { data } = useGetIssuesQuery({
-		owner: "athenacheng15",
-		repo: "issue_test",
+		owner: loginUser.login,
+		repo: localStorage.getItem("repo"),
 		query: {
 			issueStatus: issueStatus ? `state=${issueStatus}&` : "",
 			labels: labels?.length !== 0 ? `labels=${labels?.join()}&` : "",
@@ -69,8 +70,8 @@ export default function Issues() {
 	});
 
 	const { data: labelData } = useGetLabelsQuery({
-		owner: "athenacheng15",
-		repo: "issue_test",
+		owner: loginUser.login,
+		repo: localStorage.getItem("repo"),
 	});
 
 	function handleInputText() {
