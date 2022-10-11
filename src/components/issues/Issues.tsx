@@ -1,6 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import type { RootState } from "../../app/store";
 import DoubleIconBtn from "../../commons/DoubleIconBtn";
 import NormalBtn from "../../commons/NormalBtn";
@@ -120,8 +120,6 @@ export default function Issues() {
 			filters === ""
 		);
 	}
-
-	console.log(data);
 
 	const filtersList = [
 		{

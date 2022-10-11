@@ -43,9 +43,6 @@ export default function LoginPage() {
 		username: loginUser.login,
 	});
 
-	console.log(loginUser);
-	console.log(data);
-
 	if (loginUser.login) {
 		return (
 			<>
