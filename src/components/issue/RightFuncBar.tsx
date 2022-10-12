@@ -8,6 +8,13 @@ import PopAssignee from "../../commons/PopAssignee";
 import PopLabel from "../../commons/PopLabel";
 import BarTool from "../../commons/BarTool";
 import Label from "../labels/Label";
+import {
+	BellSlashIcon,
+	LockIcon,
+	PinIcon,
+	ArrowRightIcon,
+	TrashIcon,
+} from "@primer/octicons-react";
 
 export default function RightFuncBar() {
 	const [popAssigneeVis, setPopAssigneeVis] = useState(false);
@@ -91,17 +98,18 @@ export default function RightFuncBar() {
 			defaultText: "Shows branches and pull requests linked to this issue.",
 			setting: false,
 		},
-		{
-			name: "Helpful resources",
-			defaultText: "",
-			link: "GitHub Community Guidelines",
-			href: "https://docs.github.com/en/site-policy/github-terms/github-community-guidelines",
-			setting: false,
-		},
 	];
+
+	const IconList = [
+		{ icon: <LockIcon />, name: "Lock conversation" },
+		{ icon: <PinIcon />, name: "Pin issue" },
+		{ icon: <ArrowRightIcon />, name: "Transfer issue" },
+		{ icon: <TrashIcon />, name: "Delete issue" },
+	];
+
 	return (
 		<>
-			<div className="L:w-[240px] XL:w-[256px] h-[500px]">
+			<div className="L:w-[240px] XL:w-[256px]">
 				{itemList.map((item, index) => (
 					<BarTool
 						key={index}
@@ -112,12 +120,53 @@ export default function RightFuncBar() {
 						setting={item.setting}
 						defaultText={item.defaultText}
 						button={item.button}
-						link={item.link}
-						href={item.href}
 						content={item.content}
 						onClick={item.onClick}
 					/>
 				))}
+				<div className="relative w-[100%] h-[auto] min-h-[80px] py-4 border-0 border-b border-[#d1d5da] border-solid text-xs text-[#57606a]">
+					<button className="flex w-[100%] justify-between items-center  cursor-pointer group ">
+						<p className=" font-medium group-hover:text-[#0969da">
+							Notifications
+						</p>
+						<div className={`group-hover:text-[#0969da]`}>Customize</div>
+					</button>
+					<button className="flex justify-center items-center my-2 w-[100%] h-[30px] border border-[#d1d5da] border-solid rounded-md font-bold text-[#24292f] bg-[#f6f8fa]">
+						<BellSlashIcon fill="#57606a" />
+						<p className="ml-2">Unsubcribe</p>
+					</button>
+					<p>
+						You’re receiving notifications because you’re watching this
+						repository.
+					</p>
+				</div>
+				<div className="relative w-[100%] h-[auto] min-h-[80px] py-4 border-0 border-b border-[#d1d5da] border-solid text-xs text-[#57606a]">
+					<button className="flex w-[100%] justify-between items-center  cursor-pointer group ">
+						<p className=" font-medium group-hover:text-[#0969da]">
+							{assigneesData?.length} participants
+						</p>
+					</button>
+					<div className="flex mt-2">
+						{assigneesData?.map((item) => (
+							<img
+								key={item.login}
+								className="w-7 h-7 mr-1 rounded-[100%]"
+								src={item.avatar_url}
+							/>
+						))}
+					</div>
+				</div>
+				<div className="relative w-[100%] h-[auto] min-h-[80px] py-4 border-0  border-[#d1d5da] border-solid text-xs text-[#57606a]">
+					{IconList.map((item, index) => (
+						<button
+							key={index}
+							className="flex w-[100%] mb-4 text-[#24292f] font-bold cursor-pointer hover:text-[#0969da]"
+						>
+							{item.icon}
+							<p className="ml-2">{item.name}</p>
+						</button>
+					))}
+				</div>
 			</div>
 		</>
 	);

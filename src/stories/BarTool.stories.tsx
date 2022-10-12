@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import BarTool from "../components/new_issue/BarTool";
+import BarTool from "../commons/BarTool";
 
 export default {
 	title: "BarTool",

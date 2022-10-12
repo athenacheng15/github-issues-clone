@@ -10,6 +10,7 @@ import LoginPage from "./components/LoginPage";
 import Labels from "./components/labels/Labels";
 import Issues from "./components/issues/Issues";
 import NewIssue from "./components/new_issue/NewIssue";
+import Issue from "./components/issue/Issue";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement
@@ -22,6 +23,7 @@ root.render(
 					<Route index element={<LoginPage />} />
 					<Route path="issues" element={<Issues />} />
 					<Route path="issues/new" element={<NewIssue />} />
+					<Route path="issues/:id" element={<Issue />} />
 					<Route path="labels" element={<Labels />} />
 					{/* <Route path="*" element={<Navigate to="/" replace />} /> */}
 				</Route>

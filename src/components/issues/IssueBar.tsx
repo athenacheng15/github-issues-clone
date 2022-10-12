@@ -7,6 +7,7 @@ import {
 import { RepoLabels } from "../../models/LabelsType";
 import { UserDefaultData } from "../../models/IssuesType";
 import Label from "../labels/Label";
+import { useNavigate } from "react-router-dom";
 import { timeCalc, timeCalc2 } from "../../utils/utils";
 
 interface IssueBarProp {
@@ -34,6 +35,7 @@ export default function IssueBar({
 	time,
 	body,
 }: IssueBarProp) {
+	const navigate = useNavigate();
 	return (
 		<>
 			<div className="flex px-4 py-2 border-0 border-b border-[#d1d5da] border-solid last:rounded-b-[6px] hover:bg-[#f6f8fa] M:last:border-b-0">
@@ -58,10 +60,9 @@ export default function IssueBar({
 						<div className="hidden group-hover:block absolute p-4 w-[340px] h-[auto] border border-[#d1d5da] border-solid rounded-[6px] bg-white bottom-12">
 							<div className="flex text-xs text-[#57606a]">
 								<p>
-									{" "}
 									<span className="underline hover:text-[#0969da]">
 										athenacheng15/issue_test
-									</span>{" "}
+									</span>
 									on {timeCalc2(time)}
 								</p>
 							</div>
@@ -100,7 +101,11 @@ export default function IssueBar({
 								))}
 							</div>
 						</div>
-						<strong className="hover:text-[#0969da]">{title}</strong>
+						<button onClick={() => navigate(`/issues/${number}`)}>
+							<strong className="hover:text-[#0969da] cursor-pointer">
+								{title}
+							</strong>
+						</button>
 					</button>
 
 					<div className="mb-1 L:ml-2">

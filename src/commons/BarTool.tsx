@@ -53,7 +53,7 @@ export default function BarTool({
 					</div>
 				</button>
 				{!content && (
-					<div className=" flex text-xs mt-1">
+					<div className=" flex text-xs mt-1 text-[#24292f]">
 						{defaultText}
 						{button && (
 							<button
