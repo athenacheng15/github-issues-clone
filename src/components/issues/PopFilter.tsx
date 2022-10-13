@@ -2,7 +2,7 @@ import { XIcon, CheckIcon } from "@primer/octicons-react";
 import { Dispatch, SetStateAction } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
-import { handleFilters, resetQuery } from "../../app/issueSlice";
+import { handleFilters, resetQuery } from "../../app/issuesSlice";
 
 const itemList = [
 	{ name: "Your issues", query: "creator=" },

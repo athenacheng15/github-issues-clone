@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
 
-import { handleSort } from "../../app/issueSlice";
+import { handleSort } from "../../app/issuesSlice";
 
 const itemList = [
 	{ name: "Newest", query: "created" },

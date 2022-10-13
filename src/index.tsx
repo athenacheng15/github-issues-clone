@@ -23,7 +23,7 @@ root.render(
 					<Route index element={<LoginPage />} />
 					<Route path="issues" element={<Issues />} />
 					<Route path="issues/new" element={<NewIssue />} />
-					<Route path="issues/:id" element={<Issue />} />
+					<Route path="issues/:number" element={<Issue />} />
 					<Route path="labels" element={<Labels />} />
 					{/* <Route path="*" element={<Navigate to="/" replace />} /> */}
 				</Route>

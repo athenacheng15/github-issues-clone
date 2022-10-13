@@ -1,7 +1,12 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import NormalBtn from "../../commons/NormalBtn";
 
-export default function IssueTitle() {
+interface IssueTitleProp {
+	title?: string;
+	number?: number;
+}
+
+export default function IssueTitle({ title, number }: IssueTitleProp) {
 	const [mode, setMode] = useState("view");
 	return (
 		<>
@@ -28,8 +33,8 @@ export default function IssueTitle() {
 						</a>
 					</div>
 					<div className="flex items-center space-x-2 order-1 text-[26px] L:text-[32px]">
-						<p className="">失礼だな－純愛だよ~~</p>
-						<p className="text-[#57606a]">#18</p>
+						<p className="">{title}</p>
+						<p className="text-[#57606a]">#{number}</p>
 					</div>
 				</div>
 			) : (

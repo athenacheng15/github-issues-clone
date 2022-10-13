@@ -13,6 +13,7 @@ interface BarToolProp {
 	link?: string;
 	href?: string;
 	content?: boolean | JSX.Element[];
+	dataManager?: any;
 }
 
 export default function BarTool({
@@ -27,6 +28,7 @@ export default function BarTool({
 	link,
 	href,
 	content,
+	dataManager,
 }: BarToolProp) {
 	return (
 		<>
@@ -35,6 +37,7 @@ export default function BarTool({
 					className="flex w-[100%] justify-between items-center cursor-pointer group text-[#57606a]"
 					onClick={() => {
 						setPopVis && setPopVis(!popVis);
+						dataManager && dataManager();
 					}}
 				>
 					<p

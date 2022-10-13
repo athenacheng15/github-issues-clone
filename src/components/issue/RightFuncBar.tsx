@@ -4,8 +4,8 @@ import { useGetLabelsQuery } from "../../services/labelsApi";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
 import { handleAssignees } from "../../app/newIssueSlice";
-import PopAssignee from "../../commons/PopAssignee";
-import PopLabel from "../../commons/PopLabel";
+import PopAssignee from "./popAssignee";
+import PopLabel from "./popLabel";
 import BarTool from "../../commons/BarTool";
 import Label from "../labels/Label";
 import {
@@ -15,54 +15,62 @@ import {
 	ArrowRightIcon,
 	TrashIcon,
 } from "@primer/octicons-react";
+import { RepoLabels } from "../../models/LabelsType";
+import { UserDefaultData } from "../../models/IssuesType";
+import { useParams } from "react-router-dom";
+import {
+	useUpdateLabelMutation,
+	useUpdateAssigneeMutation,
+} from "../../services/issueApi";
 
-export default function RightFuncBar() {
+interface RightFuncBarProps {
+	labelsData?: RepoLabels[];
+	assigneesData?: UserDefaultData[];
+}
+
+export default function RightFuncBar({
+	labelsData,
+	assigneesData,
+}: RightFuncBarProps) {
 	const [popAssigneeVis, setPopAssigneeVis] = useState(false);
 	const [popLabelVis, setPopLabelVis] = useState(false);
-	const currentContent = useSelector((state: RootState) => state.contents);
+	const currentContent = useSelector((state: RootState) => state.issue);
 	const dispatch = useDispatch();
+	const { number } = useParams();
+	const [updateLabel] = useUpdateLabelMutation();
+	const [updateAssignee] = useUpdateAssigneeMutation();
 
-	const { data: assigneesData } = useGetAssigneeQuery({
+	const { data: repoAssignees } = useGetAssigneeQuery({
 		owner: "athenacheng15",
 		repo: "issue_test",
 	});
 
-	const { data: labelsData } = useGetLabelsQuery({
+	const { data: repoLabels } = useGetLabelsQuery({
 		owner: "athenacheng15",
 		repo: "issue_test",
 	});
 
 	function assignedList() {
-		const assignees = assigneesData?.filter((item) =>
-			currentContent.assignees.includes(item.login)
+		const assignees = repoAssignees?.filter((item) =>
+			assigneesData?.map((assignee) => assignee.login).includes(item.login)
 		);
-		return (
-			currentContent.assignees.length !== 0 &&
-			assignees?.map((item) => (
-				<AssignedUser
-					key={item.login}
-					name={item.login}
-					img={item.avatar_url}
-				/>
-			))
-		);
+		return assignees?.map((item) => (
+			<AssignedUser key={item.login} name={item.login} img={item.avatar_url} />
+		));
 	}
 
 	function labeledList() {
-		const labels = labelsData?.filter((item) =>
-			currentContent.labels.includes(item.name)
+		const labels = repoLabels?.filter((item) =>
+			labelsData?.map((label) => label.name).includes(item.name)
 		);
-		return (
-			currentContent.labels.length !== 0 &&
-			labels?.map((item) => (
-				<Label
-					key={item.name}
-					labelText={item.name}
-					bgColor={item.color}
-					padding="s"
-				/>
-			))
-		);
+		return labels?.map((item) => (
+			<Label
+				key={item.name}
+				labelText={item.name}
+				bgColor={item.color}
+				padding="s"
+			/>
+		));
 	}
 
 	const itemList = [
@@ -73,7 +81,8 @@ export default function RightFuncBar() {
 			popOut: (
 				<PopAssignee
 					setPopAssigneeVis={setPopAssigneeVis}
-					data={assigneesData}
+					repoAssignees={repoAssignees}
+					assigneesData={assigneesData}
 				/>
 			),
 			defaultText: "no one-",
@@ -81,15 +90,35 @@ export default function RightFuncBar() {
 			onClick: () => dispatch(handleAssignees("athenacheng15")),
 			setting: true,
 			content: assignedList(),
+			dataManager: () =>
+				updateAssignee({
+					owner: "athenacheng15",
+					repo: "issue_test",
+					number: number,
+					assignees: currentContent.assignees,
+				}),
 		},
 		{
 			name: "Labels",
 			popVis: popLabelVis,
 			setPopVis: setPopLabelVis,
-			popOut: <PopLabel setPopLabelVis={setPopLabelVis} data={labelsData} />,
+			popOut: (
+				<PopLabel
+					setPopLabelVis={setPopLabelVis}
+					repoLabels={repoLabels}
+					labelsData={labelsData}
+				/>
+			),
 			defaultText: "None-yet",
 			setting: true,
 			content: labeledList(),
+			dataManager: () =>
+				updateLabel({
+					owner: "athenacheng15",
+					repo: "issue_test",
+					number: number,
+					labels: currentContent.labels,
+				}),
 		},
 		{ name: "Projects", defaultText: "None-yet", setting: true },
 		{ name: "Milestone", defaultText: "No milestone", setting: true },
@@ -122,6 +151,7 @@ export default function RightFuncBar() {
 						button={item.button}
 						content={item.content}
 						onClick={item.onClick}
+						dataManager={item.dataManager}
 					/>
 				))}
 				<div className="relative w-[100%] h-[auto] min-h-[80px] py-4 border-0 border-b border-[#d1d5da] border-solid text-xs text-[#57606a]">

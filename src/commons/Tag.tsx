@@ -2,19 +2,20 @@ import styled from "styled-components";
 
 interface TagProp {
 	text: string;
-	owner: boolean;
+	display?: boolean;
+	self?: boolean;
 }
 
-export default function Tag({ text, owner }: TagProp) {
+export default function Tag({ text, display, self }: TagProp) {
 	return (
-		<>
-			<TagBtn owner={owner}>{text}</TagBtn>
-		</>
+		<div className={`${display ? "block" : "hidden"}`}>
+			<TagBtn self={self}>{text}</TagBtn>
+		</div>
 	);
 }
 
 interface BtnProps {
-	owner: boolean;
+	self?: boolean;
 }
 
 const TagBtn = styled.button<BtnProps>`
@@ -29,5 +30,5 @@ const TagBtn = styled.button<BtnProps>`
 	padding: 1px 8px;
 	text-align: center;
 	color: #57606a;
-	border: solid 1px ${(props) => (props.owner ? " #54aeff66" : "#d1d5da")};
+	border: solid 1px ${(props) => (props.self ? " #54aeff66" : "#d1d5da")};
 `;

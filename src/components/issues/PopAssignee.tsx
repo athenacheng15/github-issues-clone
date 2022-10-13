@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useGetAssigneeQuery } from "../../services/issuesApi";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
-import { handleAssignee } from "../../app/issueSlice";
+import { handleAssignee } from "../../app/issuesSlice";
 
 interface AssigneeProps {
 	setPopAssigneeVis: Dispatch<SetStateAction<boolean>>;

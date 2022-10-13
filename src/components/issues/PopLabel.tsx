@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
 import { useGetLabelsQuery } from "../../services/labelsApi";
-import { handleLabelQuery, cleanLabelQuery } from "../../app/issueSlice";
+import { handleLabelQuery, cleanLabelQuery } from "../../app/issuesSlice";
 
 interface LabelProps {
 	setPopLabelVis: Dispatch<SetStateAction<boolean>>;

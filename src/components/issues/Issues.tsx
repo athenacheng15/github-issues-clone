@@ -28,7 +28,7 @@ import {
 	resetQuery,
 	nextPage,
 	prevPage,
-} from "../../app/issueSlice";
+} from "../../app/issuesSlice";
 
 const stateList = [
 	{ stateName: "open", icon: <IssueOpenedIcon />, btnText: "Open" },

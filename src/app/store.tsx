@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { labelsApi } from "../services/labelsApi";
-import issueQueryStringSlice from "./issueSlice";
+import issueQueryStringSlice from "./issuesSlice";
 import newIssueContentSlice from "./newIssueSlice";
 import loginSlice from "./userSlice";
+import issueSlice from "./issueSlice";
 
 export const store = configureStore({
 	reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
 		queries: issueQueryStringSlice,
 		contents: newIssueContentSlice,
 		login: loginSlice,
+		issue: issueSlice,
 	},
 	middleware: (getDefaultMiddleware) =>
 		getDefaultMiddleware().concat(labelsApi.middleware),

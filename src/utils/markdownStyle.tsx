@@ -31,6 +31,12 @@ export const commands = [
 ];
 
 export const markdownStyle = {
+	h1: ({ node, ...props }) => (
+		<h1
+			className="pb-4 text-[28px] my-2 font-extrabold border-0 border-b border-solid border-[#d1d5da]"
+			{...props}
+		/>
+	),
 	h3: ({ node, ...props }) => (
 		<h3 className="pb-4 text-[17.5px] font-extrabold" {...props} />
 	),
