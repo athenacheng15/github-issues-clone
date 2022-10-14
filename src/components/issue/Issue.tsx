@@ -24,7 +24,7 @@ import IssueTitle from "./IssueTitle";
 import DataBar from "./DataBar";
 import StatusTag from "../../commons/StatusTag";
 import CommentArea from "./CommentArea";
-
+import CloseBtn from "./CloseBtn";
 import { timeCalc } from "../../utils/utils";
 
 export default function Issue() {
@@ -151,7 +151,7 @@ export default function Issue() {
 							defaultBody={issueData?.body}
 							submitFunc={() => console.log("submit")}
 							hight="s"
-							self={true}
+							self={loginUser.login === issueData.user.login}
 							reactions={{ reactions: { ...issueData?.reactions } }}
 							first
 						/>
@@ -192,13 +192,8 @@ export default function Issue() {
 							submitFunc={handleCreateComment}
 							hight="s"
 							commentMode={true}
-							secondBtn={
-								<NormalBtn
-									text="Submit new Issue"
-									colorType="green"
-									width="150px"
-								/>
-							}
+							state={issueData.state}
+							stateReason={issueData.state_reason}
 						/>
 					</div>
 				</div>

@@ -49,6 +49,14 @@ interface EditIssueParams {
 	body?: string;
 }
 
+interface EditIssueStateParams {
+	owner: string | null;
+	repo: string | null;
+	number?: string;
+	state?: string;
+	state_reason?: string;
+}
+
 interface CreateCommentParams {
 	owner: string | null;
 	repo: string | null;
@@ -127,6 +135,18 @@ export const issueApi = labelsApi.injectEndpoints({
 			}),
 			invalidatesTags: ["Issue"],
 		}),
+		editIssueState: builder.mutation<void, EditIssueStateParams>({
+			query: ({ owner, repo, number, state, state_reason }) => ({
+				url: `/repos/${owner}/${repo}/issues/${number}`,
+				method: "PATCH",
+				body: { state, state_reason },
+				headers: new Headers({
+					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
+					Accept: "application/vnd.github+json",
+				}),
+			}),
+			invalidatesTags: ["Issue"],
+		}),
 		createComment: builder.mutation<void, CreateCommentParams>({
 			query: ({ owner, repo, number, body }) => ({
 				url: `/repos/${owner}/${repo}/issues/${number}/comments`,
@@ -173,6 +193,7 @@ export const {
 	useUpdateAssigneeMutation,
 	useUpdateTitleMutation,
 	useEditIssueMutation,
+	useEditIssueStateMutation,
 	useCreateCommentMutation,
 	useEditCommentMutation,
 	useDeleteCommentMutation,

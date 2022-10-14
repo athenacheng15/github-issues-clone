@@ -25,11 +25,10 @@ import {
 	MarkdownIcon,
 	InfoIcon,
 } from "@primer/octicons-react";
-import ReactMarkdown from "react-markdown";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { markdownStyle, commands } from "../../utils/markdownStyle";
+
+import { commands } from "../../utils/markdownStyle";
 import MarkDownArea from "../../commons/MarkDownArea";
+import CloseBtn from "../issue/CloseBtn";
 
 interface CreateAreaProp {
 	type: string;
@@ -43,6 +42,8 @@ interface CreateAreaProp {
 	commentMode?: boolean;
 	secondBtn?: JSX.Element;
 	submitText: string;
+	state?: string;
+	stateReason?: string;
 }
 
 export default function CreateArea({
@@ -56,7 +57,8 @@ export default function CreateArea({
 	hight,
 	commentMode,
 	submitText,
-	secondBtn,
+	state,
+	stateReason,
 }: CreateAreaProp) {
 	const [inputStatus, setInputStatus] = useState("Write");
 	const [bottomVis, setBottomVis] = useState(false);
@@ -235,7 +237,11 @@ export default function CreateArea({
 							</a>
 							<div className="flex">
 								<div className={`${commentMode ? "flex" : "hidden"} mr-1`}>
-									{secondBtn}
+									<CloseBtn
+										state={state}
+										stateReason={stateReason}
+										body={bodyValue}
+									/>
 								</div>
 								<div
 									className={`${commentMode ? "flex L:mr-2" : "hidden"} L:flex`}
