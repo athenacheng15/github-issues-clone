@@ -9,8 +9,13 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import type { RootState } from "../../app/store";
-import { useGetIssueQuery, useGetCommentQuery } from "../../services/issueApi";
-import { handleTitle, handleBody, resetAll } from "../../app/newIssueSlice";
+import {
+	useGetIssueQuery,
+	useGetCommentQuery,
+	useCreateCommentMutation,
+} from "../../services/issueApi";
+import { handleBody, handleTitle } from "../../app/newIssueSlice";
+import { handleIssueBody, resetAll } from "../../app/issueSlice";
 import { setDefaultLabels, setDefaultAssignees } from "../../app/issueSlice";
 import CreateArea from "../new_issue/CreateArea";
 import RightFuncBar from "./RightFuncBar";
@@ -21,7 +26,6 @@ import StatusTag from "../../commons/StatusTag";
 import CommentArea from "./CommentArea";
 
 import { timeCalc } from "../../utils/utils";
-import { map } from "lodash";
 
 export default function Issue() {
 	const currentContent = useSelector((state: RootState) => state.issue);
@@ -32,17 +36,19 @@ export default function Issue() {
 	const { number } = useParams();
 
 	const [fixedHeaderStatus, setFixedHeaderStatus] = useState(false);
+	const [createComment] = useCreateCommentMutation();
 
-	// function handleCreateIssue() {
-	// 	dispatch(handleBody(currentContent.body.replace(/\n\r?/g, "\n\r")));
-	// 	createIssue({
-	// 		owner: loginUser.login,
-	// 		repo: localStorage.getItem("repo"),
-	// 		content: currentContent,
-	// 	});
-	// 	dispatch(resetAll());
-	// 	navigate("/issues");
-	// }
+	function handleCreateComment() {
+		createComment({
+			owner: loginUser.login,
+			repo: localStorage.getItem("repo"),
+			number: number,
+			body: currentContent.body,
+		});
+		dispatch(resetAll());
+	}
+
+	console.log(currentContent.body);
 
 	const headerBottom = useCallback((node: HTMLDivElement) => {
 		if (node) {
@@ -92,19 +98,29 @@ export default function Issue() {
 		console.log(currentContent);
 	}, [issueData?.assignees]);
 
-	console.log(currentContent);
+	// console.log(currentContent);
+
+	if (!isSuccess) {
+		return <p>loading</p>;
+	}
 
 	return (
 		<div className="w-[100%] max-w-[1280px] my-4 L:mx-[auto] px-4 L:px-6 XL:px-8">
 			<div className=" py-2 ">
-				<IssueTitle title={issueData?.title} number={issueData?.number} />
+				<IssueTitle
+					defaultTitle={issueData?.title}
+					number={issueData?.number.toString() || ""}
+				/>
 			</div>
 			<div
 				className="flex flex-wrap items-center mb-2 pb-4 w-[auto] text-sm text-[#57606a] border-0 border-b border-[#d1d5da] border-solid"
 				ref={headerBottom}
 			>
 				<div className="mb-2">
-					<StatusTag status="Open" />
+					<StatusTag
+						status={issueData?.state}
+						statusReason={issueData?.state_reason}
+					/>
 				</div>
 				<p className="flex flex-wrap pl-2 mb-2">
 					<strong className="mr-1">{issueData?.user.login}</strong> opened this
@@ -125,6 +141,8 @@ export default function Issue() {
 				<div className="w-[100%]">
 					<div className="flex w-[100%] mb-10 ">
 						<CommentArea
+							type="issue"
+							number={number}
 							login={issueData?.user.login}
 							img={issueData?.user.avatar_url}
 							time={timeCalc(issueData?.created_at || "")}
@@ -145,6 +163,7 @@ export default function Issue() {
 					>
 						{commentData?.map((item) => (
 							<CommentArea
+								type="comment"
 								key={item.id}
 								id={item.id}
 								login={item?.user.login}
@@ -153,7 +172,9 @@ export default function Issue() {
 								handleBody={handleBody}
 								submitText="Update comment"
 								defaultBody={item.body}
-								submitFunc={() => console.log("submit")}
+								submitFunc={() => {
+									console.log("submit");
+								}}
 								hight="s"
 								self={loginUser.login === item.user.login}
 								reactions={{ reactions: { ...item.reactions } }}
@@ -163,11 +184,12 @@ export default function Issue() {
 					</div>
 					<div className="flex w-[100%] pt-6 mt-5 border-0 border-t-2 border-solid border-[#d1d5da]">
 						<CreateArea
+							type="comment"
 							handleTitle={handleTitle}
-							handleBody={handleBody}
+							handleBody={handleIssueBody}
 							submitText="Comment"
-							defaultBody=""
-							submitFunc={() => console.log("submit")}
+							defaultBody={currentContent.body || ""}
+							submitFunc={handleCreateComment}
 							hight="s"
 							commentMode={true}
 							secondBtn={

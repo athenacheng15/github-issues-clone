@@ -20,12 +20,9 @@ export default function PopAssignee({
 }: AssigneeProps) {
 	const currentContent = useSelector((state: RootState) => state.issue);
 	const dispatch = useDispatch();
-	const navigate = useNavigate();
 	const [inputText, setInputText] = useState("");
-	const [updateAssignees] = useUpdateAssigneeMutation();
-	const { number } = useParams();
 
-	console.log(currentContent.assignees);
+	// console.log(currentContent.assignees);
 
 	return (
 		<>
@@ -81,6 +78,7 @@ export default function PopAssignee({
 							>
 								<div
 									className={`${
+										currentContent.assignees &&
 										currentContent.assignees.includes(item.login)
 											? "visible"
 											: "invisible"

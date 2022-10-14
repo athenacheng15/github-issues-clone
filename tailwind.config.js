@@ -4,13 +4,13 @@ module.exports = {
 	theme: {
 		screens: {
 			M: "544px",
-			// => @media (min-width: 640px) { ... }
+			// => @media (min-width: 544px) { ... }
 
 			L: "768px",
-			// => @media (min-width: 1024px) { ... }
+			// => @media (min-width: 768px) { ... }
 
 			XL: "1012px",
-			// => @media (min-width: 1280px) { ... }
+			// => @media (min-width: 1012px) { ... }
 		},
 	},
 	plugins: [require("@tailwindcss/typography")],

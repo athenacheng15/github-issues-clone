@@ -5,19 +5,24 @@ import {
 } from "@primer/octicons-react";
 
 interface StatusTagProp {
-	status: string;
+	status?: string;
 	statusReason?: string;
 }
 
 export default function StatusTag({ status, statusReason }: StatusTagProp) {
+	const statueText = `${status?.charAt(0).toUpperCase()}${status?.slice(1)}`;
 	return (
 		<>
 			<div
 				className={`flex items-center w-[auto] px-4 h-8 rounded-full text-sm text-white font-medium ${
-					status === "Open" ? "bg-[#2da44e]" : "bg-[#8250df]"
+					status === "open"
+						? "bg-[#2da44e]"
+						: statusReason === "completed"
+						? "bg-[#8250df]"
+						: "bg-[#6e7781]"
 				}`}
 			>
-				{status === "Open" ? (
+				{status === "open" ? (
 					<IssueOpenedIcon />
 				) : statusReason === "completed" ? (
 					<IssueClosedIcon />
@@ -25,7 +30,7 @@ export default function StatusTag({ status, statusReason }: StatusTagProp) {
 					<SkipIcon />
 				)}
 
-				<p className="pl-1">{status}</p>
+				<p className="pl-1">{statueText}</p>
 			</div>
 		</>
 	);

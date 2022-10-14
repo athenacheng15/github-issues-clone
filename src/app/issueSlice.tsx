@@ -4,14 +4,15 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 
 export interface IssueState {
+	title?: string;
+	body?: string;
 	state?: string;
 	stateReason?: string;
-	labels: string[];
-	assignees: string[];
+	labels?: string[];
+	assignees?: string[];
 }
 
 const initialState: IssueState = {
-	state: "",
 	labels: [],
 	assignees: [],
 };
@@ -25,6 +26,12 @@ const issueSlice = createSlice({
 		},
 		handleIssueStateReason: (state, action: PayloadAction<string>) => {
 			state.stateReason = action.payload;
+		},
+		handleTitle: (state, action: PayloadAction<string>) => {
+			state.title = action.payload;
+		},
+		handleIssueBody: (state, action: PayloadAction<string | undefined>) => {
+			state.body = action.payload;
 		},
 		setDefaultLabels: (state, action: PayloadAction<string[]>) => {
 			state.labels = action.payload;
@@ -56,6 +63,8 @@ const issueSlice = createSlice({
 export const {
 	handleIssueState,
 	handleIssueStateReason,
+	handleTitle,
+	handleIssueBody,
 	setDefaultLabels,
 	handleLabels,
 	setDefaultAssignees,

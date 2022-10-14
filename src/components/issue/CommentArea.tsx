@@ -26,19 +26,24 @@ import {
 	KebabHorizontalIcon,
 	SmileyIcon,
 } from "@primer/octicons-react";
-// import ReactMarkdown from "react-markdown";
-// import SyntaxHighlighter from "react-syntax-highlighter";
-// import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { commands } from "../../utils/markdownStyle";
 import Tag from "../../commons/Tag";
-import { timeCalc } from "../../utils/utils";
 import MarkDownArea from "../../commons/MarkDownArea";
 import CommentsBar from "../../commons/CommentsBar";
 import { Reactions } from "../../commons/CommentsBar";
 import type { RootState } from "../../app/store";
+import DropdownList from "../../commons/DropDown";
+import {
+	useDeleteCommentMutation,
+	useEditIssueMutation,
+	useEditCommentMutation,
+} from "../../services/issueApi";
+import { handleIssueBody, resetAll } from "../../app/issueSlice";
 
 interface CreateAreaProp {
+	type?: string;
 	id?: number;
+	number?: string;
 	login?: string;
 	img?: string;
 	time?: string;
@@ -51,82 +56,13 @@ interface CreateAreaProp {
 	reactions: Reactions;
 	first?: boolean;
 	owner?: string;
+	reducer?: AnyAction;
 }
-const iconGorup1 = [
-	{
-		icon: <HeadingIcon />,
-		action: "h3",
-		description: "Add heading text",
-	},
-	{
-		icon: <BoldIcon />,
-		action: "bold",
-		description: "Add bold text, <Cmd+b>",
-	},
-	{
-		icon: <ItalicIcon />,
-		action: "italic",
-		description: "Add italic text, <Cmd+i>",
-	},
-];
-const iconGorup2 = [
-	{
-		icon: <QuoteIcon />,
-		action: "block-quotes",
-		description: "Add a quote, <Cmd+Shift+.>",
-	},
-	{
-		icon: <CodeIcon />,
-		action: "code",
-		description: "Add code, <Cmd+e>",
-	},
-	{
-		icon: <LinkIcon />,
-		action: "link",
-		description: "Add a link, <Cmd+k>",
-	},
-];
-const iconGorup3 = [
-	{
-		icon: <ListUnorderedIcon />,
-		action: "unordered-list",
-		description: "Add a bulleted list, <Cmd+Shift+8>",
-	},
-	{
-		icon: <ListOrderedIcon />,
-		action: "ordered-list",
-		description: "Add a numbered list, <Cmd+Shift+7>",
-	},
-	{
-		icon: <TasklistIcon />,
-		action: "",
-		description: "Add a task list, <Cmd+Shift+l>",
-	},
-];
-const iconGorup4 = [
-	{
-		icon: <MentionIcon />,
-		action: "",
-		description: "Directly mention a user or team",
-	},
-	{
-		icon: <ImageIcon />,
-		action: "image",
-		description: "Attach an image or video",
-	},
-	{
-		icon: <CrossReferenceIcon />,
-		action: "",
-		description: "Reference an issue, pull request, or discussion",
-	},
-	{
-		icon: <ReplyIcon />,
-		action: "",
-		description: "Add saved reply",
-	},
-];
 
 export default function CommentArea({
+	id,
+	number,
+	type,
 	login,
 	img,
 	time,
@@ -139,9 +75,11 @@ export default function CommentArea({
 	reactions,
 	first,
 	owner,
+	reducer,
 }: CreateAreaProp) {
 	const [inputStatus, setInputStatus] = useState("Write");
 	const [bottomVis, setBottomVis] = useState(false);
+	const [dropDownVis, setDropDownVis] = useState(false);
 	const [mode, setMode] = useState("view");
 	const inputBtnList = [
 		{ name: "Write", action: "" },
@@ -152,6 +90,71 @@ export default function CommentArea({
 	const dispatch = useDispatch();
 	const ref = useRef<TextareaMarkdownRef>(null);
 	const loginUser = useSelector((state: RootState) => state.login);
+	const currentContent = useSelector((state: RootState) => state.issue);
+	const [deleteComment] = useDeleteCommentMutation();
+	const [editComment] = useEditCommentMutation();
+	const [editIssue] = useEditIssueMutation();
+
+	const issueDropDownList = [
+		{ name: "Copy link" },
+		{ name: "Quote reply" },
+		{ name: "Reference in new issue", last: true },
+		{
+			name: "Edit",
+			action: () => {
+				setMode("edit");
+			},
+			first: true,
+		},
+		{ name: "Report content", first: true },
+	];
+
+	const commentDropDownList = [
+		{ name: "Copy link" },
+		{ name: "Quote reply" },
+		{ name: "Reference in new issue", last: true },
+		{
+			name: "Edit",
+			action: () => {
+				setMode("edit");
+			},
+			first: true,
+		},
+		{ name: "Hide" },
+		{
+			name: "Delete",
+			last: true,
+			action: () => {
+				deleteComment({
+					owner: loginUser.login,
+					repo: "issue_test",
+					id: id?.toString(),
+				});
+			},
+		},
+		{ name: "Report content", first: true },
+	];
+	function handleUpdateComment() {
+		editComment({
+			owner: loginUser.login,
+			repo: "issue_test",
+			id: id?.toString(),
+			body: currentContent.body,
+		});
+		dispatch(resetAll());
+		setMode("view");
+	}
+
+	function handleUpdateIssue() {
+		editIssue({
+			owner: loginUser.login,
+			repo: "issue_test",
+			number: number,
+			body: currentContent.body,
+		});
+		dispatch(resetAll());
+		setMode("view");
+	}
 
 	return (
 		<div className="flex w-[100%] ">
@@ -201,10 +204,24 @@ export default function CommentArea({
 									<SmileyIcon />
 								</button>
 								<button
-									className="flex justify-center items-center cursor-pointer"
-									onClick={() => setMode("edit")}
+									className="relative flex justify-center items-center cursor-pointer"
+									onClick={() => setDropDownVis(!dropDownVis)}
 								>
 									<KebabHorizontalIcon />
+									<div>
+										<DropdownList
+											right="-10px"
+											top="25px"
+											width="190px"
+											listitems={
+												type === "issue"
+													? issueDropDownList
+													: commentDropDownList
+											}
+											dropDownVis={dropDownVis}
+											setDropDownVis={setDropDownVis}
+										/>
+									</div>
 								</button>
 							</div>
 						</div>
@@ -338,7 +355,7 @@ export default function CommentArea({
 											onChange={(e) => {
 												setBodyValue(e.target.value);
 											}}
-											onBlur={() => dispatch(handleBody(bodyValue))}
+											onBlur={() => dispatch(handleIssueBody(bodyValue))}
 											ref={ref}
 											commands={commands}
 										></TextareaMarkdown>
@@ -350,7 +367,7 @@ export default function CommentArea({
 												"Nothing to preview"
 											) : (
 												<div className=" text-[#24292f] text-sm">
-													<MarkDownArea text={defaultBody || ""} />
+													<MarkDownArea text={bodyValue} />
 												</div>
 											)}
 										</div>
@@ -373,7 +390,11 @@ export default function CommentArea({
 													text="Cancle"
 													colorType="gray"
 													width="auto"
-													onClick={() => setMode("view")}
+													onClick={() => {
+														setMode("view");
+														setBodyValue(defaultBody || "");
+														dispatch(resetAll());
+													}}
 												/>
 											}
 										</div>
@@ -382,7 +403,11 @@ export default function CommentArea({
 												text={submitText}
 												colorType="green"
 												width={"auto"}
-												onClick={submitFunc}
+												onClick={
+													type === "issue"
+														? handleUpdateIssue
+														: handleUpdateComment
+												}
 											/>
 										</div>
 									</div>
@@ -395,3 +420,77 @@ export default function CommentArea({
 		</div>
 	);
 }
+
+const iconGorup1 = [
+	{
+		icon: <HeadingIcon />,
+		action: "h3",
+		description: "Add heading text",
+	},
+	{
+		icon: <BoldIcon />,
+		action: "bold",
+		description: "Add bold text, <Cmd+b>",
+	},
+	{
+		icon: <ItalicIcon />,
+		action: "italic",
+		description: "Add italic text, <Cmd+i>",
+	},
+];
+const iconGorup2 = [
+	{
+		icon: <QuoteIcon />,
+		action: "block-quotes",
+		description: "Add a quote, <Cmd+Shift+.>",
+	},
+	{
+		icon: <CodeIcon />,
+		action: "code",
+		description: "Add code, <Cmd+e>",
+	},
+	{
+		icon: <LinkIcon />,
+		action: "link",
+		description: "Add a link, <Cmd+k>",
+	},
+];
+const iconGorup3 = [
+	{
+		icon: <ListUnorderedIcon />,
+		action: "unordered-list",
+		description: "Add a bulleted list, <Cmd+Shift+8>",
+	},
+	{
+		icon: <ListOrderedIcon />,
+		action: "ordered-list",
+		description: "Add a numbered list, <Cmd+Shift+7>",
+	},
+	{
+		icon: <TasklistIcon />,
+		action: "",
+		description: "Add a task list, <Cmd+Shift+l>",
+	},
+];
+const iconGorup4 = [
+	{
+		icon: <MentionIcon />,
+		action: "",
+		description: "Directly mention a user or team",
+	},
+	{
+		icon: <ImageIcon />,
+		action: "image",
+		description: "Attach an image or video",
+	},
+	{
+		icon: <CrossReferenceIcon />,
+		action: "",
+		description: "Reference an issue, pull request, or discussion",
+	},
+	{
+		icon: <ReplyIcon />,
+		action: "",
+		description: "Add saved reply",
+	},
+];

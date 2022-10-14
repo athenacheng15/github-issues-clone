@@ -19,7 +19,7 @@ export default function NewIssue() {
 		dispatch(handleBody(currentContent.body.replace(/\n\r?/g, "\n\r")));
 		createIssue({
 			owner: loginUser.login,
-			repo: localStorage.getItem("repo"),
+			repo: "issue_test",
 			content: currentContent,
 		});
 		dispatch(resetAll());
@@ -31,6 +31,7 @@ export default function NewIssue() {
 			<div className="w-[100%] m-[auto] mt-2 p-4 max-w-[1280px] L:flex L:px-6 XL:px-8">
 				<div className="flex w-[100%]">
 					<CreateArea
+						type="issue"
 						handleTitle={handleTitle}
 						handleBody={handleBody}
 						submitFunc={handleCreateIssue}

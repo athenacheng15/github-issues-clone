@@ -1,13 +1,28 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { useState } from "react";
+import { useUpdateTitleMutation } from "../../services/issueApi";
+
 import NormalBtn from "../../commons/NormalBtn";
 
 interface IssueTitleProp {
-	title?: string;
-	number?: number;
+	defaultTitle?: string;
+	number: string;
 }
 
-export default function IssueTitle({ title, number }: IssueTitleProp) {
+export default function IssueTitle({ defaultTitle, number }: IssueTitleProp) {
 	const [mode, setMode] = useState("view");
+	const [inputValue, setInputValue] = useState(defaultTitle);
+	const [updateTitle] = useUpdateTitleMutation();
+
+	function handleSubmit() {
+		updateTitle({
+			owner: "athenacheng15",
+			repo: "issue_test",
+			number: number,
+			title: inputValue,
+		});
+		setMode("view");
+	}
+
 	return (
 		<>
 			{mode === "view" ? (
@@ -19,7 +34,10 @@ export default function IssueTitle({ title, number }: IssueTitleProp) {
 								colorType="gray"
 								width="auto"
 								size="s"
-								onClick={() => setMode("edit")}
+								onClick={() => {
+									setMode("edit");
+									setInputValue(defaultTitle);
+								}}
 							/>
 							<NormalBtn
 								text="New issue"
@@ -33,21 +51,31 @@ export default function IssueTitle({ title, number }: IssueTitleProp) {
 						</a>
 					</div>
 					<div className="flex items-center space-x-2 order-1 text-[26px] L:text-[32px]">
-						<p className="">{title}</p>
+						<p className="">{defaultTitle}</p>
 						<p className="text-[#57606a]">#{number}</p>
 					</div>
 				</div>
 			) : (
 				<div className="mb-2 items-center L:flex ">
 					<input
-						className="w-[100%] h-8 mb-2 border border-[#d1d5da] border-solid rounded-md bg-[#f6f8fa] focus:border-[#0969da] focus:border-2 focus:bg-[#ffffff] L:mb-0"
+						className="w-[100%] h-8 mb-2 pl-2 border border-[#d1d5da] border-solid rounded-md bg-[#f6f8fa] focus:border-[#0969da] focus:border-2 focus:bg-[#ffffff] L:mb-0"
 						autoFocus
+						value={inputValue}
+						onChange={(e) => setInputValue(e.target.value)}
 					/>
 					<div className="flex items-center L:ml-4">
-						<NormalBtn text="Save" colorType="gray" width="auto" />
+						<NormalBtn
+							text="Save"
+							colorType="gray"
+							width="auto"
+							onClick={handleSubmit}
+						/>
 						<button
 							className=" px-4 text-sm text-[#0969da] cursor-pointer L:pr-0"
-							onClick={() => setMode("view")}
+							onClick={() => {
+								setMode("view");
+								setInputValue(defaultTitle);
+							}}
 						>
 							Cancel
 						</button>

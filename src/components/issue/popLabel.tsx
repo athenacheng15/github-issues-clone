@@ -25,7 +25,7 @@ export default function PopLabel({
 	const [updateLabel] = useUpdateLabelMutation();
 	const { number } = useParams();
 
-	console.log(currentContent.labels);
+	// console.log(currentContent.labels);
 
 	return (
 		<>
@@ -70,6 +70,7 @@ export default function PopLabel({
 							>
 								<div
 									className={
+										currentContent.labels &&
 										currentContent.labels.includes(item.name)
 											? "block"
 											: "invisible"

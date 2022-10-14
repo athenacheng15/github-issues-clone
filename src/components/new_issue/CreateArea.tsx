@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import TextareaMarkdown, {
@@ -29,8 +29,10 @@ import ReactMarkdown from "react-markdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { docco } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { markdownStyle, commands } from "../../utils/markdownStyle";
+import MarkDownArea from "../../commons/MarkDownArea";
 
 interface CreateAreaProp {
+	type: string;
 	handleTitle: (value: string) => AnyAction;
 	handleBody: (value: string) => AnyAction;
 	submitFunc: () => void;
@@ -44,6 +46,7 @@ interface CreateAreaProp {
 }
 
 export default function CreateArea({
+	type,
 	handleTitle,
 	handleBody,
 	submitFunc,
@@ -210,41 +213,7 @@ export default function CreateArea({
 										"Nothing to preview"
 									) : (
 										<div className=" text-[#24292f] text-sm">
-											<ReactMarkdown
-												components={{
-													code({
-														node,
-														inline,
-														className,
-														children,
-														...props
-													}) {
-														const match = /language-(\w+)/.exec(
-															className || ""
-														);
-														return !inline && match ? (
-															<SyntaxHighlighter
-																language={match[1]}
-																style={docco}
-																PreTag="div"
-																{...props}
-															>
-																{String(children).replace(/\n$/, "")}
-															</SyntaxHighlighter>
-														) : (
-															<code
-																className="text-xs bg-[rgba(175,184,193,0.2)] p-[2px] rounded-[4px]"
-																{...props}
-															>
-																{children}
-															</code>
-														);
-													},
-													...markdownStyle,
-												}}
-											>
-												{bodyValue.replace(/\n\r?/g, "\n\r")}
-											</ReactMarkdown>
+											<MarkDownArea text={bodyValue} />
 										</div>
 									)}
 								</div>
@@ -271,13 +240,24 @@ export default function CreateArea({
 								<div
 									className={`${commentMode ? "flex L:mr-2" : "hidden"} L:flex`}
 								>
-									<NormalBtn
-										text={submitText}
-										colorType="green"
-										width={commentMode ? "auto" : "150px"}
-										disabled={titleValue === ""}
-										onClick={submitFunc}
-									/>
+									<button
+										onClick={() => {
+											setInputStatus("Write");
+											setBodyValue("");
+										}}
+									>
+										<NormalBtn
+											text={submitText}
+											colorType="green"
+											width={commentMode ? "auto" : "150px"}
+											disabled={
+												type === "comment"
+													? bodyValue === ""
+													: titleValue === ""
+											}
+											onClick={submitFunc}
+										/>
+									</button>
 								</div>
 							</div>
 						</div>
