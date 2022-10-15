@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import TextareaMarkdown, {
@@ -58,7 +58,6 @@ export default function CreateArea({
 	commentMode,
 	submitText,
 	state,
-	stateReason,
 }: CreateAreaProp) {
 	const [inputStatus, setInputStatus] = useState("Write");
 	const [bottomVis, setBottomVis] = useState(false);

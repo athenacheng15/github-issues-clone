@@ -11,7 +11,6 @@ import {
 	useEditIssueStateMutation,
 	useCreateCommentMutation,
 } from "../../services/issueApi";
-import { resetAll } from "../../app/issueSlice";
 
 interface CloseBtnProp {
 	state?: string;
