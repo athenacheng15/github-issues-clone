@@ -1,13 +1,6 @@
-import {
-	useState,
-	useEffect,
-	Dispatch,
-	SetStateAction,
-	useCallback,
-	useRef,
-} from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import type { RootState } from "../../app/store";
 import {
 	useGetIssueQuery,
@@ -19,19 +12,16 @@ import { handleIssueBody, resetAll } from "../../app/issueSlice";
 import { setDefaultLabels, setDefaultAssignees } from "../../app/issueSlice";
 import CreateArea from "../new_issue/CreateArea";
 import RightFuncBar from "./RightFuncBar";
-import NormalBtn from "../../commons/NormalBtn";
 import IssueTitle from "./IssueTitle";
 import DataBar from "./DataBar";
 import StatusTag from "../../commons/StatusTag";
 import CommentArea from "./CommentArea";
-import CloseBtn from "./CloseBtn";
 import { timeCalc } from "../../utils/utils";
 
 export default function Issue() {
 	const currentContent = useSelector((state: RootState) => state.issue);
 	const loginUser = useSelector((state: RootState) => state.login);
 
-	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const { number } = useParams();
 
@@ -99,7 +89,17 @@ export default function Issue() {
 	// console.log(currentContent);
 
 	if (!isSuccess) {
-		return <p>loading</p>;
+		return (
+			<div className="flex flex-wrap items-center justify-center my-[150px]">
+				<img
+					className="w-[100px] h-[100px]"
+					src="https://media3.giphy.com/avatars/mwooodward/cIe5MvDvX4Vc.gif"
+				></img>
+				<p className="w-[100%] text-center mt-2 text-[32px] font-bold text-[#57606a]">
+					loading...
+				</p>
+			</div>
+		);
 	}
 
 	return (
