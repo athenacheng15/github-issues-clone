@@ -48,8 +48,6 @@ export default function Issue() {
 		dispatch(resetAll());
 	}
 
-	// console.log(currentContent.body);
-
 	const headerBottom = useCallback((node: HTMLDivElement) => {
 		if (node) {
 			const options = {
@@ -106,6 +104,34 @@ export default function Issue() {
 
 	return (
 		<div className="w-[100%] max-w-[1280px] my-4 L:mx-[auto] px-4 L:px-6 XL:px-8">
+			<header
+				className={`${
+					fixedHeaderStatus ? "block" : "hidden"
+				} fixed top-0 left-0 right-0 z-[200] flex  border-0 border-b border-solid border-[#d1d5da] bg-white p-3 text-[#57606a]`}
+			>
+				<div className="mr-1 flex whitespace-nowrap">
+					<StatusTag
+						status={issueData?.state}
+						statusReason={issueData?.state_reason}
+					/>
+				</div>
+				<div className="flex flex-col justify-between truncate ml-1">
+					<h1 className="text-[14px] font-medium leading-[1.3] text-[#24292f]">
+						{issueData.title}
+						<span className="font-normal pl-1">#{issueData.number}</span>
+					</h1>
+					<p className="text-[12px] ">
+						<button className="mr-[4px] font-medium text-textGray">
+							{issueData.user.login}
+						</button>
+						<span className="text-textGray">
+							opened this issue {timeCalc(issueData.created_at)} ．
+							{issueData.comments} comments
+						</span>
+					</p>
+				</div>
+			</header>
+
 			<div className=" py-2 ">
 				<IssueTitle
 					defaultTitle={issueData?.title}

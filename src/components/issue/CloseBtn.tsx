@@ -89,10 +89,6 @@ export default function CloseBtn({ state, body, setBodyValue }: CloseBtnProp) {
 		setReason(editState === "open" ? "completed" : "reopened");
 	}
 
-	console.log(reason);
-	console.log(editState);
-	console.log(body);
-
 	return (
 		<div className=" flex justify-center items-center bg-[#f6f8fa] text-[#24292f] ">
 			<button
