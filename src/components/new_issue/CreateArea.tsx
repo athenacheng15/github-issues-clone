@@ -239,8 +239,8 @@ export default function CreateArea({
 								<div className={`${commentMode ? "flex" : "hidden"} mr-1`}>
 									<CloseBtn
 										state={state}
-										stateReason={stateReason}
 										body={bodyValue}
+										setBodyValue={setBodyValue}
 									/>
 								</div>
 								<div
@@ -250,6 +250,7 @@ export default function CreateArea({
 										onClick={() => {
 											setInputStatus("Write");
 											setBodyValue("");
+											console.log("issue clicked");
 										}}
 									>
 										<NormalBtn

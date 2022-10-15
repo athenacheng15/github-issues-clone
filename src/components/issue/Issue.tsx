@@ -48,7 +48,7 @@ export default function Issue() {
 		dispatch(resetAll());
 	}
 
-	console.log(currentContent.body);
+	// console.log(currentContent.body);
 
 	const headerBottom = useCallback((node: HTMLDivElement) => {
 		if (node) {

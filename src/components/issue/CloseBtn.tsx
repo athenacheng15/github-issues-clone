@@ -11,16 +11,20 @@ import {
 	useEditIssueStateMutation,
 	useCreateCommentMutation,
 } from "../../services/issueApi";
+import { resetAll } from "../../app/issueSlice";
 
 interface CloseBtnProp {
 	state?: string;
-	stateReason?: string;
 	body: string;
+	setBodyValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function CloseBtn({ state, stateReason, body }: CloseBtnProp) {
+export default function CloseBtn({ state, body, setBodyValue }: CloseBtnProp) {
 	const [reason, setReason] = useState(
-		state === "open" ? "completed" : "reopen"
+		state === "open" ? "completed" : "reopened"
+	);
+	const [editState, setEditState] = useState(
+		state === "open" ? "closed" : "open"
 	);
 	const [optionVis, setOptionVis] = useState(false);
 	const [editIssueState] = useEditIssueStateMutation();
@@ -33,6 +37,7 @@ export default function CloseBtn({ state, stateReason, body }: CloseBtnProp) {
 		text: "Close as completed",
 		description: "Done, closed, fixed, resolved",
 		onClick: () => {
+			setEditState("closed");
 			setReason("completed");
 			setOptionVis(!optionVis);
 		},
@@ -43,6 +48,7 @@ export default function CloseBtn({ state, stateReason, body }: CloseBtnProp) {
 		text: "Close as not planned",
 		description: "Won't fix, can't repro, duplicate, stale",
 		onClick: () => {
+			setEditState("closed");
 			setReason("not_planned");
 			setOptionVis(!optionVis);
 		},
@@ -53,7 +59,8 @@ export default function CloseBtn({ state, stateReason, body }: CloseBtnProp) {
 		text: "Reopen Issue",
 		description: "",
 		onClick: () => {
-			setReason("reopen");
+			setEditState("open");
+			setReason("reopened");
 			setOptionVis(!optionVis);
 		},
 	};
@@ -61,9 +68,37 @@ export default function CloseBtn({ state, stateReason, body }: CloseBtnProp) {
 	const options =
 		state === "open" ? [completed, notPlanned] : [reOpen, notPlanned];
 
+	function handelSubmitApi() {
+		if (body !== "") {
+			createComment({
+				owner: "athenacheng15",
+				repo: localStorage.getItem("repo"),
+				number: number,
+				body: body,
+			});
+			setBodyValue("");
+		}
+		editIssueState({
+			owner: "athenacheng15",
+			repo: "issue_test",
+			number,
+			state: editState,
+			state_reason: reason,
+		});
+		setEditState(editState === "open" ? "closed" : "open");
+		setReason(editState === "open" ? "completed" : "reopened");
+	}
+
+	console.log(reason);
+	console.log(editState);
+	console.log(body);
+
 	return (
 		<div className=" flex justify-center items-center bg-[#f6f8fa] text-[#24292f] ">
-			<button className="flex justify-center items-center w-[auto] h-8 px-4 border border-solid rounded-l-md border-[#d1d5da] text-sm font-bold cursor-pointer hover:bg-[#f0f0f0]">
+			<button
+				className="flex justify-center items-center w-[auto] h-8 px-4 border border-solid rounded-l-md border-[#d1d5da] text-sm font-bold cursor-pointer hover:bg-[#f0f0f0]"
+				onClick={handelSubmitApi}
+			>
 				<div className={`flex items-center `}>
 					{reason === "not_planned" ? (
 						<SkipIcon fill="#6e7781" />
