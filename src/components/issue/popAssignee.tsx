@@ -11,12 +11,17 @@ interface AssigneeProps {
 	setPopAssigneeVis: Dispatch<SetStateAction<boolean>>;
 	repoAssignees?: UserDefaultData[];
 	assigneesData?: UserDefaultData[];
+	participant?: (
+		| { name: string | undefined; img: string | undefined }
+		| undefined
+	)[];
 }
 
 export default function PopAssignee({
 	setPopAssigneeVis,
 	repoAssignees,
 	assigneesData,
+	participant,
 }: AssigneeProps) {
 	const currentContent = useSelector((state: RootState) => state.issue);
 	const dispatch = useDispatch();

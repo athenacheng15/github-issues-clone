@@ -17,6 +17,7 @@ import DataBar from "./DataBar";
 import StatusTag from "../../commons/StatusTag";
 import CommentArea from "./CommentArea";
 import { timeCalc } from "../../utils/utils";
+import _, { forEach } from "lodash";
 
 export default function Issue() {
 	const currentContent = useSelector((state: RootState) => state.issue);
@@ -27,6 +28,10 @@ export default function Issue() {
 
 	const [fixedHeaderStatus, setFixedHeaderStatus] = useState(false);
 	const [createComment] = useCreateCommentMutation();
+
+	const [participant, setParticipant] = useState<
+		({ name: string | undefined; img: string | undefined } | undefined)[]
+	>([]);
 
 	function handleCreateComment() {
 		createComment({
@@ -85,6 +90,17 @@ export default function Issue() {
 		);
 		console.log(currentContent);
 	}, [issueData?.assignees]);
+	useEffect(() => {
+		const issueUser = [
+			{ name: issueData?.user.login, img: issueData?.user.avatar_url },
+		];
+		const commentUser = commentData?.map((item) => ({
+			name: item.user.login,
+			img: item.user.avatar_url,
+		}));
+		const allUser = [...issueUser, ...(commentUser || [])];
+		setParticipant(_.uniqWith(allUser, _.isEqual));
+	}, [commentData]);
 
 	// console.log(currentContent);
 
@@ -194,7 +210,7 @@ export default function Issue() {
 								id={item.id}
 								login={item?.user.login}
 								img={item?.user.avatar_url}
-								time={timeCalc(issueData?.created_at || "")}
+								time={timeCalc(item.created_at || "")}
 								handleBody={handleBody}
 								submitText="Update comment"
 								defaultBody={item.body}
@@ -227,6 +243,7 @@ export default function Issue() {
 					<RightFuncBar
 						labelsData={issueData?.labels}
 						assigneesData={issueData?.assignees}
+						participant={participant}
 					/>
 				</div>
 			</div>

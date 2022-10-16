@@ -26,11 +26,16 @@ import {
 interface RightFuncBarProps {
 	labelsData?: RepoLabels[];
 	assigneesData?: UserDefaultData[];
+	participant?: (
+		| { name: string | undefined; img: string | undefined }
+		| undefined
+	)[];
 }
 
 export default function RightFuncBar({
 	labelsData,
 	assigneesData,
+	participant,
 }: RightFuncBarProps) {
 	const [popAssigneeVis, setPopAssigneeVis] = useState(false);
 	const [popLabelVis, setPopLabelVis] = useState(false);
@@ -83,6 +88,7 @@ export default function RightFuncBar({
 					setPopAssigneeVis={setPopAssigneeVis}
 					repoAssignees={repoAssignees}
 					assigneesData={assigneesData}
+					participant={participant}
 				/>
 			),
 			defaultText: "no one-",
@@ -177,11 +183,11 @@ export default function RightFuncBar({
 						</p>
 					</button>
 					<div className="flex mt-2">
-						{assigneesData?.map((item) => (
+						{participant?.map((item) => (
 							<img
-								key={item.login}
+								key={item?.name}
 								className="w-7 h-7 mr-1 rounded-[100%]"
-								src={item.avatar_url}
+								src={item?.img}
 							/>
 						))}
 					</div>
