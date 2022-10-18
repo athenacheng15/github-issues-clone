@@ -55,6 +55,9 @@ const issueSlice = createSlice({
 				  })
 				: state.assignees?.push(action.payload);
 		},
+		resetAssignees: (state) => {
+			state.assignees = [];
+		},
 
 		resetAll: () => initialState,
 	},
@@ -69,6 +72,7 @@ export const {
 	handleLabels,
 	setDefaultAssignees,
 	handleAssignees,
+	resetAssignees,
 	resetAll,
 } = issueSlice.actions;
 export default issueSlice.reducer;

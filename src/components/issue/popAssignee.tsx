@@ -2,7 +2,7 @@ import { XIcon, CheckIcon } from "@primer/octicons-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
-import { handleAssignees } from "../../app/issueSlice";
+import { handleAssignees, resetAssignees } from "../../app/issueSlice";
 import { UserDefaultData } from "../../models/IssuesType";
 
 interface AssigneeProps {
@@ -22,8 +22,6 @@ export default function PopAssignee({
 	const currentContent = useSelector((state: RootState) => state.issue);
 	const dispatch = useDispatch();
 	const [inputText, setInputText] = useState("");
-
-	// console.log(currentContent.assignees);
 
 	return (
 		<>
@@ -53,7 +51,7 @@ export default function PopAssignee({
 						</div>
 						<button
 							className="flex items-center w-[100%] px-3 py-4 font-normal border-0 border-t border-[#d1d5da] border-solid last:rounded-b-[12px] cursor-pointer hover:bg-[#f6f8fa] L:py-2"
-							// onClick={() => dispatch(resetAssignees())}
+							onClick={() => dispatch(resetAssignees())}
 						>
 							<XIcon />
 							<p className="ml-1">Clear assignees</p>

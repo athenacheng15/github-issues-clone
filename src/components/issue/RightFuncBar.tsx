@@ -60,23 +60,33 @@ export default function RightFuncBar({
 		const assignees = repoAssignees?.filter((item) =>
 			assigneesData?.map((assignee) => assignee.login).includes(item.login)
 		);
-		return assignees?.map((item) => (
-			<AssignedUser key={item.login} name={item.login} img={item.avatar_url} />
-		));
+		return (
+			assignees?.length !== 0 &&
+			assignees?.map((item) => (
+				<AssignedUser
+					key={item.login}
+					name={item.login}
+					img={item.avatar_url}
+				/>
+			))
+		);
 	}
 
 	function labeledList() {
 		const labels = repoLabels?.filter((item) =>
 			labelsData?.map((label) => label.name).includes(item.name)
 		);
-		return labels?.map((item) => (
-			<Label
-				key={item.name}
-				labelText={item.name}
-				bgColor={item.color}
-				padding="s"
-			/>
-		));
+		return (
+			labels?.length !== 0 &&
+			labels?.map((item) => (
+				<Label
+					key={item.name}
+					labelText={item.name}
+					bgColor={item.color}
+					padding="s"
+				/>
+			))
+		);
 	}
 
 	const itemList = [
@@ -94,7 +104,13 @@ export default function RightFuncBar({
 			),
 			defaultText: "no one-",
 			button: "assign yourself",
-			onClick: () => dispatch(handleAssignees(loginUser.login || "")),
+			onClick: () =>
+				updateAssignee({
+					owner: loginUser.login,
+					repo: localStorage.getItem("repo"),
+					number: number,
+					assignees: [loginUser.login || ""],
+				}),
 			setting: true,
 			content: assignedList(),
 			dataManager: () =>
