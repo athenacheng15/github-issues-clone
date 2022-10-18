@@ -1,4 +1,3 @@
-import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import type { RootState } from "../../app/store";
@@ -11,15 +10,15 @@ import NormalBtn from "../../commons/NormalBtn";
 export default function NewIssue() {
 	const currentContent = useSelector((state: RootState) => state.contents);
 	const loginUser = useSelector((state: RootState) => state.login);
-	const [createIssue] = useCreateIssueMutation();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const [createIssue] = useCreateIssueMutation();
 
 	function handleCreateIssue() {
 		dispatch(handleBody(currentContent.body.replace(/\n\r?/g, "\n\r")));
 		createIssue({
 			owner: loginUser.login,
-			repo: "issue_test",
+			repo: localStorage.getItem("repo"),
 			content: currentContent,
 		});
 		dispatch(resetAll());

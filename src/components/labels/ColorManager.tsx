@@ -5,7 +5,7 @@ import { SyncIcon } from "@primer/octicons-react";
 import { RootState } from "../../app/store";
 import NormalBtn from "../../commons/NormalBtn";
 import { lightOrDark, generateRendomColor } from "../../utils/utils";
-import Label from "./Label";
+import Label from "../../commons/Label";
 import {
 	useEditLabelMutation,
 	useCreateLabelMutation,

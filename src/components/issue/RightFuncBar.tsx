@@ -7,7 +7,7 @@ import { handleAssignees } from "../../app/newIssueSlice";
 import PopAssignee from "./popAssignee";
 import PopLabel from "./popLabel";
 import BarTool from "../../commons/BarTool";
-import Label from "../labels/Label";
+import Label from "../../commons/Label";
 import {
 	BellSlashIcon,
 	LockIcon,
@@ -37,22 +37,23 @@ export default function RightFuncBar({
 	assigneesData,
 	participant,
 }: RightFuncBarProps) {
-	const [popAssigneeVis, setPopAssigneeVis] = useState(false);
-	const [popLabelVis, setPopLabelVis] = useState(false);
+	const loginUser = useSelector((state: RootState) => state.login);
 	const currentContent = useSelector((state: RootState) => state.issue);
 	const dispatch = useDispatch();
 	const { number } = useParams();
 	const [updateLabel] = useUpdateLabelMutation();
 	const [updateAssignee] = useUpdateAssigneeMutation();
+	const [popAssigneeVis, setPopAssigneeVis] = useState(false);
+	const [popLabelVis, setPopLabelVis] = useState(false);
 
 	const { data: repoAssignees } = useGetAssigneeQuery({
-		owner: "athenacheng15",
-		repo: "issue_test",
+		owner: loginUser.login,
+		repo: localStorage.getItem("repo"),
 	});
 
 	const { data: repoLabels } = useGetLabelsQuery({
-		owner: "athenacheng15",
-		repo: "issue_test",
+		owner: loginUser.login,
+		repo: localStorage.getItem("repo"),
 	});
 
 	function assignedList() {

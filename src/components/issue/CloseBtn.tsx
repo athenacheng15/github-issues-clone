@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 import {
 	IssueClosedIcon,
 	IssueReopenedIcon,
@@ -19,6 +21,7 @@ interface CloseBtnProp {
 }
 
 export default function CloseBtn({ state, body, setBodyValue }: CloseBtnProp) {
+	const loginUser = useSelector((state: RootState) => state.login);
 	const [reason, setReason] = useState(
 		state === "open" ? "completed" : "reopened"
 	);
@@ -70,7 +73,7 @@ export default function CloseBtn({ state, body, setBodyValue }: CloseBtnProp) {
 	function handelSubmitApi() {
 		if (body !== "") {
 			createComment({
-				owner: "athenacheng15",
+				owner: loginUser.login,
 				repo: localStorage.getItem("repo"),
 				number: number,
 				body: body,
@@ -78,8 +81,8 @@ export default function CloseBtn({ state, body, setBodyValue }: CloseBtnProp) {
 			setBodyValue("");
 		}
 		editIssueState({
-			owner: "athenacheng15",
-			repo: "issue_test",
+			owner: loginUser.login,
+			repo: localStorage.getItem("repo"),
 			number,
 			state: editState,
 			state_reason: reason,

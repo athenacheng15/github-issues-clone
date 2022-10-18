@@ -1,4 +1,4 @@
-import Label from "../labels/Label";
+import Label from "../../commons/Label";
 import { RepoLabels } from "../../models/LabelsType";
 import { UserDefaultData } from "../../models/IssuesType";
 

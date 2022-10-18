@@ -10,9 +10,10 @@ interface AssigneeProps {
 }
 
 export default function PopAssignee({ setPopAssigneeVis }: AssigneeProps) {
+	const loginUser = useSelector((state: RootState) => state.login);
 	const { data } = useGetAssigneeQuery({
-		owner: "athenacheng15",
-		repo: "issue_test",
+		owner: loginUser.login,
+		repo: localStorage.getItem("repo"),
 	});
 
 	const assignee = useSelector((state: RootState) => state.queries.assignee);

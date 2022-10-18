@@ -4,6 +4,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import type { RootState } from "../../app/store";
 import { useGetLabelsQuery } from "../../services/labelsApi";
 import { useGetIssuesQuery } from "../../services/issuesApi";
+import { handleIssuesNum } from "../../app/issuesSlice";
 import DoubleIconBtn from "../../commons/DoubleIconBtn";
 import NormalBtn from "../../commons/NormalBtn";
 import IssueBar from "./IssueBar";
@@ -119,6 +120,9 @@ export default function Issues() {
 	}
 
 	useEffect(() => setInputValue(handleInputText()), [currentState]);
+	useEffect(() => {
+		dispatch(handleIssuesNum(issuesData?.length || 0));
+	});
 
 	function defaultState() {
 		return (

@@ -10,9 +10,10 @@ interface LabelProps {
 }
 
 export default function PopLabel({ setPopLabelVis }: LabelProps) {
+	const loginUser = useSelector((state: RootState) => state.login);
 	const { data } = useGetLabelsQuery({
-		owner: "athenacheng15",
-		repo: "issue_test",
+		owner: loginUser.login,
+		repo: localStorage.getItem("repo"),
 	});
 
 	const labels = useSelector((state: RootState) => state.queries.labels);

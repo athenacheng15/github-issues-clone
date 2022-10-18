@@ -4,6 +4,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 
 export interface IssueQueryStringState {
+	issuesNum?: number;
 	issueStatus?: string;
 	labels?: string[];
 	assignee?: string;
@@ -13,6 +14,7 @@ export interface IssueQueryStringState {
 }
 
 const initialState: IssueQueryStringState = {
+	issuesNum: 0,
 	issueStatus: "",
 	labels: [],
 	assignee: "",
@@ -25,6 +27,9 @@ const issueQueryStringSlice = createSlice({
 	name: "queries",
 	initialState,
 	reducers: {
+		handleIssuesNum: (state, action: PayloadAction<number>) => {
+			state.issuesNum = action.payload;
+		},
 		handleIssueStatus: (state, action: PayloadAction<string>) => {
 			state.issueStatus = action.payload;
 		},
@@ -55,6 +60,7 @@ const issueQueryStringSlice = createSlice({
 		},
 
 		resetQuery: (state) => {
+			state.issuesNum = 0;
 			state.issueStatus = "";
 			state.labels = [];
 			state.assignee = "";
@@ -66,6 +72,7 @@ const issueQueryStringSlice = createSlice({
 });
 
 export const {
+	handleIssuesNum,
 	handleIssueStatus,
 	handleLabelQuery,
 	cleanLabelQuery,

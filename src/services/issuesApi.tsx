@@ -8,8 +8,8 @@ interface GetIssuesParams {
 }
 
 interface GetAssigneeParams {
-	owner: string;
-	repo: string;
+	owner: string | null;
+	repo: string | null;
 }
 
 interface IssueQueryStringState {

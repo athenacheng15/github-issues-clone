@@ -6,7 +6,7 @@ import {
 } from "@primer/octicons-react";
 import { RepoLabels } from "../../models/LabelsType";
 import { UserDefaultData } from "../../models/IssuesType";
-import Label from "../labels/Label";
+import Label from "../../commons/Label";
 import { useNavigate } from "react-router-dom";
 import { timeCalc, timeCalc2 } from "../../utils/utils";
 

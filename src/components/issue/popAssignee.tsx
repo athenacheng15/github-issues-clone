@@ -1,11 +1,9 @@
-import { XIcon, CheckIcon, PencilIcon } from "@primer/octicons-react";
+import { XIcon, CheckIcon } from "@primer/octicons-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
 import type { RootState } from "../../app/store";
-import { handleAssignees, handleLabels } from "../../app/issueSlice";
+import { handleAssignees } from "../../app/issueSlice";
 import { UserDefaultData } from "../../models/IssuesType";
-import { useUpdateAssigneeMutation } from "../../services/issueApi";
 
 interface AssigneeProps {
 	setPopAssigneeVis: Dispatch<SetStateAction<boolean>>;
@@ -20,8 +18,6 @@ interface AssigneeProps {
 export default function PopAssignee({
 	setPopAssigneeVis,
 	repoAssignees,
-	assigneesData,
-	participant,
 }: AssigneeProps) {
 	const currentContent = useSelector((state: RootState) => state.issue);
 	const dispatch = useDispatch();

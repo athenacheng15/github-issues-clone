@@ -1,11 +1,10 @@
 import { XIcon, CheckIcon, PencilIcon } from "@primer/octicons-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import type { RootState } from "../../app/store";
 import { handleLabels } from "../../app/issueSlice";
 import { RepoLabels } from "../../models/LabelsType";
-import { useUpdateLabelMutation } from "../../services/issueApi";
 
 interface LabelProps {
 	setPopLabelVis: Dispatch<SetStateAction<boolean>>;
@@ -13,19 +12,11 @@ interface LabelProps {
 	labelsData?: RepoLabels[];
 }
 
-export default function PopLabel({
-	setPopLabelVis,
-	repoLabels,
-	labelsData,
-}: LabelProps) {
+export default function PopLabel({ setPopLabelVis, repoLabels }: LabelProps) {
 	const currentContent = useSelector((state: RootState) => state.issue);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const [inputText, setInputText] = useState("");
-	const [updateLabel] = useUpdateLabelMutation();
-	const { number } = useParams();
-
-	// console.log(currentContent.labels);
 
 	return (
 		<>

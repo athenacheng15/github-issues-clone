@@ -23,12 +23,10 @@ import _ from "lodash";
 export default function Issue() {
 	const currentContent = useSelector((state: RootState) => state.issue);
 	const loginUser = useSelector((state: RootState) => state.login);
-
 	const dispatch = useDispatch();
 	const { number } = useParams();
-
-	const [fixedHeaderStatus, setFixedHeaderStatus] = useState(false);
 	const [createComment] = useCreateCommentMutation();
+	const [fixedHeaderStatus, setFixedHeaderStatus] = useState(false);
 
 	const [participant, setParticipant] = useState<
 		({ name: string | undefined; img: string | undefined } | undefined)[]

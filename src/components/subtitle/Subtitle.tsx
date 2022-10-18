@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
 import SingleOutlineBtn from "./SingleOutlineBtn";
 import DoubleOutlineBtn from "./DoubleOutlineBtn";
 import FilledBtn from "./FilledBtn";
 import { useGetIssuesQuery } from "../../services/issuesApi";
+import { resetQuery } from "../../app/issuesSlice";
 import {
 	RepoIcon,
 	PinIcon,
@@ -25,19 +26,17 @@ import {
 
 export default function SubTitle() {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const loginUser = useSelector((state: RootState) => state.login);
-	const { data } = useGetIssuesQuery({
-		owner: "athenacheng15",
-		repo: "issue_test",
-		query: {},
-	});
+	const issuesNum = useSelector((state: RootState) => state.queries.issuesNum);
+
 	const fillBtnList = [
 		{ icon: <CodeIcon fill="#57606a" />, text: "Code" },
 		{
 			icon: <IssueOpenedIcon fill="#57606a" />,
 			text: "Issues",
 			dotDisplay: true,
-			num: data?.length,
+			num: issuesNum,
 			action: () => navigate("/issues"),
 		},
 		{ icon: <GitPullRequestIcon fill="#57606a" />, text: "Pull requests" },
@@ -55,7 +54,13 @@ export default function SubTitle() {
 				<UpperBox>
 					<TitleBox>
 						<RepoIcon size={16} fill="rgb(87, 96, 106)" />
-						<UserName href="/">
+						<UserName
+							onClick={() => {
+								dispatch(resetQuery());
+								navigate("/");
+								localStorage.removeItem("repo");
+							}}
+						>
 							{loginUser.login ? loginUser.login : "User Name"}
 						</UserName>
 						<span>/</span>
@@ -82,7 +87,7 @@ export default function SubTitle() {
 							icon={<RepoForkedIcon fill="#57606a" />}
 							btnText="Fork"
 							dotDisplay={true}
-							num={1}
+							num={0}
 						/>
 						<DoubleOutlineBtn
 							icon={<StarIcon fill="#57606a" />}
@@ -167,7 +172,7 @@ const TitleBox = styled.div`
 	}
 `;
 
-const UserName = styled.a`
+const UserName = styled.button`
 	color: #0969da;
 	cursor: pointer;
 	:hover {
