@@ -1,6 +1,6 @@
 import { IssueType } from "../models/IssueType";
 import { CommentType } from "../models/CommentType";
-import { labelsApi } from "./labelsApi";
+import { mainApi } from "./mainApi";
 
 interface GetIssueParams {
 	owner: string | null;
@@ -64,25 +64,17 @@ interface CreateCommentParams {
 	body?: string;
 }
 
-export const issueApi = labelsApi.injectEndpoints({
+export const issueApi = mainApi.injectEndpoints({
 	endpoints: (builder) => ({
 		getIssue: builder.query<IssueType, GetIssueParams>({
 			query: ({ owner, repo, number }) => ({
 				url: `/repos/${owner}/${repo}/issues/${number}`,
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			providesTags: ["Issue"],
 		}),
 		getComment: builder.query<CommentType[], GetIssueParams>({
 			query: ({ owner, repo, number }) => ({
 				url: `/repos/${owner}/${repo}/issues/${number}/comments`,
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			providesTags: ["Issue"],
 		}),
@@ -91,10 +83,6 @@ export const issueApi = labelsApi.injectEndpoints({
 				url: `/repos/${owner}/${repo}/issues/${number}`,
 				method: "PATCH",
 				body: { labels },
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			invalidatesTags: ["Issue"],
 		}),
@@ -103,10 +91,6 @@ export const issueApi = labelsApi.injectEndpoints({
 				url: `/repos/${owner}/${repo}/issues/${number}`,
 				method: "PATCH",
 				body: { assignees },
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			invalidatesTags: ["Issue"],
 		}),
@@ -115,10 +99,6 @@ export const issueApi = labelsApi.injectEndpoints({
 				url: `/repos/${owner}/${repo}/issues/${number}`,
 				method: "PATCH",
 				body: { title },
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			invalidatesTags: ["Issue"],
 		}),
@@ -128,10 +108,6 @@ export const issueApi = labelsApi.injectEndpoints({
 				url: `/repos/${owner}/${repo}/issues/${number}`,
 				method: "PATCH",
 				body: { body },
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			invalidatesTags: ["Issue"],
 		}),
@@ -140,10 +116,6 @@ export const issueApi = labelsApi.injectEndpoints({
 				url: `/repos/${owner}/${repo}/issues/${number}`,
 				method: "PATCH",
 				body: { state, state_reason },
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			invalidatesTags: ["Issue"],
 		}),
@@ -152,10 +124,6 @@ export const issueApi = labelsApi.injectEndpoints({
 				url: `/repos/${owner}/${repo}/issues/${number}/comments`,
 				method: "POST",
 				body: { body },
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			invalidatesTags: ["Issue"],
 		}),
@@ -164,10 +132,6 @@ export const issueApi = labelsApi.injectEndpoints({
 				url: `/repos/${owner}/${repo}/issues/comments/${id}`,
 				method: "PATCH",
 				body: { body },
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			invalidatesTags: ["Issue"],
 		}),
@@ -175,10 +139,6 @@ export const issueApi = labelsApi.injectEndpoints({
 			query: ({ owner, repo, id }) => ({
 				url: `/repos/${owner}/${repo}/issues/comments/${id}`,
 				method: "DELETE",
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			invalidatesTags: ["Issue"],
 		}),

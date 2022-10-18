@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
+import { useSelector } from "react-redux";
 import { SyncIcon } from "@primer/octicons-react";
+import { RootState } from "../../app/store";
 import NormalBtn from "../../commons/NormalBtn";
 import { lightOrDark, generateRendomColor } from "../../utils/utils";
 import Label from "./Label";
@@ -40,6 +42,7 @@ export default function ColorManager({
 	const [forbiddenSubmit, setForbiddenSubmit] = useState(true);
 	const colorValidate = /^([0-9A-F]{3}){1,2}$/i;
 	const colorChecked = colorValidate.test(colorCode.split("#")[1]);
+	const loginUser = useSelector((state: RootState) => state.login);
 
 	useEffect(() => {
 		checkInput();
@@ -81,8 +84,8 @@ export default function ColorManager({
 
 	async function handleCreateLabel() {
 		await createLabel({
-			owner: "athenacheng15",
-			repo: "issue_test",
+			owner: loginUser.login,
+			repo: localStorage.getItem("repo"),
 			label: newLabel,
 		});
 	}

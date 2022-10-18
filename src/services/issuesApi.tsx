@@ -1,5 +1,5 @@
 import { DefaultRepoIssues, UserDefaultData } from "../models/IssuesType";
-import { labelsApi } from "./labelsApi";
+import { mainApi } from "./mainApi";
 
 interface GetIssuesParams {
 	owner: string | null;
@@ -21,15 +21,11 @@ interface IssueQueryStringState {
 	page?: number | string;
 }
 
-export const issuesApi = labelsApi.injectEndpoints({
+export const issuesApi = mainApi.injectEndpoints({
 	endpoints: (builder) => ({
 		getIssues: builder.query<DefaultRepoIssues[], GetIssuesParams>({
 			query: ({ owner, repo, query }) => ({
 				url: `/repos/${owner}/${repo}/issues?${query.issueStatus}${query.labels}${query.assignee}${query.sort}${query.filters}${query.page}`,
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			providesTags: ["Issues"],
 		}),
@@ -37,10 +33,6 @@ export const issuesApi = labelsApi.injectEndpoints({
 		getAssignee: builder.query<UserDefaultData[], GetAssigneeParams>({
 			query: ({ owner, repo }) => ({
 				url: `/repos/${owner}/${repo}/assignees`,
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			providesTags: ["Issues"],
 		}),

@@ -34,12 +34,7 @@ const loginSlice = createSlice({
 		setAvatar: (state, action: PayloadAction<string>) => {
 			state.avatar_url = action.payload;
 		},
-		setOwner: (state, action: PayloadAction<string>) => {
-			state.owner = action.payload;
-		},
-		setRepo: (state, action: PayloadAction<string>) => {
-			state.repo = action.payload;
-		},
+
 		resetLogin: (state) => {
 			state.login = "";
 			state.avatar_url = "";
@@ -48,6 +43,5 @@ const loginSlice = createSlice({
 	},
 });
 
-export const { setLogin, setAvatar, setOwner, setRepo, resetLogin } =
-	loginSlice.actions;
+export const { setLogin, setAvatar, resetLogin } = loginSlice.actions;
 export default loginSlice.reducer;

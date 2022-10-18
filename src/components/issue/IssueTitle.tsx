@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useUpdateTitleMutation } from "../../services/issueApi";
-
+import { useNavigate } from "react-router-dom";
 import NormalBtn from "../../commons/NormalBtn";
 
 interface IssueTitleProp {
@@ -9,6 +9,7 @@ interface IssueTitleProp {
 }
 
 export default function IssueTitle({ defaultTitle, number }: IssueTitleProp) {
+	const navigate = useNavigate();
 	const [mode, setMode] = useState("view");
 	const [inputValue, setInputValue] = useState(defaultTitle);
 	const [updateTitle] = useUpdateTitleMutation();
@@ -44,6 +45,7 @@ export default function IssueTitle({ defaultTitle, number }: IssueTitleProp) {
 								colorType="green"
 								width="auto"
 								size="s"
+								onClick={() => navigate("/issues/new")}
 							/>
 						</div>
 						<a className="text-sm font-medium text-[#0969da] cursor-pointer hover:underline L:hidden ">

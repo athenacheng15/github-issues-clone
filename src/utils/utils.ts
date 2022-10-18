@@ -1,3 +1,11 @@
+export function getToken() {
+	const supaBaseData = JSON.parse(
+		localStorage.getItem("supabase.auth.token") || ""
+	);
+	const userToken = supaBaseData.currentSession.provider_token;
+	return userToken;
+}
+
 export function lightOrDark(color: string) {
 	const r = parseInt(color.slice(1, 3), 16);
 	const g = parseInt(color.slice(3, 5), 16);
@@ -54,8 +62,6 @@ export function timeCalc(time: string) {
 }
 
 export function timeCalc2(time: string) {
-	const createdTime = new Date(time).getTime();
-
 	const monthNamesEn = [
 		"Jan",
 		"Feb",

@@ -1,7 +1,9 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import type { RootState } from "../../app/store";
+import { useGetLabelsQuery } from "../../services/labelsApi";
+import { useGetIssuesQuery } from "../../services/issuesApi";
 import DoubleIconBtn from "../../commons/DoubleIconBtn";
 import NormalBtn from "../../commons/NormalBtn";
 import IssueBar from "./IssueBar";
@@ -9,6 +11,7 @@ import PopFilter from "./PopFilter";
 import PopSort from "./PopSort";
 import PopLabel from "./PopLabel";
 import PopAssignee from "./PopAssignee";
+import Loader from "../../commons/Loader";
 
 import {
 	TagIcon,
@@ -21,8 +24,6 @@ import {
 	ChevronLeftIcon,
 } from "@primer/octicons-react";
 
-import { useGetLabelsQuery } from "../../services/labelsApi";
-import { useGetIssuesQuery } from "../../services/issuesApi";
 import {
 	handleIssueStatus,
 	resetQuery,
@@ -56,7 +57,15 @@ export default function Issues() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const { data } = useGetIssuesQuery({
+	if (!loginUser.login) {
+		return (
+			<>
+				<Navigate to="/" replace />
+			</>
+		);
+	}
+
+	const { data: issuesData, isSuccess: issuesSuccess } = useGetIssuesQuery({
 		owner: loginUser.login,
 		repo: localStorage.getItem("repo"),
 		query: {
@@ -69,7 +78,7 @@ export default function Issues() {
 		},
 	});
 
-	const { data: labelData } = useGetLabelsQuery({
+	const { data: labelsData, isSuccess: labelsSuccess } = useGetLabelsQuery({
 		owner: loginUser.login,
 		repo: localStorage.getItem("repo"),
 	});
@@ -142,6 +151,10 @@ export default function Issues() {
 		},
 	];
 
+	if (!issuesSuccess || !labelsSuccess) {
+		return <Loader />;
+	}
+
 	return (
 		<div className="w-[100%] h-[auto] max-w-[1280px]   m-[auto] M:relative">
 			<section className="flex px-4 flex-wrap justify-between items-center w-[100%] mt-6 M:relative L:flex-nowrap L:px-6 XL:px-8">
@@ -169,8 +182,9 @@ export default function Issues() {
 						text1="Labels"
 						icon2={<MilestoneIcon />}
 						text2="Milestones"
-						num1={labelData?.length}
+						num1={labelsData?.length}
 						num2={0}
+						onClick1={() => navigate("/labels")}
 					/>
 				</div>
 				<button>
@@ -246,7 +260,7 @@ export default function Issues() {
 					</div>
 				</header>
 				<div className=" rounded-b-[6px] M:border M:border-t-0 M:border-[#d1d5da] M:border-solid ">
-					{data?.length === 0 ? (
+					{issuesData?.length === 0 ? (
 						<div className="flex flex-wrap justify-center py-20 text-center">
 							<div className="w-[100%] mb-8">
 								<IssueOpenedIcon fill="#57606a" size={24} />
@@ -261,7 +275,7 @@ export default function Issues() {
 							</p>
 						</div>
 					) : (
-						data?.map((item) => (
+						issuesData?.map((item) => (
 							<IssueBar
 								key={item.id}
 								title={item.title}
@@ -293,11 +307,11 @@ export default function Issues() {
 				<p>{page}</p>
 				<button
 					className={`flex items-center w-[auto]h-[auto] p-2 ml-4  rounded-md ${
-						data?.length === 0
+						issuesData?.length === 0
 							? "text-[#57606a]"
 							: "text-[#0969da] hover:border hover:border-[#d1d5da] hover:border-solid cursor-pointer"
 					}`}
-					disabled={data?.length === 0}
+					disabled={issuesData?.length === 0}
 					onClick={() => dispatch(nextPage())}
 				>
 					<p className="mr-1">Next</p> <ChevronRightIcon />

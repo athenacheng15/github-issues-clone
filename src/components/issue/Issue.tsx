@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import type { RootState } from "../../app/store";
 import {
 	useGetIssueQuery,
@@ -16,8 +16,9 @@ import IssueTitle from "./IssueTitle";
 import DataBar from "./DataBar";
 import StatusTag from "../../commons/StatusTag";
 import CommentArea from "./CommentArea";
+import Loader from "../../commons/Loader";
 import { timeCalc } from "../../utils/utils";
-import _, { forEach } from "lodash";
+import _ from "lodash";
 
 export default function Issue() {
 	const currentContent = useSelector((state: RootState) => state.issue);
@@ -32,6 +33,14 @@ export default function Issue() {
 	const [participant, setParticipant] = useState<
 		({ name: string | undefined; img: string | undefined } | undefined)[]
 	>([]);
+
+	if (!loginUser.login) {
+		return (
+			<>
+				<Navigate to="/" replace />
+			</>
+		);
+	}
 
 	function handleCreateComment() {
 		createComment({
@@ -69,14 +78,12 @@ export default function Issue() {
 		repo: localStorage.getItem("repo"),
 		number: number,
 	});
-	console.log(issueData);
 
 	const { data: commentData } = useGetCommentQuery({
 		owner: loginUser.login,
 		repo: localStorage.getItem("repo"),
 		number: number,
 	});
-	console.log(commentData);
 
 	useEffect(() => {
 		dispatch(
@@ -102,20 +109,8 @@ export default function Issue() {
 		setParticipant(_.uniqWith(allUser, _.isEqual));
 	}, [commentData]);
 
-	// console.log(currentContent);
-
 	if (!isSuccess) {
-		return (
-			<div className="flex flex-wrap items-center justify-center my-[150px]">
-				<img
-					className="w-[100px] h-[100px]"
-					src="https://media3.giphy.com/avatars/mwooodward/cIe5MvDvX4Vc.gif"
-				></img>
-				<p className="w-[100%] text-center mt-2 text-[32px] font-bold text-[#57606a]">
-					loading...
-				</p>
-			</div>
-		);
+		return <Loader />;
 	}
 
 	return (

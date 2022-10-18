@@ -7,6 +7,7 @@ interface Props {
 	text2: string;
 	num1?: number;
 	num2?: number;
+	onClick1?: () => void;
 }
 
 export default function DoubleIconBtn({
@@ -16,11 +17,12 @@ export default function DoubleIconBtn({
 	text2,
 	num1,
 	num2,
+	onClick1,
 }: Props) {
 	return (
 		<>
 			<DoubleBtn>
-				<OutLineBtnLeft>
+				<OutLineBtnLeft onClick={onClick1}>
 					{icon1} <div>{text1}</div> <Dot isShown={num1}>{num1}</Dot>
 				</OutLineBtnLeft>
 				<OutLineBtnRight>

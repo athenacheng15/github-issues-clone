@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
 import SingleOutlineBtn from "./SingleOutlineBtn";
 import DoubleOutlineBtn from "./DoubleOutlineBtn";
 import FilledBtn from "./FilledBtn";
@@ -20,8 +22,6 @@ import {
 	GraphIcon,
 	GearIcon,
 } from "@primer/octicons-react";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../app/store";
 
 export default function SubTitle() {
 	const navigate = useNavigate();
@@ -51,11 +51,11 @@ export default function SubTitle() {
 
 	return (
 		<>
-			<Wrapper>
+			<Wrapper isShown={loginUser.login ? true : false}>
 				<UpperBox>
 					<TitleBox>
 						<RepoIcon size={16} fill="rgb(87, 96, 106)" />
-						<UserName>
+						<UserName href="/">
 							{loginUser.login ? loginUser.login : "User Name"}
 						</UserName>
 						<span>/</span>
@@ -110,8 +110,13 @@ export default function SubTitle() {
 	);
 }
 
-const Wrapper = styled.div`
+interface WrapperProps {
+	isShown: boolean;
+}
+
+const Wrapper = styled.div<WrapperProps>`
 	position: relative;
+	display: ${(props) => (props.isShown ? "block" : "none")};
 	width: 100%;
 	height: auto;
 	background-color: #f6f8fa;

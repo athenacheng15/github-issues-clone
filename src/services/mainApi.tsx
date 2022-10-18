@@ -1,11 +1,22 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getToken } from "../utils/utils";
 import { RepoType } from "../models/RepoType";
-import { labelsApi } from "./labelsApi";
 
 interface GetReposParams {
 	username: string | null;
 }
 
-export const reposApi = labelsApi.injectEndpoints({
+export const mainApi = createApi({
+	reducerPath: "labelsApi",
+	tagTypes: ["Label", "Issues", "Issue", "Repos"],
+	baseQuery: fetchBaseQuery({
+		baseUrl: "https://api.github.com",
+		prepareHeaders: (headers) => {
+			headers.set("Accept", "application/vnd.github+json");
+			headers.set("Authorization", `Bearer ${getToken()}`);
+			return headers;
+		},
+	}),
 	endpoints: (builder) => ({
 		getRepos: builder.query<RepoType[], GetReposParams>({
 			query: ({ username }) => ({
@@ -21,7 +32,6 @@ export const reposApi = labelsApi.injectEndpoints({
 			providesTags: ["Repos"],
 		}),
 	}),
-	overrideExisting: false,
 });
 
-export const { useGetReposQuery } = reposApi;
+export const { useGetReposQuery } = mainApi;

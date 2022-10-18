@@ -1,5 +1,5 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RepoLabels, EditLabelKey } from "../models/LabelsType";
+import { mainApi } from "./mainApi";
 
 interface GetLabelParams {
 	owner: string | null;
@@ -7,8 +7,8 @@ interface GetLabelParams {
 }
 
 interface CreateLabelParams {
-	owner: string;
-	repo: string;
+	owner: string | null;
+	repo: string | null;
 	label: EditLabelKey;
 }
 
@@ -25,20 +25,11 @@ interface DeleteLabelParams {
 	name: string;
 }
 
-export const labelsApi = createApi({
-	reducerPath: "labelsApi",
-	tagTypes: ["Label", "Issues", "Issue", "Repos"],
-	baseQuery: fetchBaseQuery({
-		baseUrl: "https://api.github.com",
-	}),
+export const labelsApi = mainApi.injectEndpoints({
 	endpoints: (builder) => ({
 		getLabels: builder.query<RepoLabels[], GetLabelParams>({
 			query: ({ owner, repo }) => ({
 				url: `/repos/${owner}/${repo}/labels`,
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			providesTags: ["Label"],
 		}),
@@ -47,10 +38,6 @@ export const labelsApi = createApi({
 				url: `/repos/${owner}/${repo}/labels`,
 				method: "POST",
 				body: label,
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			invalidatesTags: ["Label"],
 		}),
@@ -59,10 +46,6 @@ export const labelsApi = createApi({
 				url: `/repos/${owner}/${repo}/labels/${name}`,
 				method: "PATCH",
 				body: label,
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			invalidatesTags: ["Label"],
 		}),
@@ -71,10 +54,6 @@ export const labelsApi = createApi({
 				url: `/repos/${owner}/${repo}/labels/${name}`,
 				method: "DELETE",
 				body: { owner, repo, name },
-				headers: new Headers({
-					Authorization: `Bearer ${process.env.REACT_APP_GH_TOKEN}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			invalidatesTags: ["Label"],
 		}),

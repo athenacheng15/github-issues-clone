@@ -1,11 +1,15 @@
 import styled from "styled-components";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+import { RootState } from "../../app/store";
 import NormalBtn from "../../commons/NormalBtn";
 import LabelBar from "./LabelBar";
 import SelectBox from "../../commons/SelectBox";
 import DoubleIconBtn from "../../commons/DoubleIconBtn";
 import ContentSearchBar from "../../commons/ContentSearchBar";
 import NewLabel from "./NewLabel";
+import Loader from "../../commons/Loader";
 import {
 	TagIcon,
 	MilestoneIcon,
@@ -15,15 +19,26 @@ import {
 import { useGetLabelsQuery } from "../../services/labelsApi";
 
 export default function Labels() {
+	const loginUser = useSelector((state: RootState) => state.login);
 	const [sortListVis, setSortListVis] = useState(false);
 	const [newLabelVis, setNewLabelVis] = useState(false);
 
-	const { data } = useGetLabelsQuery({
-		owner: "athenacheng15",
-		repo: "issue_test",
+	const { data, isSuccess } = useGetLabelsQuery({
+		owner: loginUser.login,
+		repo: localStorage.getItem("repo"),
 	});
 
-	console.log(data);
+	if (!loginUser.login) {
+		return (
+			<>
+				<Navigate to="/" replace />
+			</>
+		);
+	}
+
+	if (!isSuccess) {
+		return <Loader />;
+	}
 
 	return (
 		<>

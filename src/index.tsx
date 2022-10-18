@@ -25,7 +25,7 @@ root.render(
 					<Route path="issues/new" element={<NewIssue />} />
 					<Route path="issues/:number" element={<Issue />} />
 					<Route path="labels" element={<Labels />} />
-					{/* <Route path="*" element={<Navigate to="/" replace />} /> */}
+					<Route path="*" element={<Navigate to="/issues" replace />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>

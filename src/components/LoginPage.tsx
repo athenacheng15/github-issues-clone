@@ -4,14 +4,8 @@ import { supabase } from "../utils/client";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../app/store";
-import { useGetReposQuery } from "../services/reposApi";
-import {
-	setLogin,
-	setAvatar,
-	setOwner,
-	setRepo,
-	resetLogin,
-} from "../app/userSlice";
+import { useGetReposQuery } from "../services/mainApi";
+import { setLogin, setAvatar, resetLogin } from "../app/userSlice";
 
 export default function LoginPage() {
 	const dispatch = useDispatch();
@@ -31,7 +25,12 @@ export default function LoginPage() {
 	}
 
 	async function signInWithGithub() {
-		await supabase.auth.signIn({ provider: "github" });
+		await supabase.auth.signIn(
+			{ provider: "github" },
+			{
+				scopes: "repo gist notifications",
+			}
+		);
 	}
 
 	async function signOut() {
