@@ -39,6 +39,7 @@ export default function NewIssue() {
 						title={true}
 						hight="l"
 						submitText="Submit new Issue"
+						img={loginUser.avatar_url}
 					/>
 				</div>
 				<div className="mt-8 L:mt-0 L:ml-4 XL:ml-6">

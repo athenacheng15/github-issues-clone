@@ -94,13 +94,13 @@ export default function RightFuncBar({
 			),
 			defaultText: "no one-",
 			button: "assign yourself",
-			onClick: () => dispatch(handleAssignees("athenacheng15")),
+			onClick: () => dispatch(handleAssignees(loginUser.login || "")),
 			setting: true,
 			content: assignedList(),
 			dataManager: () =>
 				updateAssignee({
-					owner: "athenacheng15",
-					repo: "issue_test",
+					owner: loginUser.login,
+					repo: localStorage.getItem("repo"),
 					number: number,
 					assignees: currentContent.assignees,
 				}),
@@ -121,8 +121,8 @@ export default function RightFuncBar({
 			content: labeledList(),
 			dataManager: () =>
 				updateLabel({
-					owner: "athenacheng15",
-					repo: "issue_test",
+					owner: loginUser.login,
+					repo: localStorage.getItem("repo"),
 					number: number,
 					labels: currentContent.labels,
 				}),

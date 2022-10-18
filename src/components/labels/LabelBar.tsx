@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { useState } from "react";
-import SelectList from "../../commons/SelectList";
-import ColorManager from "./ColorManager";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
 import { KebabHorizontalIcon } from "@primer/octicons-react";
 import { useDeleteLabelsMutation } from "../../services/labelsApi";
 import { EditLabelKey } from "../../models/LabelsType";
+import SelectList from "../../commons/SelectList";
+import ColorManager from "./ColorManager";
 
 interface BarProps {
 	labelText: string;
@@ -18,9 +20,9 @@ export default function LabelBar({
 	bgColor,
 	description,
 }: BarProps) {
+	const loginUser = useSelector((state: RootState) => state.login);
 	const [editAreaVis, setEditAreaVis] = useState(false);
 	const [dotListVis, setDotListVis] = useState(false);
-
 	const [deleteLabel] = useDeleteLabelsMutation();
 
 	const [newLabel, setNewLabel] = useState<EditLabelKey>({
@@ -31,8 +33,8 @@ export default function LabelBar({
 
 	async function handleDeleteLabel() {
 		await deleteLabel({
-			owner: "athenacheng15",
-			repo: "issue_test",
+			owner: loginUser.login,
+			repo: localStorage.getItem("repo"),
 			name: labelText,
 		});
 	}

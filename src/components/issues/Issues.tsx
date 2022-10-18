@@ -38,12 +38,8 @@ const stateList = [
 ];
 
 export default function Issues() {
-	const [popFilterVis, setPopFilterVis] = useState(false);
-	const [popSortVis, setPopSortVis] = useState(false);
-	const [popLabelVis, setPopLabelVis] = useState(false);
-	const [popAssigneeVis, setPopAssigneeVis] = useState(false);
-	const [inputValue, setInputValue] = useState("");
-
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const currentState = useSelector((state: RootState) => state.queries);
 	const loginUser = useSelector((state: RootState) => state.login);
 	const issueStatus = useSelector(
@@ -54,9 +50,11 @@ export default function Issues() {
 	const labels = useSelector((state: RootState) => state.queries.labels);
 	const filters = useSelector((state: RootState) => state.queries.filters);
 	const page = useSelector((state: RootState) => state.queries.page);
-
-	const dispatch = useDispatch();
-	const navigate = useNavigate();
+	const [popFilterVis, setPopFilterVis] = useState(false);
+	const [popSortVis, setPopSortVis] = useState(false);
+	const [popLabelVis, setPopLabelVis] = useState(false);
+	const [popAssigneeVis, setPopAssigneeVis] = useState(false);
+	const [inputValue, setInputValue] = useState("");
 
 	if (!loginUser.login) {
 		return (
@@ -74,7 +72,7 @@ export default function Issues() {
 			labels: labels?.length !== 0 ? `labels=${labels?.join()}&` : "",
 			assignee: assignee ? `assignee=${assignee}&` : "",
 			sort: sort ? `sort=${sort}&` : "",
-			filters: filters ? `${filters}athenacheng15&` : "",
+			filters: filters ? `${filters}${loginUser.login}&` : "",
 			page: page ? `page=${page}&` : 1,
 		},
 	});

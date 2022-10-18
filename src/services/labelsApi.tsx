@@ -13,15 +13,15 @@ interface CreateLabelParams {
 }
 
 interface EditLabelParams {
-	owner: string;
-	repo: string;
+	owner: string | null;
+	repo: string | null;
 	name?: string;
 	label: EditLabelKey;
 }
 
 interface DeleteLabelParams {
-	owner: string;
-	repo: string;
+	owner: string | null;
+	repo: string | null;
 	name: string;
 }
 

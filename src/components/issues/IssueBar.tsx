@@ -1,14 +1,16 @@
+import { RepoLabels } from "../../models/LabelsType";
+import { UserDefaultData } from "../../models/IssuesType";
+import { useNavigate } from "react-router-dom";
+import { timeCalc, timeCalc2 } from "../../utils/utils";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../app/store";
+import Label from "../../commons/Label";
 import {
 	IssueOpenedIcon,
 	CommentIcon,
 	IssueClosedIcon,
 	SkipIcon,
 } from "@primer/octicons-react";
-import { RepoLabels } from "../../models/LabelsType";
-import { UserDefaultData } from "../../models/IssuesType";
-import Label from "../../commons/Label";
-import { useNavigate } from "react-router-dom";
-import { timeCalc, timeCalc2 } from "../../utils/utils";
 
 interface IssueBarProp {
 	title: string;
@@ -36,6 +38,7 @@ export default function IssueBar({
 	body,
 }: IssueBarProp) {
 	const navigate = useNavigate();
+	const loginUser = useSelector((state: RootState) => state.login);
 	return (
 		<>
 			<div className="flex px-4 py-2 border-0 border-b border-[#d1d5da] border-solid last:rounded-b-[6px] hover:bg-[#f6f8fa] M:last:border-b-0">
@@ -60,8 +63,8 @@ export default function IssueBar({
 						<div className="hidden group-hover:block absolute p-4 w-[340px] h-[auto] border border-[#d1d5da] border-solid rounded-[6px] bg-white bottom-12">
 							<div className="flex text-xs text-[#57606a]">
 								<p>
-									<span className="underline hover:text-[#0969da]">
-										athenacheng15/issue_test
+									<span className="underline hover:text-[#0969da] mr-1">
+										{loginUser.login}/{localStorage.getItem("repo")}
 									</span>
 									on {timeCalc2(time)}
 								</p>

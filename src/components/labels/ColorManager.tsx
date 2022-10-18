@@ -92,8 +92,8 @@ export default function ColorManager({
 
 	async function handleEditLabel() {
 		await editLabel({
-			owner: "athenacheng15",
-			repo: "issue_test",
+			owner: loginUser.login,
+			repo: localStorage.getItem("repo"),
 			name: labelText,
 			label: {
 				new_name: newLabel.name,

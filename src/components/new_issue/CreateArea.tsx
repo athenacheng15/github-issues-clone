@@ -44,6 +44,7 @@ interface CreateAreaProp {
 	submitText: string;
 	state?: string;
 	stateReason?: string;
+	img: string;
 }
 
 export default function CreateArea({
@@ -58,6 +59,7 @@ export default function CreateArea({
 	commentMode,
 	submitText,
 	state,
+	img,
 }: CreateAreaProp) {
 	const [inputStatus, setInputStatus] = useState("Write");
 	const [bottomVis, setBottomVis] = useState(false);
@@ -76,8 +78,7 @@ export default function CreateArea({
 			<div className="w-[auto]">
 				<img
 					className="hidden L:block w-10 h-10 rounded-[100%] mr-4 "
-					src="https://avatars.githubusercontent.com/u/64196504?v=4
-"
+					src={img}
 				></img>
 			</div>
 			<div className="w-[100%]">

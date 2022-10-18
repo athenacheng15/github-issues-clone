@@ -5,7 +5,6 @@ import type { RootState } from "../../app/store";
 import SingleOutlineBtn from "./SingleOutlineBtn";
 import DoubleOutlineBtn from "./DoubleOutlineBtn";
 import FilledBtn from "./FilledBtn";
-import { useGetIssuesQuery } from "../../services/issuesApi";
 import { resetQuery } from "../../app/issuesSlice";
 import {
 	RepoIcon,

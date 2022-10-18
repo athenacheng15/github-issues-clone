@@ -229,6 +229,7 @@ export default function Issue() {
 							commentMode={true}
 							state={issueData.state}
 							stateReason={issueData.state_reason}
+							img={loginUser.avatar_url}
 						/>
 					</div>
 				</div>

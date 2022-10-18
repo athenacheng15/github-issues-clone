@@ -72,7 +72,7 @@ export default function RightFuncBar() {
 			),
 			defaultText: "no one-",
 			button: "assign yourself",
-			onClick: () => dispatch(handleAssignees("athenacheng15")),
+			onClick: () => dispatch(handleAssignees(loginUser.login || "")),
 			setting: true,
 			content: assignedList(),
 		},

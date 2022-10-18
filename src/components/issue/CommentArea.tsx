@@ -56,7 +56,6 @@ interface CreateAreaProp {
 	reactions: Reactions;
 	first?: boolean;
 	owner?: string;
-	reducer?: AnyAction;
 }
 
 export default function CommentArea({
@@ -75,8 +74,13 @@ export default function CommentArea({
 	reactions,
 	first,
 	owner,
-	reducer,
 }: CreateAreaProp) {
+	const dispatch = useDispatch();
+	const loginUser = useSelector((state: RootState) => state.login);
+	const currentContent = useSelector((state: RootState) => state.issue);
+	const [deleteComment] = useDeleteCommentMutation();
+	const [editComment] = useEditCommentMutation();
+	const [editIssue] = useEditIssueMutation();
 	const [inputStatus, setInputStatus] = useState("Write");
 	const [bottomVis, setBottomVis] = useState(false);
 	const [dropDownVis, setDropDownVis] = useState(false);
@@ -85,15 +89,8 @@ export default function CommentArea({
 		{ name: "Write", action: "" },
 		{ name: "Preview", action: "" },
 	];
-
 	const [bodyValue, setBodyValue] = useState<string>(defaultBody || "");
-	const dispatch = useDispatch();
 	const ref = useRef<TextareaMarkdownRef>(null);
-	const loginUser = useSelector((state: RootState) => state.login);
-	const currentContent = useSelector((state: RootState) => state.issue);
-	const [deleteComment] = useDeleteCommentMutation();
-	const [editComment] = useEditCommentMutation();
-	const [editIssue] = useEditIssueMutation();
 
 	const issueDropDownList = [
 		{ name: "Copy link" },
@@ -127,7 +124,7 @@ export default function CommentArea({
 			action: () => {
 				deleteComment({
 					owner: loginUser.login,
-					repo: "issue_test",
+					repo: localStorage.getItem("repo"),
 					id: id?.toString(),
 				});
 			},
@@ -137,7 +134,7 @@ export default function CommentArea({
 	function handleUpdateComment() {
 		editComment({
 			owner: loginUser.login,
-			repo: "issue_test",
+			repo: localStorage.getItem("repo"),
 			id: id?.toString(),
 			body: currentContent.body,
 		});
@@ -148,7 +145,7 @@ export default function CommentArea({
 	function handleUpdateIssue() {
 		editIssue({
 			owner: loginUser.login,
-			repo: "issue_test",
+			repo: localStorage.getItem("repo"),
 			number: number,
 			body: currentContent.body,
 		});
