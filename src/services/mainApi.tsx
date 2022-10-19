@@ -14,6 +14,7 @@ export const mainApi = createApi({
 		prepareHeaders: (headers) => {
 			headers.set("Accept", "application/vnd.github+json");
 			headers.set("Authorization", `Bearer ${getToken()}`);
+			headers.set("If-None-Match", "");
 			return headers;
 		},
 	}),
