@@ -16,7 +16,7 @@ import IssueTitle from "./IssueTitle";
 import DataBar from "./DataBar";
 import StatusTag from "../../components/commons/tags/StatusTag";
 import CommentArea from "../../components/commons/message/CommentArea";
-import Loader from "../../components/commons/Loader";
+import Loader from "../../components/Loader";
 import { timeCalc } from "../../utils/utils";
 import _ from "lodash";
 

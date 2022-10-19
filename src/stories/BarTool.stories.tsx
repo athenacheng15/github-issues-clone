@@ -1,6 +1,8 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import BarTool from "../components/commons/BarTool";
+import { Provider } from "react-redux";
+import { store } from "../app/store";
 
 export default {
 	title: "BarTool",
@@ -14,9 +16,11 @@ export default {
 } as ComponentMeta<typeof BarTool>;
 
 const Template: ComponentStory<typeof BarTool> = (args) => (
-	<div className="w-[240px]">
-		<BarTool {...args} />
-	</div>
+	<Provider store={store}>
+		<div className="w-[240px]">
+			<BarTool {...args} />
+		</div>
+	</Provider>
 );
 export const Default = Template.bind({});
 

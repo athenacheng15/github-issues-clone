@@ -64,7 +64,8 @@ export default function IssueBar({
 							<div className="flex text-xs text-[#57606a]">
 								<p>
 									<span className="underline hover:text-[#0969da] mr-1">
-										{loginUser.login}/{localStorage.getItem("repo")}
+										{loginUser.login || "user"}/
+										{localStorage.getItem("repo") || "repo"}
 									</span>
 									on {timeCalc2(time)}
 								</p>

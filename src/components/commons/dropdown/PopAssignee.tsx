@@ -1,9 +1,9 @@
 import { XIcon, CheckIcon } from "@primer/octicons-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import type { RootState } from "../../app/store";
-import { handleAssignees, resetAssignees } from "../../app/newIssueSlice";
-import { UserDefaultData } from "../../models/IssuesType";
+import type { RootState } from "../../../app/store";
+import { handleAssignees, resetAssignees } from "../../../app/newIssueSlice";
+import { UserDefaultData } from "../../../models/IssuesType";
 
 interface AssigneeProps {
 	setPopAssigneeVis: Dispatch<SetStateAction<boolean>>;

@@ -12,7 +12,7 @@ import {
 	SignOutIcon,
 } from "@primer/octicons-react";
 import SearchBar from "./SearchBar";
-import SelectList from "../commons/SelectList";
+import SelectList from "../commons/dropdown/SelectList";
 import UserSelectList from "./UserSelectList";
 
 interface Props {

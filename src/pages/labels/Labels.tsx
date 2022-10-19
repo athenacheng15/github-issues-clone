@@ -5,11 +5,11 @@ import { Navigate } from "react-router-dom";
 import { RootState } from "../../app/store";
 import NormalBtn from "../../components/commons/buttons/NormalBtn";
 import LabelBar from "./LabelBar";
-import SelectBox from "../../components/commons/SelectBox";
+import SelectBox from "../../components/commons/dropdown/SelectBox";
 import DoubleIconBtn from "../../components/commons/buttons/DoubleIconBtn";
 import ContentSearchBar from "../../components/commons/ContentSearchBar";
 import NewLabel from "./NewLabel";
-import Loader from "../../components/commons/Loader";
+import Loader from "../../components/Loader";
 import {
 	TagIcon,
 	MilestoneIcon,

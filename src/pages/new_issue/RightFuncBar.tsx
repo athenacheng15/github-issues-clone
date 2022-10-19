@@ -4,8 +4,8 @@ import { useGetLabelsQuery } from "../../services/labelsApi";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
 import { handleAssignees } from "../../app/newIssueSlice";
-import PopAssignee from "../../components/commons/PopAssignee";
-import PopLabel from "../../components/commons/PopLabel";
+import PopAssignee from "../../components/commons/dropdown/PopAssignee";
+import PopLabel from "../../components/commons/dropdown/PopLabel";
 import BarTool from "../../components/commons/BarTool";
 import Label from "../../components/commons/tags/Label";
 

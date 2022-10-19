@@ -12,7 +12,7 @@ import PopFilter from "./PopFilter";
 import PopSort from "./PopSort";
 import PopLabel from "./PopLabel";
 import PopAssignee from "./PopAssignee";
-import Loader from "../../components/commons/Loader";
+import Loader from "../../components/Loader";
 
 import {
 	TagIcon,

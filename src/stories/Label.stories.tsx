@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Label from "../components/commons/tags/Label";
 
 export default {
-	title: "Label",
+	title: "tags/Label",
 	component: Label,
 
 	argTypes: {

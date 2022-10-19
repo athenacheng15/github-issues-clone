@@ -141,8 +141,6 @@ export default function CommentArea({
 		setMode("view");
 	}
 
-	console.log(reactions);
-
 	return (
 		<div className="flex w-[100%] ">
 			<div className="w-[auto]">

@@ -1,6 +1,9 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import IssueBar from "../pages/issues/IssueBar";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "../app/store";
 
 export default {
 	title: "IssueBar",
@@ -20,7 +23,11 @@ export default {
 
 const Template: ComponentStory<typeof IssueBar> = (args) => (
 	<div className="flex width-[500px]">
-		<IssueBar {...args} />
+		<BrowserRouter>
+			<Provider store={store}>
+				<IssueBar {...args} />
+			</Provider>
+		</BrowserRouter>
 	</div>
 );
 export const Default = Template.bind({});
@@ -43,4 +50,5 @@ Default.args = {
 	iconState: "open",
 	stateReason: "",
 	time: "2022-09-29T06:14:25Z",
+	body: "",
 };

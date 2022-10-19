@@ -2,9 +2,9 @@ import { XIcon, CheckIcon, PencilIcon } from "@primer/octicons-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import type { RootState } from "../../app/store";
-import { handleLabels } from "../../app/newIssueSlice";
-import { RepoLabels } from "../../models/LabelsType";
+import type { RootState } from "../../../app/store";
+import { handleLabels } from "../../../app/newIssueSlice";
+import { RepoLabels } from "../../../models/LabelsType";
 
 interface LabelProps {
 	setPopLabelVis: Dispatch<SetStateAction<boolean>>;

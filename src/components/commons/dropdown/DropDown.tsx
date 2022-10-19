@@ -1,5 +1,4 @@
 import { MouseEventHandler, Dispatch, SetStateAction } from "react";
-import { AnyAction } from "redux";
 import styled from "styled-components";
 
 interface ListProps {

@@ -4,7 +4,7 @@ import DoubleIconBtn from "../components/commons/buttons/DoubleIconBtn";
 import { TagIcon, MilestoneIcon } from "@primer/octicons-react";
 
 export default {
-	title: "DoubleIconBtn",
+	title: "buttons/DoubleIconBtn",
 	component: DoubleIconBtn,
 	argTypes: {
 		icon1: {

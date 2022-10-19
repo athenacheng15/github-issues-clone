@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import NormalBtn from "../components/commons/buttons/NormalBtn";
 
 export default {
-	title: "NormalBtn",
+	title: "buttons/NormalBtn",
 	component: NormalBtn,
 	argTypes: {
 		colorType: {

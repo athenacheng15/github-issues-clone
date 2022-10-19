@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import StatusTag from "../components/commons/tags/StatusTag";
 
 export default {
-	title: "StatusTag",
+	title: "tags/StatusTag",
 	component: StatusTag,
 } as ComponentMeta<typeof StatusTag>;
 

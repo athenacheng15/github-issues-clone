@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import Tag from "../tags/Tag";
 import MarkDownArea from "./MarkDownArea";
-import DropdownList from "../DropDown";
+import DropdownList from "../dropdown/DropDown";
 import ReactionBar from "../ReactionsBar";
 import { KebabHorizontalIcon, SmileyIcon } from "@primer/octicons-react";
 import { ReactionType } from "../../../models/ReactionType";
