@@ -26,8 +26,8 @@ export default function Issue() {
 	const dispatch = useDispatch();
 	const { number } = useParams();
 	const [createComment] = useCreateCommentMutation();
+	const observer = useRef<IntersectionObserver | null>(null);
 	const [fixedHeaderStatus, setFixedHeaderStatus] = useState(false);
-
 	const [participant, setParticipant] = useState<
 		({ name: string | undefined; img: string | undefined } | undefined)[]
 	>([]);
@@ -59,17 +59,14 @@ export default function Issue() {
 			const callback = (entries: IntersectionObserverEntry[]) => {
 				if (entries[0].isIntersecting) {
 					setFixedHeaderStatus(false);
-					console.log("in");
 				} else {
 					setFixedHeaderStatus(true);
-					console.log("out");
 				}
 			};
 			observer.current = new IntersectionObserver(callback, options);
 			observer.current.observe(node);
 		}
 	}, []);
-	const observer = useRef<IntersectionObserver | null>(null);
 
 	const { data: issueData, isSuccess } = useGetIssueQuery({
 		owner: loginUser.login,
@@ -93,8 +90,8 @@ export default function Issue() {
 		dispatch(
 			setDefaultAssignees(issueData?.assignees.map((item) => item.login) || [])
 		);
-		console.log(currentContent);
 	}, [issueData?.assignees]);
+
 	useEffect(() => {
 		const issueUser = [
 			{ name: issueData?.user.login, img: issueData?.user.avatar_url },
@@ -105,7 +102,7 @@ export default function Issue() {
 		}));
 		const allUser = [...issueUser, ...(commentUser || [])];
 		setParticipant(_.uniqWith(allUser, _.isEqual));
-	}, [commentData]);
+	}, [commentData, issueData]);
 
 	if (!isSuccess) {
 		return <Loader />;

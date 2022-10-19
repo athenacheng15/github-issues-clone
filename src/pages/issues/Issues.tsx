@@ -42,14 +42,6 @@ export default function Issues() {
 	const navigate = useNavigate();
 	const currentState = useSelector((state: RootState) => state.queries);
 	const loginUser = useSelector((state: RootState) => state.login);
-	const issueStatus = useSelector(
-		(state: RootState) => state.queries.issueStatus
-	);
-	const assignee = useSelector((state: RootState) => state.queries.assignee);
-	const sort = useSelector((state: RootState) => state.queries.sort);
-	const labels = useSelector((state: RootState) => state.queries.labels);
-	const filters = useSelector((state: RootState) => state.queries.filters);
-	const page = useSelector((state: RootState) => state.queries.page);
 	const [popFilterVis, setPopFilterVis] = useState(false);
 	const [popSortVis, setPopSortVis] = useState(false);
 	const [popLabelVis, setPopLabelVis] = useState(false);
@@ -68,12 +60,21 @@ export default function Issues() {
 		owner: loginUser.login,
 		repo: localStorage.getItem("repo"),
 		query: {
-			issueStatus: issueStatus ? `state=${issueStatus}&` : "",
-			labels: labels?.length !== 0 ? `labels=${labels?.join()}&` : "",
-			assignee: assignee ? `assignee=${assignee}&` : "",
-			sort: sort ? `sort=${sort}&` : "",
-			filters: filters ? `${filters}${loginUser.login}&` : "",
-			page: page ? `page=${page}&` : 1,
+			issueStatus: currentState.issueStatus
+				? `state=${currentState.issueStatus}&`
+				: "",
+			labels:
+				currentState.labels?.length !== 0
+					? `labels=${currentState.labels?.join()}&`
+					: "",
+			assignee: currentState.assignee
+				? `assignee=${currentState.assignee}&`
+				: "",
+			sort: currentState.sort ? `sort=${currentState.sort}&` : "",
+			filters: currentState.filters
+				? `${currentState.filters}${loginUser.login}&`
+				: "",
+			page: currentState.page ? `page=${currentState.page}&` : 1,
 		},
 	});
 
@@ -84,34 +85,34 @@ export default function Issues() {
 
 	function handleInputText() {
 		let text = "is:issue";
-		if (issueStatus === "") {
+		if (currentState.issueStatus === "") {
 			text += ` is:open`;
 		} else {
-			text += ` is:${issueStatus}`;
+			text += ` is:${currentState.issueStatus}`;
 		}
 
-		if (filters === "creator=") {
+		if (currentState.filters === "creator=") {
 			text += ` author:@me`;
-		} else if (filters === "assignee=") {
+		} else if (currentState.filters === "assignee=") {
 			text += ` assignee:@me`;
-		} else if (filters === "mentioned=") {
+		} else if (currentState.filters === "mentioned=") {
 			text += ` metions:@me`;
 		}
 
-		if (labels?.length !== 0) {
-			const allLabels = labels?.reduce((acc, cur) => {
+		if (currentState.labels?.length !== 0) {
+			const allLabels = currentState.labels?.reduce((acc, cur) => {
 				acc += ` label:${cur}`;
 				return acc;
 			}, "");
 			text += allLabels;
 		}
 
-		if (sort !== "") {
-			text += ` is:${sort}`;
+		if (currentState.sort !== "") {
+			text += ` is:${currentState.sort}`;
 		}
 
-		if (assignee !== "") {
-			text += ` assignee:${assignee}`;
+		if (currentState.assignee !== "") {
+			text += ` assignee:${currentState.assignee}`;
 		}
 
 		return text;
@@ -124,11 +125,11 @@ export default function Issues() {
 
 	function defaultState() {
 		return (
-			issueStatus === "" &&
-			labels?.length === 0 &&
-			assignee === "" &&
-			sort === "" &&
-			filters === ""
+			currentState.issueStatus === "open" &&
+			currentState.labels?.length === 0 &&
+			currentState.assignee === "" &&
+			currentState.sort === "" &&
+			currentState.filters === ""
 		);
 	}
 
@@ -230,7 +231,7 @@ export default function Issues() {
 					<button
 						key={item.stateName}
 						className={`flex w-[auto] items-center mr-4 cursor-pointer ${
-							issueStatus === item.stateName
+							currentState.issueStatus === item.stateName
 								? "text-black font-semibold"
 								: "text-[#57606a]"
 						}`}
@@ -298,7 +299,7 @@ export default function Issues() {
 			<section className="flex justify-center items-center mt-4 h-10 text-xs">
 				<button
 					className={`flex items-center w-[auto]h-[auto] p-2 mr-4  rounded-md ${
-						page === 1
+						currentState.page === 1
 							? "text-[#57606a]"
 							: "text-[#0969da] hover:border hover:border-[#d1d5da] hover:border-solid cursor-pointer"
 					}`}
@@ -306,7 +307,7 @@ export default function Issues() {
 				>
 					<ChevronLeftIcon /> <p className="ml-1">Previous</p>
 				</button>
-				<p>{page}</p>
+				<p>{currentState.page}</p>
 				<button
 					className={`flex items-center w-[auto]h-[auto] p-2 ml-4  rounded-md ${
 						issuesData?.length === 0

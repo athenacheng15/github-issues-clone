@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../app/store";
 import {
 	IssueClosedIcon,
@@ -10,9 +10,10 @@ import {
 	CheckIcon,
 } from "@primer/octicons-react";
 import {
-	useEditIssueStateMutation,
 	useCreateCommentMutation,
+	useEditIssueMutation,
 } from "../../services/issueApi";
+import { resetAll } from "../../app/issueSlice";
 
 interface CloseBtnProp {
 	state?: string;
@@ -21,6 +22,7 @@ interface CloseBtnProp {
 }
 
 export default function CloseBtn({ state, body, setBodyValue }: CloseBtnProp) {
+	const dispatch = useDispatch();
 	const loginUser = useSelector((state: RootState) => state.login);
 	const [reason, setReason] = useState(
 		state === "open" ? "completed" : "reopened"
@@ -29,7 +31,7 @@ export default function CloseBtn({ state, body, setBodyValue }: CloseBtnProp) {
 		state === "open" ? "closed" : "open"
 	);
 	const [optionVis, setOptionVis] = useState(false);
-	const [editIssueState] = useEditIssueStateMutation();
+	const [editIssue] = useEditIssueMutation();
 	const [createComment] = useCreateCommentMutation();
 	const { number } = useParams();
 
@@ -79,13 +81,13 @@ export default function CloseBtn({ state, body, setBodyValue }: CloseBtnProp) {
 				body: body,
 			});
 			setBodyValue("");
+			dispatch(resetAll());
 		}
-		editIssueState({
+		editIssue({
 			owner: loginUser.login,
 			repo: localStorage.getItem("repo"),
 			number,
-			state: editState,
-			state_reason: reason,
+			content: { state: editState, state_reason: reason },
 		});
 		setEditState(editState === "open" ? "closed" : "open");
 		setReason(editState === "open" ? "completed" : "reopened");

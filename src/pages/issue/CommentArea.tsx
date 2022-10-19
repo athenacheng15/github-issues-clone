@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AnyAction } from "redux";
-import { Reactions } from "../../components/commons/CommentsBar";
+import { Reactions } from "../../components/commons/ReactionsBar";
 import type { RootState } from "../../app/store";
 import {
 	useDeleteCommentMutation,
@@ -21,7 +21,7 @@ import {
 } from "../../utils/markdownBtnList";
 import Tag from "../../components/commons/Tag";
 import MarkDownArea from "../../components/commons/MarkDownArea";
-import CommentsBar from "../../components/commons/CommentsBar";
+import CommentsBar from "../../components/commons/ReactionsBar";
 import NormalBtn from "../../components/commons/NormalBtn";
 import DropdownList from "../../components/commons/DropDown";
 import {
@@ -139,7 +139,7 @@ export default function CommentArea({
 			owner: loginUser.login,
 			repo: localStorage.getItem("repo"),
 			number: number,
-			body: currentContent.body,
+			content: { body: currentContent.body },
 		});
 		dispatch(resetAll());
 		setMode("view");

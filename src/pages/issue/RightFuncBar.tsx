@@ -3,10 +3,6 @@ import { useGetAssigneeQuery } from "../../services/issuesApi";
 import { useGetLabelsQuery } from "../../services/labelsApi";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
-import PopAssignee from "./popAssignee";
-import PopLabel from "./popLabel";
-import BarTool from "../../components/commons/BarTool";
-import Label from "../../components/commons/Label";
 import {
 	BellSlashIcon,
 	LockIcon,
@@ -21,6 +17,10 @@ import {
 	useUpdateLabelMutation,
 	useUpdateAssigneeMutation,
 } from "../../services/issueApi";
+import PopAssignee from "./popAssignee";
+import PopLabel from "./popLabel";
+import BarTool from "../../components/commons/BarTool";
+import Label from "../../components/commons/Label";
 
 interface RightFuncBarProps {
 	labelsData?: RepoLabels[];
@@ -194,7 +194,7 @@ export default function RightFuncBar({
 				<div className="relative w-[100%] h-[auto] min-h-[80px] py-4 border-0 border-b border-[#d1d5da] border-solid text-xs text-[#57606a]">
 					<button className="flex w-[100%] justify-between items-center  cursor-pointer group ">
 						<p className=" font-medium group-hover:text-[#0969da]">
-							{assigneesData?.length} participants
+							{participant?.length} participants
 						</p>
 					</button>
 					<div className="flex mt-2">

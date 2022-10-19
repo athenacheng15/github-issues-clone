@@ -15,7 +15,7 @@ export interface IssueQueryStringState {
 
 const initialState: IssueQueryStringState = {
 	issuesNum: 0,
-	issueStatus: "",
+	issueStatus: "open",
 	labels: [],
 	assignee: "",
 	sort: "",
@@ -59,15 +59,7 @@ const issueQueryStringSlice = createSlice({
 			state.page > 1 ? (state.page -= 1) : state.page;
 		},
 
-		resetQuery: (state) => {
-			state.issuesNum = 0;
-			state.issueStatus = "";
-			state.labels = [];
-			state.assignee = "";
-			state.sort = "";
-			state.filters = "";
-			state.page = 1;
-		},
+		resetQuery: () => initialState,
 	},
 });
 

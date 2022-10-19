@@ -1,5 +1,4 @@
 import { SmileyIcon } from "@primer/octicons-react";
-import { map } from "lodash";
 
 export interface Reactions {
 	reactions: {
@@ -51,8 +50,4 @@ export default function CommentsBar({ reactions }: Reactions) {
 			</div>
 		</div>
 	);
-}
-
-function SelectList() {
-	return <></>;
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { useUpdateTitleMutation } from "../../services/issueApi";
+import { useEditIssueMutation } from "../../services/issueApi";
 import { useNavigate } from "react-router-dom";
 import NormalBtn from "../../components/commons/NormalBtn";
 
@@ -15,14 +15,14 @@ export default function IssueTitle({ defaultTitle, number }: IssueTitleProp) {
 	const navigate = useNavigate();
 	const [mode, setMode] = useState("view");
 	const [inputValue, setInputValue] = useState(defaultTitle);
-	const [updateTitle] = useUpdateTitleMutation();
+	const [editIssue] = useEditIssueMutation();
 
 	function handleSubmit() {
-		updateTitle({
+		editIssue({
 			owner: loginUser.login,
 			repo: localStorage.getItem("repo"),
 			number: number,
-			title: inputValue,
+			content: { title: inputValue },
 		});
 		setMode("view");
 	}

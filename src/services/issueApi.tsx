@@ -2,83 +2,49 @@ import { IssueType } from "../models/IssueType";
 import { CommentType } from "../models/CommentType";
 import { mainApi } from "./mainApi";
 
-interface GetIssueParams {
-	owner: string | null;
-	repo: string | null;
-	number?: string;
-}
-
-interface EditLabelParams {
+interface ManagerSidebarParams {
 	owner: string | null;
 	repo: string | null;
 	number?: string;
 	labels?: string[];
-}
-
-interface EditAssigneesParams {
-	owner: string | null;
-	repo: string | null;
-	number?: string;
 	assignees?: string[];
 }
 
-interface EditTitleParams {
+interface ManagerCommentParams {
 	owner: string | null;
 	repo: string | null;
-	number: string;
-	title?: string;
-}
-
-interface DelCommentParams {
-	owner: string | null;
-	repo: string | null;
-	id?: string;
-}
-
-interface EditCommentParams {
-	owner: string | null;
-	repo: string | null;
+	number?: string;
 	id?: string;
 	body?: string;
 }
 
-interface EditIssueParams {
+interface ManagerIssueParams {
 	owner: string | null;
 	repo: string | null;
 	number?: string;
-	body?: string;
-}
-
-interface EditIssueStateParams {
-	owner: string | null;
-	repo: string | null;
-	number?: string;
-	state?: string;
-	state_reason?: string;
-}
-
-interface CreateCommentParams {
-	owner: string | null;
-	repo: string | null;
-	number?: string;
-	body?: string;
+	content?: {
+		title?: string;
+		body?: string;
+		state?: string;
+		state_reason?: string;
+	};
 }
 
 export const issueApi = mainApi.injectEndpoints({
 	endpoints: (builder) => ({
-		getIssue: builder.query<IssueType, GetIssueParams>({
+		getIssue: builder.query<IssueType, ManagerIssueParams>({
 			query: ({ owner, repo, number }) => ({
 				url: `/repos/${owner}/${repo}/issues/${number}`,
 			}),
 			providesTags: ["Issue"],
 		}),
-		getComment: builder.query<CommentType[], GetIssueParams>({
+		getComment: builder.query<CommentType[], ManagerCommentParams>({
 			query: ({ owner, repo, number }) => ({
 				url: `/repos/${owner}/${repo}/issues/${number}/comments`,
 			}),
 			providesTags: ["Issue"],
 		}),
-		updateLabel: builder.mutation<void, EditLabelParams>({
+		updateLabel: builder.mutation<void, ManagerSidebarParams>({
 			query: ({ owner, repo, number, labels }) => ({
 				url: `/repos/${owner}/${repo}/issues/${number}`,
 				method: "PATCH",
@@ -86,7 +52,7 @@ export const issueApi = mainApi.injectEndpoints({
 			}),
 			invalidatesTags: ["Issue"],
 		}),
-		updateAssignee: builder.mutation<void, EditAssigneesParams>({
+		updateAssignee: builder.mutation<void, ManagerSidebarParams>({
 			query: ({ owner, repo, number, assignees }) => ({
 				url: `/repos/${owner}/${repo}/issues/${number}`,
 				method: "PATCH",
@@ -94,32 +60,17 @@ export const issueApi = mainApi.injectEndpoints({
 			}),
 			invalidatesTags: ["Issue"],
 		}),
-		updateTitle: builder.mutation<void, EditTitleParams>({
-			query: ({ owner, repo, number, title }) => ({
+
+		editIssue: builder.mutation<void, ManagerIssueParams>({
+			query: ({ owner, repo, number, content }) => ({
 				url: `/repos/${owner}/${repo}/issues/${number}`,
 				method: "PATCH",
-				body: { title },
+				body: content,
 			}),
 			invalidatesTags: ["Issue"],
 		}),
 
-		editIssue: builder.mutation<void, EditIssueParams>({
-			query: ({ owner, repo, number, body }) => ({
-				url: `/repos/${owner}/${repo}/issues/${number}`,
-				method: "PATCH",
-				body: { body },
-			}),
-			invalidatesTags: ["Issue"],
-		}),
-		editIssueState: builder.mutation<void, EditIssueStateParams>({
-			query: ({ owner, repo, number, state, state_reason }) => ({
-				url: `/repos/${owner}/${repo}/issues/${number}`,
-				method: "PATCH",
-				body: { state, state_reason },
-			}),
-			invalidatesTags: ["Issue"],
-		}),
-		createComment: builder.mutation<void, CreateCommentParams>({
+		createComment: builder.mutation<void, ManagerCommentParams>({
 			query: ({ owner, repo, number, body }) => ({
 				url: `/repos/${owner}/${repo}/issues/${number}/comments`,
 				method: "POST",
@@ -127,7 +78,7 @@ export const issueApi = mainApi.injectEndpoints({
 			}),
 			invalidatesTags: ["Issue"],
 		}),
-		editComment: builder.mutation<void, EditCommentParams>({
+		editComment: builder.mutation<void, ManagerCommentParams>({
 			query: ({ owner, repo, id, body }) => ({
 				url: `/repos/${owner}/${repo}/issues/comments/${id}`,
 				method: "PATCH",
@@ -135,7 +86,7 @@ export const issueApi = mainApi.injectEndpoints({
 			}),
 			invalidatesTags: ["Issue"],
 		}),
-		deleteComment: builder.mutation<void, DelCommentParams>({
+		deleteComment: builder.mutation<void, ManagerCommentParams>({
 			query: ({ owner, repo, id }) => ({
 				url: `/repos/${owner}/${repo}/issues/comments/${id}`,
 				method: "DELETE",
@@ -151,9 +102,7 @@ export const {
 	useGetCommentQuery,
 	useUpdateLabelMutation,
 	useUpdateAssigneeMutation,
-	useUpdateTitleMutation,
 	useEditIssueMutation,
-	useEditIssueStateMutation,
 	useCreateCommentMutation,
 	useEditCommentMutation,
 	useDeleteCommentMutation,

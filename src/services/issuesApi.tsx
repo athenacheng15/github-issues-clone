@@ -4,21 +4,19 @@ import { mainApi } from "./mainApi";
 interface GetIssuesParams {
 	owner: string | null;
 	repo: string | null;
-	query: IssueQueryStringState;
+	query: {
+		issueStatus?: string;
+		labels?: string;
+		assignee?: string;
+		sort?: string;
+		filters?: string;
+		page?: number | string;
+	};
 }
 
 interface GetAssigneeParams {
 	owner: string | null;
 	repo: string | null;
-}
-
-interface IssueQueryStringState {
-	issueStatus?: string;
-	labels?: string;
-	assignee?: string;
-	sort?: string;
-	filters?: string;
-	page?: number | string;
 }
 
 export const issuesApi = mainApi.injectEndpoints({
