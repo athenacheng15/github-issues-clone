@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { useUpdateTitleMutation } from "../../services/issueApi";
 import { useNavigate } from "react-router-dom";
-import NormalBtn from "../../commons/NormalBtn";
+import NormalBtn from "../../components/commons/NormalBtn";
 
 interface IssueTitleProp {
 	defaultTitle?: string;

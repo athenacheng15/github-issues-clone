@@ -14,9 +14,9 @@ import CreateArea from "../new_issue/CreateArea";
 import RightFuncBar from "./RightFuncBar";
 import IssueTitle from "./IssueTitle";
 import DataBar from "./DataBar";
-import StatusTag from "../../commons/StatusTag";
+import StatusTag from "../../components/commons/StatusTag";
 import CommentArea from "./CommentArea";
-import Loader from "../../commons/Loader";
+import Loader from "../../components/commons/Loader";
 import { timeCalc } from "../../utils/utils";
 import _ from "lodash";
 

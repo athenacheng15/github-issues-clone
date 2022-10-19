@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import NormalBtn from "../commons/NormalBtn";
+import NormalBtn from "../components/commons/NormalBtn";
 
 export default {
 	title: "NormalBtn",

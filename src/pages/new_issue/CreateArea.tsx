@@ -4,7 +4,7 @@ import { AnyAction } from "redux";
 import TextareaMarkdown, {
 	TextareaMarkdownRef,
 } from "textarea-markdown-editor";
-import NormalBtn from "../../commons/NormalBtn";
+import NormalBtn from "../../components/commons/NormalBtn";
 import {
 	TypographyIcon,
 	ChevronDownIcon,
@@ -27,7 +27,7 @@ import {
 } from "@primer/octicons-react";
 
 import { commands } from "../../utils/markdownStyle";
-import MarkDownArea from "../../commons/MarkDownArea";
+import MarkDownArea from "../../components/commons/MarkDownArea";
 import CloseBtn from "../issue/CloseBtn";
 
 interface CreateAreaProp {

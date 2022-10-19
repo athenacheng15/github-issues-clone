@@ -4,10 +4,10 @@ import { useGetLabelsQuery } from "../../services/labelsApi";
 import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "../../app/store";
 import { handleAssignees } from "../../app/newIssueSlice";
-import PopAssignee from "../../commons/PopAssignee";
-import PopLabel from "../../commons/PopLabel";
-import BarTool from "../../commons/BarTool";
-import Label from "../../commons/Label";
+import PopAssignee from "../../components/commons/PopAssignee";
+import PopLabel from "../../components/commons/PopLabel";
+import BarTool from "../../components/commons/BarTool";
+import Label from "../../components/commons/Label";
 
 export default function RightFuncBar() {
 	const loginUser = useSelector((state: RootState) => state.login);

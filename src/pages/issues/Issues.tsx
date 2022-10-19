@@ -5,14 +5,14 @@ import type { RootState } from "../../app/store";
 import { useGetLabelsQuery } from "../../services/labelsApi";
 import { useGetIssuesQuery } from "../../services/issuesApi";
 import { handleIssuesNum } from "../../app/issuesSlice";
-import DoubleIconBtn from "../../commons/DoubleIconBtn";
-import NormalBtn from "../../commons/NormalBtn";
+import DoubleIconBtn from "../../components/commons/DoubleIconBtn";
+import NormalBtn from "../../components/commons/NormalBtn";
 import IssueBar from "./IssueBar";
 import PopFilter from "./PopFilter";
 import PopSort from "./PopSort";
 import PopLabel from "./PopLabel";
 import PopAssignee from "./PopAssignee";
-import Loader from "../../commons/Loader";
+import Loader from "../../components/commons/Loader";
 
 import {
 	TagIcon,

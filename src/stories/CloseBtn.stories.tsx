@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import CloseBtn from "../components/issue/CloseBtn";
+import CloseBtn from "../pages/issue/CloseBtn";
 import { Provider } from "react-redux";
 import { store } from "../app/store";
 

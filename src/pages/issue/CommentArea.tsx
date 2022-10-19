@@ -1,44 +1,37 @@
 import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AnyAction } from "redux";
-import TextareaMarkdown, {
-	TextareaMarkdownRef,
-} from "textarea-markdown-editor";
-import NormalBtn from "../../commons/NormalBtn";
-import {
-	TypographyIcon,
-	ChevronDownIcon,
-	ChevronUpIcon,
-	QuoteIcon,
-	CodeIcon,
-	LinkIcon,
-	MentionIcon,
-	ImageIcon,
-	CrossReferenceIcon,
-	ReplyIcon,
-	HeadingIcon,
-	BoldIcon,
-	ItalicIcon,
-	ListUnorderedIcon,
-	ListOrderedIcon,
-	TasklistIcon,
-	MarkdownIcon,
-	KebabHorizontalIcon,
-	SmileyIcon,
-} from "@primer/octicons-react";
-import { commands } from "../../utils/markdownStyle";
-import Tag from "../../commons/Tag";
-import MarkDownArea from "../../commons/MarkDownArea";
-import CommentsBar from "../../commons/CommentsBar";
-import { Reactions } from "../../commons/CommentsBar";
+import { Reactions } from "../../components/commons/CommentsBar";
 import type { RootState } from "../../app/store";
-import DropdownList from "../../commons/DropDown";
 import {
 	useDeleteCommentMutation,
 	useEditIssueMutation,
 	useEditCommentMutation,
 } from "../../services/issueApi";
 import { handleIssueBody, resetAll } from "../../app/issueSlice";
+import TextareaMarkdown, {
+	TextareaMarkdownRef,
+} from "textarea-markdown-editor";
+import { commands } from "../../utils/markdownStyle";
+import {
+	markdownIconGorup1,
+	markdownIconGroup2,
+	markdownIconRroup3,
+	markdownIconGorup4,
+} from "../../utils/markdownBtnList";
+import Tag from "../../components/commons/Tag";
+import MarkDownArea from "../../components/commons/MarkDownArea";
+import CommentsBar from "../../components/commons/CommentsBar";
+import NormalBtn from "../../components/commons/NormalBtn";
+import DropdownList from "../../components/commons/DropDown";
+import {
+	TypographyIcon,
+	ChevronDownIcon,
+	ChevronUpIcon,
+	MarkdownIcon,
+	KebabHorizontalIcon,
+	SmileyIcon,
+} from "@primer/octicons-react";
 
 interface CreateAreaProp {
 	type?: string;
@@ -47,8 +40,8 @@ interface CreateAreaProp {
 	login?: string;
 	img?: string;
 	time?: string;
-	handleBody: (value: string) => AnyAction;
-	submitFunc: () => void;
+	handleBody?: (value: string) => AnyAction;
+	submitFunc?: () => void;
 	defaultBody?: string;
 	hight: string;
 	self?: boolean;
@@ -65,8 +58,6 @@ export default function CommentArea({
 	login,
 	img,
 	time,
-	handleBody,
-	submitFunc,
 	defaultBody,
 	hight,
 	self,
@@ -76,6 +67,7 @@ export default function CommentArea({
 	owner,
 }: CreateAreaProp) {
 	const dispatch = useDispatch();
+	const ref = useRef<TextareaMarkdownRef>(null);
 	const loginUser = useSelector((state: RootState) => state.login);
 	const currentContent = useSelector((state: RootState) => state.issue);
 	const [deleteComment] = useDeleteCommentMutation();
@@ -85,12 +77,12 @@ export default function CommentArea({
 	const [bottomVis, setBottomVis] = useState(false);
 	const [dropDownVis, setDropDownVis] = useState(false);
 	const [mode, setMode] = useState("view");
+	const [bodyValue, setBodyValue] = useState<string>(defaultBody || "");
+
 	const inputBtnList = [
 		{ name: "Write", action: "" },
 		{ name: "Preview", action: "" },
 	];
-	const [bodyValue, setBodyValue] = useState<string>(defaultBody || "");
-	const ref = useRef<TextareaMarkdownRef>(null);
 
 	const issueDropDownList = [
 		{ name: "Copy link" },
@@ -276,19 +268,21 @@ export default function CommentArea({
 											{bottomVis ? <ChevronDownIcon /> : <ChevronUpIcon />}
 										</button>
 										<div className="flex">
-											{[...iconGorup2, ...iconGorup4].map((item, index) => (
-												<button
-													key={index}
-													className="group relative flex w-8 h-8 p-2 ml-1 cursor-pointer  hover:text-[#0969da]"
-													onClick={() => ref.current?.trigger(item.action)}
-													disabled={item.action === ""}
-												>
-													{item.icon}
-													<div className="absolute hidden right-0 bottom-[-40px] whitespace-nowrap items-center nowrap px-3 w-[auto] h-[30px] bg-[#24292f] text-white text-xs rounded-md group-hover:flex">
-														{item.description}
-													</div>
-												</button>
-											))}
+											{[...markdownIconGroup2, ...markdownIconGorup4].map(
+												(item, index) => (
+													<button
+														key={index}
+														className="group relative flex w-8 h-8 p-2 ml-1 cursor-pointer  hover:text-[#0969da]"
+														onClick={() => ref.current?.trigger(item.action)}
+														disabled={item.action === ""}
+													>
+														{item.icon}
+														<div className="absolute hidden right-0 bottom-[-40px] whitespace-nowrap items-center nowrap px-3 w-[auto] h-[30px] bg-[#24292f] text-white text-xs rounded-md group-hover:flex">
+															{item.description}
+														</div>
+													</button>
+												)
+											)}
 										</div>
 									</div>
 									<div
@@ -296,26 +290,28 @@ export default function CommentArea({
 											bottomVis ? "block" : "hidden"
 										} L:hidden`}
 									>
-										{[...iconGorup1, ...iconGorup3].map((item, index) => (
-											<button
-												key={index}
-												className="group relative flex w-8 h-8 p-2 ml-1 cursor-pointer text-[#57606a] hover:text-[#0969da]"
-												onClick={() => ref.current?.trigger(item.action)}
-												disabled={item.action === ""}
-											>
-												{item.icon}
-												<div className="absolute hidden left-0 bottom-[-40px] whitespace-nowrap items-center nowrap px-3 w-[auto] h-[30px] bg-[#24292f] text-white text-xs rounded-md group-hover:flex">
-													{item.description}
-												</div>
-											</button>
-										))}
+										{[...markdownIconGorup1, ...markdownIconRroup3].map(
+											(item, index) => (
+												<button
+													key={index}
+													className="group relative flex w-8 h-8 p-2 ml-1 cursor-pointer text-[#57606a] hover:text-[#0969da]"
+													onClick={() => ref.current?.trigger(item.action)}
+													disabled={item.action === ""}
+												>
+													{item.icon}
+													<div className="absolute hidden left-0 bottom-[-40px] whitespace-nowrap items-center nowrap px-3 w-[auto] h-[30px] bg-[#24292f] text-white text-xs rounded-md group-hover:flex">
+														{item.description}
+													</div>
+												</button>
+											)
+										)}
 									</div>
 									<div className="hidden L:flex L:ml-3">
 										{[
-											...iconGorup1,
-											...iconGorup2,
-											...iconGorup3,
-											...iconGorup4,
+											...markdownIconGorup1,
+											...markdownIconGroup2,
+											...markdownIconRroup3,
+											...markdownIconGorup4,
 										].map((item, index) => (
 											<button
 												key={index}
@@ -417,77 +413,3 @@ export default function CommentArea({
 		</div>
 	);
 }
-
-const iconGorup1 = [
-	{
-		icon: <HeadingIcon />,
-		action: "h3",
-		description: "Add heading text",
-	},
-	{
-		icon: <BoldIcon />,
-		action: "bold",
-		description: "Add bold text, <Cmd+b>",
-	},
-	{
-		icon: <ItalicIcon />,
-		action: "italic",
-		description: "Add italic text, <Cmd+i>",
-	},
-];
-const iconGorup2 = [
-	{
-		icon: <QuoteIcon />,
-		action: "block-quotes",
-		description: "Add a quote, <Cmd+Shift+.>",
-	},
-	{
-		icon: <CodeIcon />,
-		action: "code",
-		description: "Add code, <Cmd+e>",
-	},
-	{
-		icon: <LinkIcon />,
-		action: "link",
-		description: "Add a link, <Cmd+k>",
-	},
-];
-const iconGorup3 = [
-	{
-		icon: <ListUnorderedIcon />,
-		action: "unordered-list",
-		description: "Add a bulleted list, <Cmd+Shift+8>",
-	},
-	{
-		icon: <ListOrderedIcon />,
-		action: "ordered-list",
-		description: "Add a numbered list, <Cmd+Shift+7>",
-	},
-	{
-		icon: <TasklistIcon />,
-		action: "",
-		description: "Add a task list, <Cmd+Shift+l>",
-	},
-];
-const iconGorup4 = [
-	{
-		icon: <MentionIcon />,
-		action: "",
-		description: "Directly mention a user or team",
-	},
-	{
-		icon: <ImageIcon />,
-		action: "image",
-		description: "Attach an image or video",
-	},
-	{
-		icon: <CrossReferenceIcon />,
-		action: "",
-		description: "Reference an issue, pull request, or discussion",
-	},
-	{
-		icon: <ReplyIcon />,
-		action: "",
-		description: "Add saved reply",
-	},
-];

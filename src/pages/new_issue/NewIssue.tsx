@@ -5,7 +5,7 @@ import { useCreateIssueMutation } from "../../services/newIssueApi";
 import { handleTitle, handleBody, resetAll } from "../../app/newIssueSlice";
 import CreateArea from "./CreateArea";
 import RightFuncBar from "./RightFuncBar";
-import NormalBtn from "../../commons/NormalBtn";
+import NormalBtn from "../../components/commons/NormalBtn";
 
 export default function NewIssue() {
 	const currentContent = useSelector((state: RootState) => state.contents);

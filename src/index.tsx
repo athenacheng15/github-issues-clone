@@ -1,16 +1,15 @@
+import "./index.css";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
-import "./index.css";
-
+import App from "./App";
 import LoginPage from "./components/LoginPage";
-import Labels from "./components/labels/Labels";
-import Issues from "./components/issues/Issues";
-import NewIssue from "./components/new_issue/NewIssue";
-import Issue from "./components/issue/Issue";
+import Labels from "./pages/labels/Labels";
+import Issues from "./pages/issues/Issues";
+import NewIssue from "./pages/new_issue/NewIssue";
+import Issue from "./pages/issue/Issue";
 
 const root = ReactDOM.createRoot(
 	document.getElementById("root") as HTMLElement

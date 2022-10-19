@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import ContentSearchBar from "../commons/ContentSearchBar";
+import ContentSearchBar from "../components/commons/ContentSearchBar";
 
 export default {
 	title: "ContentSearchBar",

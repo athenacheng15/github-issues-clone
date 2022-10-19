@@ -5,7 +5,7 @@ import type { RootState } from "../../app/store";
 import { KebabHorizontalIcon } from "@primer/octicons-react";
 import { useDeleteLabelsMutation } from "../../services/labelsApi";
 import { EditLabelKey } from "../../models/LabelsType";
-import SelectList from "../../commons/SelectList";
+import SelectList from "../../components/commons/SelectList";
 import ColorManager from "./ColorManager";
 
 interface BarProps {

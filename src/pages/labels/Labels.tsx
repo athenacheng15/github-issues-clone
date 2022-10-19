@@ -3,13 +3,13 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { RootState } from "../../app/store";
-import NormalBtn from "../../commons/NormalBtn";
+import NormalBtn from "../../components/commons/NormalBtn";
 import LabelBar from "./LabelBar";
-import SelectBox from "../../commons/SelectBox";
-import DoubleIconBtn from "../../commons/DoubleIconBtn";
-import ContentSearchBar from "../../commons/ContentSearchBar";
+import SelectBox from "../../components/commons/SelectBox";
+import DoubleIconBtn from "../../components/commons/DoubleIconBtn";
+import ContentSearchBar from "../../components/commons/ContentSearchBar";
 import NewLabel from "./NewLabel";
-import Loader from "../../commons/Loader";
+import Loader from "../../components/commons/Loader";
 import {
 	TagIcon,
 	MilestoneIcon,

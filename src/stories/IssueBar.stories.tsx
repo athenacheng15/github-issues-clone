@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import IssueBar from "../components/issues/IssueBar";
+import IssueBar from "../pages/issues/IssueBar";
 
 export default {
 	title: "IssueBar",

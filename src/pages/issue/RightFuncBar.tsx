@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useGetAssigneeQuery } from "../../services/issuesApi";
 import { useGetLabelsQuery } from "../../services/labelsApi";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
-import { handleAssignees } from "../../app/newIssueSlice";
 import PopAssignee from "./popAssignee";
 import PopLabel from "./popLabel";
-import BarTool from "../../commons/BarTool";
-import Label from "../../commons/Label";
+import BarTool from "../../components/commons/BarTool";
+import Label from "../../components/commons/Label";
 import {
 	BellSlashIcon,
 	LockIcon,
@@ -39,7 +38,6 @@ export default function RightFuncBar({
 }: RightFuncBarProps) {
 	const loginUser = useSelector((state: RootState) => state.login);
 	const currentContent = useSelector((state: RootState) => state.issue);
-	const dispatch = useDispatch();
 	const { number } = useParams();
 	const [updateLabel] = useUpdateLabelMutation();
 	const [updateAssignee] = useUpdateAssigneeMutation();

@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import DoubleIconBtn from "../commons/DoubleIconBtn";
+import DoubleIconBtn from "../components/commons/DoubleIconBtn";
 import { TagIcon, MilestoneIcon } from "@primer/octicons-react";
 
 export default {

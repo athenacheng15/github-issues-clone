@@ -3,9 +3,9 @@ import React, { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { useSelector } from "react-redux";
 import { SyncIcon } from "@primer/octicons-react";
 import { RootState } from "../../app/store";
-import NormalBtn from "../../commons/NormalBtn";
+import NormalBtn from "../../components/commons/NormalBtn";
 import { lightOrDark, generateRendomColor } from "../../utils/utils";
-import Label from "../../commons/Label";
+import Label from "../../components/commons/Label";
 import {
 	useEditLabelMutation,
 	useCreateLabelMutation,

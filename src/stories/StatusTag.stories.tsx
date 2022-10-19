@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import StatusTag from "../commons/StatusTag";
+import StatusTag from "../components/commons/StatusTag";
 
 export default {
 	title: "StatusTag",
