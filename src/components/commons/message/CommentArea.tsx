@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AnyAction } from "redux";
-import { Reactions } from "../ReactionsBar";
+import { ReactionType } from "../../../models/ReactionType";
 import type { RootState } from "../../../app/store";
 import {
 	useDeleteCommentMutation,
@@ -19,19 +19,15 @@ import {
 	markdownIconRroup3,
 	markdownIconGorup4,
 } from "../../../utils/markdownBtnList";
-import Tag from "../tags/Tag";
 import MarkDownArea from "./MarkDownArea";
-import CommentsBar from "../ReactionsBar";
 import NormalBtn from "../buttons/NormalBtn";
-import DropdownList from "../DropDown";
 import {
 	TypographyIcon,
 	ChevronDownIcon,
 	ChevronUpIcon,
 	MarkdownIcon,
-	KebabHorizontalIcon,
-	SmileyIcon,
 } from "@primer/octicons-react";
+import IssueView from "./IssueView";
 
 interface CreateAreaProp {
 	type?: string;
@@ -46,7 +42,7 @@ interface CreateAreaProp {
 	hight: string;
 	self?: boolean;
 	submitText: string;
-	reactions: Reactions;
+	reactions: ReactionType;
 	first?: boolean;
 	owner?: string;
 }
@@ -145,6 +141,8 @@ export default function CommentArea({
 		setMode("view");
 	}
 
+	console.log(reactions);
+
 	return (
 		<div className="flex w-[100%] ">
 			<div className="w-[auto]">
@@ -160,69 +158,20 @@ export default function CommentArea({
 				} after:h-[20px] after:w-[2px] after:absolute after:bottom-[-20px] after:left-[12px] after:bg-[#d1d5da]`}
 			>
 				{mode === "view" ? (
-					<div
-						className={`w-[100%] h-[auto] rounded-md border border-solid text-sm text-[#57606a] ${
-							self ? "border-[#54aeff66]" : "border-[#d1d5da]"
-						}`}
-					>
-						<div
-							className={`flex items-center justify-between px-4 w-[100%] h-[36px] border-0 border-b border-solid ${
-								self
-									? "bg-[#ddf4ff] border-[#54aeff66]"
-									: " bg-[#f6f8fa] border-[#d1d5da]"
-							}`}
-						>
-							<p className="flex flex-wrap">
-								<strong className="text-[#24292f] mr-1">{login}</strong>
-								commented <p className="ml-1">{time}</p>
-							</p>
-							<div className="flex items-center space-x-2">
-								<div className="hidden M:flex">
-									<Tag
-										text="owner"
-										self={self}
-										display={first || login === owner}
-									></Tag>
-									<Tag
-										text="Author"
-										self={self}
-										display={login === owner}
-									></Tag>
-								</div>
-								<button className="hidden L:flex justify-center items-center cursor-pointer">
-									<SmileyIcon />
-								</button>
-								<button
-									className="relative flex justify-center items-center cursor-pointer"
-									onClick={() => setDropDownVis(!dropDownVis)}
-								>
-									<KebabHorizontalIcon />
-									<div>
-										<DropdownList
-											right="-10px"
-											top="25px"
-											width="190px"
-											listitems={
-												type === "issue"
-													? issueDropDownList
-													: commentDropDownList
-											}
-											dropDownVis={dropDownVis}
-											setDropDownVis={setDropDownVis}
-										/>
-									</div>
-								</button>
-							</div>
-						</div>
-						<div className="p-4 text-[#24292f]">
-							<MarkDownArea
-								text={defaultBody ? defaultBody : "No sescription provided"}
-							/>
-						</div>
-						<div>
-							<CommentsBar reactions={reactions?.reactions} />
-						</div>
-					</div>
+					<IssueView
+						self={self}
+						login={login}
+						owner={owner}
+						time={time}
+						first={first}
+						type="issue"
+						vis={dropDownVis}
+						setVis={setDropDownVis}
+						defaultBody={defaultBody}
+						reactions={reactions}
+						issueDropDownList={issueDropDownList}
+						commentDropDownList={commentDropDownList}
+					/>
 				) : (
 					<div className="w-[100%]">
 						<div

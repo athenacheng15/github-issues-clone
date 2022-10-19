@@ -1,30 +1,16 @@
 import { SmileyIcon } from "@primer/octicons-react";
+import { ReactionType } from "../../models/ReactionType";
 
-export interface Reactions {
-	reactions: {
-		url?: string;
-		total_count?: number;
-		"+1"?: number;
-		"-1"?: number;
-		laugh?: number;
-		hooray?: number;
-		confused?: number;
-		heart?: number;
-		rocket?: number;
-		eyes?: number;
-	};
-}
-
-export default function CommentsBar({ reactions }: Reactions) {
+export default function ReactionBar({ reactions }: ReactionType) {
 	const list = [
-		{ name: "+1", emoji: "👍", number: reactions["+1"] },
-		{ name: "-1", emoji: "👎", number: reactions["-1"] },
-		{ name: "laugh", emoji: "😄", number: reactions.laugh },
-		{ name: "hooray", emoji: "🎉", number: reactions.hooray },
-		{ name: "confused", emoji: "😕", number: reactions.confused },
-		{ name: "heart", emoji: "❤️", number: reactions.heart },
-		{ name: "rocket", emoji: "🚀", number: reactions.rocket },
-		{ name: "eyes", emoji: "👀", number: reactions.eyes },
+		{ name: "+1", emoji: "👍", number: reactions && reactions["+1"] },
+		{ name: "-1", emoji: "👎", number: reactions && reactions["-1"] },
+		{ name: "laugh", emoji: "😄", number: reactions && reactions.laugh },
+		{ name: "hooray", emoji: "🎉", number: reactions && reactions.hooray },
+		{ name: "confused", emoji: "😕", number: reactions && reactions.confused },
+		{ name: "heart", emoji: "❤️", number: reactions && reactions.heart },
+		{ name: "rocket", emoji: "🚀", number: reactions && reactions.rocket },
+		{ name: "eyes", emoji: "👀", number: reactions && reactions.eyes },
 	];
 	return (
 		<div
