@@ -10,12 +10,12 @@ import {
 import { handleBody, handleTitle } from "../../app/newIssueSlice";
 import { handleIssueBody, resetAll } from "../../app/issueSlice";
 import { setDefaultLabels, setDefaultAssignees } from "../../app/issueSlice";
-import CreateArea from "../new_issue/CreateArea";
+import CreateArea from "../../components/commons/message/CreateArea";
 import RightFuncBar from "./RightFuncBar";
 import IssueTitle from "./IssueTitle";
 import DataBar from "./DataBar";
-import StatusTag from "../../components/commons/StatusTag";
-import CommentArea from "./CommentArea";
+import StatusTag from "../../components/commons/tags/StatusTag";
+import CommentArea from "../../components/commons/message/CommentArea";
 import Loader from "../../components/commons/Loader";
 import { timeCalc } from "../../utils/utils";
 import _ from "lodash";

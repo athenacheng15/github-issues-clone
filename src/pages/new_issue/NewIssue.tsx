@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import type { RootState } from "../../app/store";
 import { useCreateIssueMutation } from "../../services/newIssueApi";
 import { handleTitle, handleBody, resetAll } from "../../app/newIssueSlice";
-import CreateArea from "./CreateArea";
+import CreateArea from "../../components/commons/message/CreateArea";
 import RightFuncBar from "./RightFuncBar";
-import NormalBtn from "../../components/commons/NormalBtn";
+import NormalBtn from "../../components/commons/buttons/NormalBtn";
 
 export default function NewIssue() {
 	const currentContent = useSelector((state: RootState) => state.contents);

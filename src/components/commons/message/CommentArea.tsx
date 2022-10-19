@@ -1,29 +1,29 @@
 import { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { AnyAction } from "redux";
-import { Reactions } from "../../components/commons/ReactionsBar";
-import type { RootState } from "../../app/store";
+import { Reactions } from "../ReactionsBar";
+import type { RootState } from "../../../app/store";
 import {
 	useDeleteCommentMutation,
 	useEditIssueMutation,
 	useEditCommentMutation,
-} from "../../services/issueApi";
-import { handleIssueBody, resetAll } from "../../app/issueSlice";
+} from "../../../services/issueApi";
+import { handleIssueBody, resetAll } from "../../../app/issueSlice";
 import TextareaMarkdown, {
 	TextareaMarkdownRef,
 } from "textarea-markdown-editor";
-import { commands } from "../../utils/markdownStyle";
+import { commands } from "../../../utils/markdownStyle";
 import {
 	markdownIconGorup1,
 	markdownIconGroup2,
 	markdownIconRroup3,
 	markdownIconGorup4,
-} from "../../utils/markdownBtnList";
-import Tag from "../../components/commons/Tag";
-import MarkDownArea from "../../components/commons/MarkDownArea";
-import CommentsBar from "../../components/commons/ReactionsBar";
-import NormalBtn from "../../components/commons/NormalBtn";
-import DropdownList from "../../components/commons/DropDown";
+} from "../../../utils/markdownBtnList";
+import Tag from "../tags/Tag";
+import MarkDownArea from "./MarkDownArea";
+import CommentsBar from "../ReactionsBar";
+import NormalBtn from "../buttons/NormalBtn";
+import DropdownList from "../DropDown";
 import {
 	TypographyIcon,
 	ChevronDownIcon,

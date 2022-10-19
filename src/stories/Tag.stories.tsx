@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Tag from "../components/commons/Tag";
+import Tag from "../components/commons/tags/Tag";
 
 export default {
 	title: "Tag",

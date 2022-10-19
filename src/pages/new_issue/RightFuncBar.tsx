@@ -7,7 +7,7 @@ import { handleAssignees } from "../../app/newIssueSlice";
 import PopAssignee from "../../components/commons/PopAssignee";
 import PopLabel from "../../components/commons/PopLabel";
 import BarTool from "../../components/commons/BarTool";
-import Label from "../../components/commons/Label";
+import Label from "../../components/commons/tags/Label";
 
 export default function RightFuncBar() {
 	const loginUser = useSelector((state: RootState) => state.login);

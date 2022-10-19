@@ -20,7 +20,7 @@ import {
 import PopAssignee from "./popAssignee";
 import PopLabel from "./popLabel";
 import BarTool from "../../components/commons/BarTool";
-import Label from "../../components/commons/Label";
+import Label from "../../components/commons/tags/Label";
 
 interface RightFuncBarProps {
 	labelsData?: RepoLabels[];

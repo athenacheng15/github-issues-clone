@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { timeCalc, timeCalc2 } from "../../utils/utils";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";
-import Label from "../../components/commons/Label";
+import Label from "../../components/commons/tags/Label";
 import {
 	IssueOpenedIcon,
 	CommentIcon,
