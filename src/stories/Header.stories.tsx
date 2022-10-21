@@ -7,7 +7,7 @@ import { store } from "../app/store";
 import { BrowserRouter } from "react-router-dom";
 
 export default {
-	title: "Header",
+	title: "block/Header",
 	component: Header,
 	parameters: {
 		layout: "fullscreen",

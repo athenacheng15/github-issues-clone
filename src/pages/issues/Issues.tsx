@@ -42,6 +42,7 @@ export default function Issues() {
 	const navigate = useNavigate();
 	const currentState = useSelector((state: RootState) => state.queries);
 	const loginUser = useSelector((state: RootState) => state.login);
+
 	const [popFilterVis, setPopFilterVis] = useState(false);
 	const [popSortVis, setPopSortVis] = useState(false);
 	const [popLabelVis, setPopLabelVis] = useState(false);
@@ -49,11 +50,7 @@ export default function Issues() {
 	const [inputValue, setInputValue] = useState("");
 
 	if (!loginUser.login) {
-		return (
-			<>
-				<Navigate to="/" replace />
-			</>
-		);
+		return <Navigate to="/" replace />;
 	}
 
 	const { data: issuesData, isSuccess: issuesSuccess } = useGetIssuesQuery({

@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import ContentSearchBar from "../components/commons/ContentSearchBar";
 
 export default {
-	title: "ContentSearchBar",
+	title: "others/ContentSearchBar",
 	component: ContentSearchBar,
 	parameters: {
 		layout: "centered",

@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { store } from "../app/store";
 
 export default {
-	title: "message/CreateArea",
+	title: "block/CreateArea",
 	component: CreateArea,
 } as ComponentMeta<typeof CreateArea>;
 

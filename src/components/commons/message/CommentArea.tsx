@@ -162,7 +162,7 @@ export default function CommentArea({
 						owner={owner}
 						time={time}
 						first={first}
-						type="issue"
+						type={type}
 						vis={dropDownVis}
 						setVis={setDropDownVis}
 						defaultBody={defaultBody}

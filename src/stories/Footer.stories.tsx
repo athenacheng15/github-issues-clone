@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Footer from "../components/Footer";
 
 export default {
-	title: "Footer",
+	title: "block/Footer",
 	component: Footer,
 	parameters: {
 		layout: "fullscreen",

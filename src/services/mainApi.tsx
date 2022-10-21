@@ -7,7 +7,7 @@ interface GetReposParams {
 }
 
 export const mainApi = createApi({
-	reducerPath: "labelsApi",
+	reducerPath: "mainApi",
 	tagTypes: ["Label", "Issues", "Issue", "Repos"],
 	baseQuery: fetchBaseQuery({
 		baseUrl: "https://api.github.com",
@@ -22,13 +22,6 @@ export const mainApi = createApi({
 		getRepos: builder.query<RepoType[], GetReposParams>({
 			query: ({ username }) => ({
 				url: `/users/${username}/repos`,
-				headers: new Headers({
-					Authorization: `Bearer ${
-						JSON.parse(localStorage.getItem("supabase.auth.token") || "")
-							.currentSession.provider_token
-					}`,
-					Accept: "application/vnd.github+json",
-				}),
 			}),
 			providesTags: ["Repos"],
 		}),
