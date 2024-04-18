@@ -6,7 +6,7 @@
   <h3 align="center">Github Issues Clone</h3>
 
   <p align="center">
-    This is a full-stack project exercise using NEXT.JS as the framework<br> refer to the video of code with Antonio
+   A front-end project exercise using React.JS as the framework and cloning Github Issues Page's main function.
     <br/>
     <br/>
     <a href="https://issue-page.firebaseapp.com/">View Demo</a>
